@@ -1,0 +1,29 @@
+﻿<Window x:Class="MediaPlayerApp.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:MediaPlayerApp"
+        xmlns:UserControl="clr-namespace:MediaPlayerApp.Views"
+        mc:Ignorable="d"
+        Icon="/Icons/logo.png"
+        Title="Duducha" Height="450" Width="800">
+    
+    <Grid Margin="10">
+
+        <MediaElement x:Name="mediaElement" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" LoadedBehavior="Manual"/>
+        <StackPanel >
+            <UserControl:MediaControls  />
+        </StackPanel>
+
+
+        <StackPanel Orientation="Horizontal" VerticalAlignment="Bottom" HorizontalAlignment="Center" Margin="0,0,0,10">
+            <Button Content="Open" Width="80" Margin="5" Click="OpenButton_Click"/>
+            <Button Content="Play" Width="80" Margin="5" Click="PlayButton_Click"/>
+            <Button Content="Pause" Width="80" Margin="5" Click="PauseButton_Click"/>
+            <Button Content="Stop" Width="80" Margin="5" Click="StopButton_Click"/>
+            <Slider x:Name="volumeSlider" Width="100" Minimum="0" Maximum="1" Value="0.5" Margin="5" ValueChanged="VolumeSlider_ValueChanged"/>
+        </StackPanel>
+
+    </Grid>
+</Window>

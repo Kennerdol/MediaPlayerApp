@@ -1,0 +1,64 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net8.0-windows</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <UseWPF>true</UseWPF>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="Icons\add-playlist.png" />
+    <None Remove="Icons\end.png" />
+    <None Remove="Icons\expand.png" />
+    <None Remove="Icons\fast-forward.png" />
+    <None Remove="Icons\help.png" />
+    <None Remove="Icons\icons8-add-96.png" />
+    <None Remove="Icons\info.png" />
+    <None Remove="Icons\logo.png" />
+    <None Remove="Icons\mute.png" />
+    <None Remove="Icons\no-audio.png" />
+    <None Remove="Icons\pause.png" />
+    <None Remove="Icons\play.png" />
+    <None Remove="Icons\playlist.png" />
+    <None Remove="Icons\repeat.png" />
+    <None Remove="Icons\rewind.png" />
+    <None Remove="Icons\settings.png" />
+    <None Remove="Icons\shuffle.png" />
+    <None Remove="Icons\shutdown.png" />
+    <None Remove="Icons\skip-to-start.png" />
+    <None Remove="Icons\stop.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="Icons\add-playlist.png" />
+    <Resource Include="Icons\end.png" />
+    <Resource Include="Icons\expand.png" />
+    <Resource Include="Icons\fast-forward.png" />
+    <Resource Include="Icons\help.png" />
+    <Resource Include="Icons\icons8-add-96.png" />
+    <Resource Include="Icons\add.png" />
+    <Resource Include="Icons\info.png" />
+    <Resource Include="Icons\logo.png" />
+    <Resource Include="Icons\mute.png" />
+    <Resource Include="Icons\no-audio.png" />
+    <Resource Include="Icons\pause.png" />
+    <Resource Include="Icons\play.png" />
+    <Resource Include="Icons\playlist.png" />
+    <Resource Include="Icons\repeat.png" />
+    <Resource Include="Icons\rewind.png" />
+    <Resource Include="Icons\settings.png" />
+    <Resource Include="Icons\shuffle.png" />
+    <Resource Include="Icons\shutdown.png" />
+    <Resource Include="Icons\skip-to-start.png" />
+    <Resource Include="Icons\speaker.png" />
+    <Resource Include="Icons\stop.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Commands\" />
+    <Folder Include="ViewModels\" />
+  </ItemGroup>
+
+</Project>
