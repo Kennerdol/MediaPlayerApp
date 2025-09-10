@@ -25,13 +25,13 @@
             <Image Source="/Icons/play.png" />
         </Button>
         <Button>
-            <Image Source="/Icons/rewind.png" />
+            <Image Source="/Icons/previous.png" />
         </Button>
         <Button>
             <Image Source="/Icons/stop.png" />
         </Button>
         <Button>
-            <Image Source="/Icons/fast-forward.png" />
+            <Image Source="/Icons/next.png" />
         </Button>
         <Button>
             <Image Source="/Icons/repeat.png" />

@@ -18,10 +18,12 @@
     <None Remove="Icons\info.png" />
     <None Remove="Icons\logo.png" />
     <None Remove="Icons\mute.png" />
+    <None Remove="Icons\next.png" />
     <None Remove="Icons\no-audio.png" />
     <None Remove="Icons\pause.png" />
     <None Remove="Icons\play.png" />
     <None Remove="Icons\playlist.png" />
+    <None Remove="Icons\previous.png" />
     <None Remove="Icons\repeat.png" />
     <None Remove="Icons\rewind.png" />
     <None Remove="Icons\settings.png" />
@@ -42,10 +44,12 @@
     <Resource Include="Icons\info.png" />
     <Resource Include="Icons\logo.png" />
     <Resource Include="Icons\mute.png" />
+    <Resource Include="Icons\next.png" />
     <Resource Include="Icons\no-audio.png" />
     <Resource Include="Icons\pause.png" />
     <Resource Include="Icons\play.png" />
     <Resource Include="Icons\playlist.png" />
+    <Resource Include="Icons\previous.png" />
     <Resource Include="Icons\repeat.png" />
     <Resource Include="Icons\rewind.png" />
     <Resource Include="Icons\settings.png" />
