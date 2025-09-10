@@ -7,17 +7,28 @@
         xmlns:UserControl="clr-namespace:MediaPlayerApp.Views"
         mc:Ignorable="d"
         Icon="/Icons/logo.png"
-        Title="Duducha" Height="450" Width="800">
+        Title="Duducha" Height="750" Width="1000">
     
     <Grid Margin="10">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition />
+            <ColumnDefinition />
+        </Grid.ColumnDefinitions>
+
+        <Grid.RowDefinitions>
+            <RowDefinition />
+            <RowDefinition Height="80"/>
+        </Grid.RowDefinitions>
 
         <MediaElement x:Name="mediaElement" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" LoadedBehavior="Manual"/>
-        <StackPanel >
+        <UserControl:SongThumbnailAndDetails />
+
+        <StackPanel Grid.Row="1" Orientation="Horizontal" VerticalAlignment="Bottom" HorizontalAlignment="Left" Margin="0,0,0,10">
             <UserControl:MediaControls  />
         </StackPanel>
 
 
-        <StackPanel Orientation="Horizontal" VerticalAlignment="Bottom" HorizontalAlignment="Center" Margin="0,0,0,10">
+        <StackPanel Grid.Row="1" Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Top" HorizontalAlignment="Right" Margin="0,0,0,10">
             <Button Content="Open" Width="80" Margin="5" Click="OpenButton_Click"/>
             <Button Content="Play" Width="80" Margin="5" Click="PlayButton_Click"/>
             <Button Content="Pause" Width="80" Margin="5" Click="PauseButton_Click"/>

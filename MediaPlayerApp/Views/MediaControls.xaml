@@ -26,28 +26,28 @@
         <Slider x:Name="Slider" Width="400" Minimum="0" Maximum="100" Value="0" Orientation="Horizontal" Margin="2, 5"/>
         
         <StackPanel Grid.Row="1" Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Center">
-            <Button>
+            <Button Name="Open" >
                 <Image Source="/Icons/add.png" />
             </Button>
-            <Button>
+            <Button Name="Play">
                 <Image Source="/Icons/play.png" />
             </Button>
-            <Button>
+            <Button Name="Previous">
                 <Image Source="/Icons/previous.png" />
             </Button>
-            <Button>
+            <Button Name="Stop">
                 <Image Source="/Icons/stop.png" />
             </Button>
-            <Button>
+            <Button Name="Next">
                 <Image Source="/Icons/next.png" />
             </Button>
-            <Button>
+            <Button Name="Repeat">
                 <Image Source="/Icons/repeat.png" />
             </Button>
-            <Button>
+            <Button Name="Shuffle">
                 <Image Source="/Icons/shuffle.png" />
             </Button>
-            <Button>
+            <Button Name="Playlis">
                 <Image Source="/Icons/playlist.png" />
             </Button>
 
@@ -59,7 +59,6 @@
 
                 <!-- Volume Popup -->
                 <Popup x:Name="volumePopup"
-                   PlacementTarget="{Binding ElementName=speakerButton}"
                    Placement="Right"
                    StaysOpen="False"
                    AllowsTransparency="True">

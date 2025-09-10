@@ -17,6 +17,7 @@
     <None Remove="Icons\icons8-add-96.png" />
     <None Remove="Icons\info.png" />
     <None Remove="Icons\logo.png" />
+    <None Remove="Icons\musical-note.png" />
     <None Remove="Icons\mute.png" />
     <None Remove="Icons\next.png" />
     <None Remove="Icons\no-audio.png" />
@@ -43,6 +44,7 @@
     <Resource Include="Icons\add.png" />
     <Resource Include="Icons\info.png" />
     <Resource Include="Icons\logo.png" />
+    <Resource Include="Icons\musical-note.png" />
     <Resource Include="Icons\mute.png" />
     <Resource Include="Icons\next.png" />
     <Resource Include="Icons\no-audio.png" />
@@ -63,6 +65,10 @@
   <ItemGroup>
     <Folder Include="Commands\" />
     <Folder Include="ViewModels\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Uno.UI" Version="5.6.99" />
   </ItemGroup>
 
 </Project>
