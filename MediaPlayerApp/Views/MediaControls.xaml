@@ -5,7 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:MediaPlayerApp.Views"
              mc:Ignorable="d" 
-             d:DesignHeight="55" d:DesignWidth="600">
+             d:DesignHeight="60" d:DesignWidth="600">
     
     <UserControl.Resources>
         <Style TargetType="Button">
@@ -52,7 +52,7 @@
             <Button Name="Shuffle">
                 <Image Source="/Icons/shuffle.png" />
             </Button>
-            <Button Name="Playlis">
+            <Button Name="Playlis" >
                 <Image Source="/Icons/playlist.png" />
             </Button>
 

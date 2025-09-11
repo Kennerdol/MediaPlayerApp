@@ -1,0 +1,83 @@
+﻿<Page x:Class="MediaPlayerApp.Views.PlaylistPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      mc:Ignorable="d" 
+      d:DesignHeight="450" d:DesignWidth="800"
+      Title="Playlist">
+
+    <Page.Resources>
+        <!-- Placeholder image -->
+        <BitmapImage x:Key="DefaultCover" UriSource="/Icons/treble-clef.png"/>
+    </Page.Resources>
+
+    <Grid Background="LightGray">
+        <ListView x:Name="PlaylistView" AllowDrop="True"
+                  HorizontalAlignment="Stretch"
+                  VerticalAlignment="Stretch"
+                  Margin="5">
+            <ListView.View>
+                <GridView>
+
+                    <!-- Album Thumbnail -->
+                    <GridViewColumn Header="Cover" Width="100">
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <Image Source="/Icons/treble-clef.png"
+                                       Width="80" Height="80"
+                                       Stretch="UniformToFill"/>
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
+
+                    <!-- Title -->
+                    <GridViewColumn Header="Title" Width="200">
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="Song Title" TextTrimming="CharacterEllipsis"/>
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
+
+                    <!-- Artist -->
+                    <GridViewColumn Header="Artist" Width="150">
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="Artist Name" TextTrimming="CharacterEllipsis"/>
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
+
+                    <!-- Duration -->
+                    <GridViewColumn Header="Duration" Width="70">
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="3:45" HorizontalAlignment="Center"/>
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
+
+                    <!-- Genre -->
+                    <GridViewColumn Header="Genre" Width="80">
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="Pop" HorizontalAlignment="Center"/>
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
+
+                    <!-- Year -->
+                    <GridViewColumn Header="Year" Width="60">
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="2025" HorizontalAlignment="Center"/>
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
+
+                </GridView>
+            </ListView.View>
+        </ListView>
+    </Grid>
+</Page>

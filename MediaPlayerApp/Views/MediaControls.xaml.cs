@@ -4,9 +4,6 @@ using System.Windows.Controls;
 
 namespace MediaPlayerApp.Views
 {
-    /// <summary>
-    /// Interaction logic for MediaControls.xaml
-    /// </summary>
     public partial class MediaControls : UserControl
     {
         public MediaControls()
@@ -22,9 +19,7 @@ namespace MediaPlayerApp.Views
             // Hide popup on mouse leave (optional: add delay if needed)
             volumePopup.MouseLeave += (s, e) => volumePopup.IsOpen = false;
 
-
         }
-
 
     }
 }
