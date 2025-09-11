@@ -11,7 +11,7 @@
     
     <Grid Margin="10">
         <Grid.ColumnDefinitions>
-            <ColumnDefinition />
+            <ColumnDefinition Width="Auto" />
             <ColumnDefinition />
         </Grid.ColumnDefinitions>
 
@@ -25,15 +25,6 @@
 
         <StackPanel Grid.Row="1" Orientation="Horizontal" VerticalAlignment="Bottom" HorizontalAlignment="Left" Margin="0,0,0,10">
             <UserControl:MediaControls  />
-        </StackPanel>
-
-
-        <StackPanel Grid.Row="1" Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Top" HorizontalAlignment="Right" Margin="0,0,0,10">
-            <Button Content="Open" Width="80" Margin="5" Click="OpenButton_Click"/>
-            <Button Content="Play" Width="80" Margin="5" Click="PlayButton_Click"/>
-            <Button Content="Pause" Width="80" Margin="5" Click="PauseButton_Click"/>
-            <Button Content="Stop" Width="80" Margin="5" Click="StopButton_Click"/>
-            <Slider x:Name="volumeSlider" Width="100" Minimum="0" Maximum="1" Value="0.5" Margin="5" ValueChanged="VolumeSlider_ValueChanged"/>
         </StackPanel>
 
     </Grid>

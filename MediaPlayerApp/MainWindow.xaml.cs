@@ -20,39 +20,8 @@ namespace MediaPlayerApp
         public MainWindow()
         {
             InitializeComponent();
-            mediaElement.Volume = 0.5; // Default volume
         }
 
-        private void OpenButton_Click(object sender, RoutedEventArgs e)
-        {
-            OpenFileDialog openFileDialog = new OpenFileDialog();
-            openFileDialog.Filter = "Media files|*.mp3;*.mp4;*.wav;*.wmv|All files|*.*";
-
-            if (openFileDialog.ShowDialog() == true)
-            {
-                mediaElement.Source = new Uri(openFileDialog.FileName);
-            }
-        }
-
-        private void PlayButton_Click(object sender, RoutedEventArgs e)
-        {
-            mediaElement.Play();
-        }
-
-        private void PauseButton_Click(object sender, RoutedEventArgs e)
-        {
-            mediaElement.Pause();
-        }
-
-        private void StopButton_Click(object sender, RoutedEventArgs e)
-        {
-            mediaElement.Stop();
-        }
-
-        private void VolumeSlider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
-        {
-            if (mediaElement != null)
-                mediaElement.Volume = volumeSlider.Value;
-        }
+        
     }
 }
