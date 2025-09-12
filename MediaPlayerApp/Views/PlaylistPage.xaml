@@ -13,23 +13,13 @@
     </Page.Resources>
 
     <Grid Background="LightGray">
-        <ListView x:Name="PlaylistView" AllowDrop="True"
+        <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
+            <ListView x:Name="PlaylistView" AllowDrop="True"
                   HorizontalAlignment="Stretch"
                   VerticalAlignment="Stretch"
-                  Margin="5">
+                  BorderThickness="1">
             <ListView.View>
                 <GridView>
-
-                    <!-- Album Thumbnail -->
-                    <GridViewColumn Header="Cover" Width="100">
-                        <GridViewColumn.CellTemplate>
-                            <DataTemplate>
-                                <Image Source="/Icons/treble-clef.png"
-                                       Width="80" Height="80"
-                                       Stretch="UniformToFill"/>
-                            </DataTemplate>
-                        </GridViewColumn.CellTemplate>
-                    </GridViewColumn>
 
                     <!-- Title -->
                     <GridViewColumn Header="Title" Width="200">
@@ -79,5 +69,6 @@
                 </GridView>
             </ListView.View>
         </ListView>
+        </ScrollViewer>
     </Grid>
 </Page>
