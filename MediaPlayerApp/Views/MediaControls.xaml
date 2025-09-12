@@ -71,6 +71,7 @@
                         <Slider x:Name="volumeSlider" Width="100" Minimum="0" Maximum="100" Value="15" Orientation="Horizontal"/>
                     </Border>
                 </Popup>
+
             </Grid>
 
         </StackPanel>

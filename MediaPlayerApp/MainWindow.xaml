@@ -5,59 +5,71 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:MediaPlayerApp"
         xmlns:UserControl="clr-namespace:MediaPlayerApp.Views"
+
         mc:Ignorable="d"
         Icon="/Icons/logo.png"
         Title="Duducha" Height="750" Width="1000" x:Name="MainWin">
-    
-    <Grid Margin="10">
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="3*" /> <!-- Media takes more space -->
-            <ColumnDefinition Width="2*"/> <!-- Playlist/details -->
-        </Grid.ColumnDefinitions>
 
-        <Grid.RowDefinitions> 
-            <RowDefinition /> <!--Main Content-->
-            <RowDefinition Height="80"/>  <!--Controls-->
+    <Grid Margin="10">
+
+        <Grid.RowDefinitions>
+            <RowDefinition Height="20"/>
+            <!--Menubar-->
+            <RowDefinition />
+            <!--Main Content-->
+            <RowDefinition Height="80"/>
+            <!--Controls-->
         </Grid.RowDefinitions>
 
-        <!-- Media playback area -->
-        <MediaElement x:Name="mediaElement" 
-                      Grid.Row="0" Grid.Column="0"
-                      HorizontalAlignment="Stretch" 
-                      VerticalAlignment="Stretch" 
-                      LoadedBehavior="Manual"/>
-
-        <!-- Playlist / navigation --><!--
-        <UserControl:SongThumbnailAndDetails x:Name="thumbNailAndDetails"/>-->
-
-        <!-- Thumbnail + song details -->
-        <UserControl:SongThumbnailAndDetails 
-          x:Name="thumbNailAndDetails"
-          Grid.Row="0" Grid.Column="0"
-          VerticalAlignment="Top" 
-          Margin="10"
-          Height="150" Width="300"
-          Panel.ZIndex="1"/> <!-- overlays video -->
+            <!-- Menu bar -->
+            <UserControl:MenuBar Grid.ColumnSpan="2"/>
         
+            <Grid Grid.Row="1">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="3*" /> <!-- Media takes more space -->
+                    <ColumnDefinition Width="3"/>   <!-- Splitter width -->
+                    <ColumnDefinition Width="2*"/> <!-- Playlist/details -->
+                </Grid.ColumnDefinitions>
+        
+       
+        
+                <!-- Media playback area -->
+                <MediaElement x:Name="mediaElement" 
+                          Grid.Row="1" Grid.Column="0"
+                          HorizontalAlignment="Stretch" 
+                          VerticalAlignment="Stretch" 
+                          LoadedBehavior="Manual"/>
 
-        <!--<Frame Grid.Column="1" x:Name="MainFrame" NavigationUIVisibility="Hidden" Margin="2, 20, 2, 0"/>-->
-        <!-- Playlist / navigation -->
-        <Frame x:Name="MainFrame" 
-           Grid.Row="0" Grid.Column="1" 
-           NavigationUIVisibility="Hidden" 
-           Margin="10,20,10,0"/>
+                <!-- Thumbnail + song details -->
+                <UserControl:SongThumbnailAndDetails 
+                  x:Name="thumbNailAndDetails"
+                  Grid.Row="1" Grid.Column="0"
+                  VerticalAlignment="Top" 
+                  Margin="10"
+                  Height="150" Width="300"
+                  Panel.ZIndex="1"/> <!-- overlays video -->
 
-        <!--<StackPanel Grid.Row="1" Orientation="Horizontal" VerticalAlignment="Bottom" HorizontalAlignment="Left" Margin="0,0,0,10">
-            <UserControl:MediaControls x:Name="mediaController" />
-        </StackPanel>-->
+                <!-- Splitter -->
+                <GridSplitter Grid.Row="1" Grid.Column="1"
+                          Width="3" BorderBrush="LightGray" BorderThickness="1"
+                          HorizontalAlignment="Stretch"
+                          VerticalAlignment="Stretch"
+                          Background="LightGray"
+                          ShowsPreview="True"/>
 
+                <!-- Playlist / navigation -->
+                <Frame x:Name="MainFrame" 
+                   Grid.Row="1" Grid.Column="2" 
+                   NavigationUIVisibility="Hidden" 
+                   Margin="10,20,10,0"/>
+            </Grid>
         <!-- Media controls -->
-        <StackPanel Grid.Row="1" Grid.ColumnSpan="2"
-                Orientation="Horizontal" 
-                VerticalAlignment="Center" 
-                HorizontalAlignment="Center">
-            <UserControl:MediaControls x:Name="mediaController" />
-        </StackPanel>
-
+            <StackPanel Grid.Row="2" Grid.ColumnSpan="2"
+                    Orientation="Horizontal" 
+                    VerticalAlignment="Center" 
+                    HorizontalAlignment="Center">
+                <UserControl:MediaControls x:Name="mediaController" />
+            </StackPanel>
+        
     </Grid>
 </Window>
