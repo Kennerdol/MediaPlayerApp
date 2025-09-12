@@ -26,7 +26,7 @@
         <!-- ⏳ Progress Bar -->
         <StackPanel Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Center" >
             <TextBlock Text="0:45" Foreground="Black" FontSize="12" VerticalAlignment="Center" Margin="0,0,5,0"/>
-            <Slider Minimum="0" Maximum="100" Value="45" Width="500"/>
+            <ProgressBar Minimum="0" Maximum="100" Value="30" Name="pbStatus" Foreground="#0370c8" Width="500" Height="5" Cursor="Hand" />
             <TextBlock Text="3:45" Foreground="black" FontSize="12" VerticalAlignment="Center" Margin="5,0,0,0"/>
         </StackPanel>
 
