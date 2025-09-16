@@ -14,61 +14,31 @@
 
     <Grid Background="LightGray">
         <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
-            <ListView x:Name="PlaylistView" AllowDrop="True"
-                  HorizontalAlignment="Stretch"
-                  VerticalAlignment="Stretch"
-                  BorderThickness="1">
-            <ListView.View>
-                <GridView>
-
-                    <!-- Title -->
-                    <GridViewColumn Header="Title" Width="200">
-                        <GridViewColumn.CellTemplate>
-                            <DataTemplate>
-                                <TextBlock Text="Song Title" TextTrimming="CharacterEllipsis"/>
-                            </DataTemplate>
-                        </GridViewColumn.CellTemplate>
-                    </GridViewColumn>
-
-                    <!-- Artist -->
-                    <GridViewColumn Header="Artist" Width="150">
-                        <GridViewColumn.CellTemplate>
-                            <DataTemplate>
-                                <TextBlock Text="Artist Name" TextTrimming="CharacterEllipsis"/>
-                            </DataTemplate>
-                        </GridViewColumn.CellTemplate>
-                    </GridViewColumn>
-
-                    <!-- Duration -->
-                    <GridViewColumn Header="Duration" Width="70">
-                        <GridViewColumn.CellTemplate>
-                            <DataTemplate>
-                                <TextBlock Text="3:45" HorizontalAlignment="Center"/>
-                            </DataTemplate>
-                        </GridViewColumn.CellTemplate>
-                    </GridViewColumn>
-
-                    <!-- Genre -->
-                    <GridViewColumn Header="Genre" Width="80">
-                        <GridViewColumn.CellTemplate>
-                            <DataTemplate>
-                                <TextBlock Text="Pop" HorizontalAlignment="Center"/>
-                            </DataTemplate>
-                        </GridViewColumn.CellTemplate>
-                    </GridViewColumn>
-
-                    <!-- Year -->
-                    <GridViewColumn Header="Year" Width="60">
-                        <GridViewColumn.CellTemplate>
-                            <DataTemplate>
-                                <TextBlock Text="2025" HorizontalAlignment="Center"/>
-                            </DataTemplate>
-                        </GridViewColumn.CellTemplate>
-                    </GridViewColumn>
-
-                </GridView>
-            </ListView.View>
-        </ListView>
+            <ListView x:Name="PlaylistListView"
+                      Height="150" Margin="10,5,10,10"
+                      
+                      
+                      BorderThickness="0"
+                      AllowDrop="True"
+                      Drop="PlaylistListView_Drop"
+                      PreviewDragOver="PlaylistListView_PreviewDragOver">
+                <ListView.View>
+                    <GridView>
+                        <GridViewColumn Width="50">
+                            <GridViewColumn.CellTemplate>
+                                <DataTemplate>
+                                    <Image Source="/Icons/treble-clef.png"
+                                           Width="40" Height="40"
+                                           Stretch="UniformToFill"/>
+                                </DataTemplate>
+                            </GridViewColumn.CellTemplate>
+                        </GridViewColumn>
+                        <!--<GridViewColumn Header="Title" Width="200" DisplayMemberBinding="{Binding Title}" />
+                        <GridViewColumn Header="Artist" Width="150" DisplayMemberBinding="{Binding Artist}" />
+                        <GridViewColumn Header="Duration" Width="90" DisplayMemberBinding="{Binding Duration}" />-->
+                    </GridView>
+                </ListView.View>
+            </ListView>
         </ScrollViewer>
     </Grid>
 </Page>

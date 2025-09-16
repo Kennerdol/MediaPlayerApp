@@ -19,7 +19,16 @@ namespace MediaPlayerApp.Views
             // Hide popup on mouse leave (optional: add delay if needed)
             volumePopup.MouseLeave += (s, e) => volumePopup.IsOpen = false;
 
+            
+
+            // Hook volume slider
+            volumeSlider.ValueChanged += (s, e) =>
+                VolumeChanged?.Invoke(this, volumeSlider.Value / 100.0);
+
         }
+
+        // 🎵 Events
+        public event EventHandler<double>? VolumeChanged;
 
     }
 }

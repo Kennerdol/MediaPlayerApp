@@ -25,9 +25,16 @@
 
         <!-- ⏳ Progress Bar -->
         <StackPanel Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Center" >
-            <TextBlock Text="0:45" Foreground="Black" FontSize="12" VerticalAlignment="Center" Margin="0,0,5,0"/>
+            <TextBlock Text="0:45" Foreground="White" FontSize="12" VerticalAlignment="Center" Margin="0,0,5,0"/>
             <ProgressBar Minimum="0" Maximum="100" Value="30" Name="pbStatus" Foreground="#0370c8" Width="500" Height="5" Cursor="Hand" />
-            <TextBlock Text="3:45" Foreground="black" FontSize="12" VerticalAlignment="Center" Margin="5,0,0,0"/>
+
+            <!--<Slider x:Name="TimeSlider" Grid.Column="1"
+                        Minimum="0" Maximum="100" Width="500"
+                        PreviewMouseLeftButtonDown="TimeSlider_PreviewMouseLeftButtonDown"
+                        PreviewMouseLeftButtonUp="TimeSlider_PreviewMouseLeftButtonUp"
+                        ValueChanged="TimeSlider_ValueChanged"/>-->
+
+            <TextBlock Text="3:45" Foreground="White" FontSize="12" VerticalAlignment="Center" Margin="5,0,0,0"/>
         </StackPanel>
 
         <StackPanel Grid.Row="1" Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Center">
