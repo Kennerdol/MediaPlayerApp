@@ -1,11 +1,7 @@
 ﻿using MediaPlayerApp.Models;
 using System.Collections.ObjectModel;
-using System.ComponentModel;
 using System.Windows;
-using System.Windows.Controls;
 using System.Windows.Input;
-using System.Windows.Threading;
-using Windows.UI.Xaml.Controls;
 using Page = System.Windows.Controls.Page;
 
 namespace MediaPlayerApp.Views
