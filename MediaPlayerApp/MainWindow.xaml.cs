@@ -345,6 +345,43 @@ namespace MediaPlayerApp
 
         // ================================================================================
 
+        //private void media_Element_MediaOpened(object sender, RoutedEventArgs e)
+        //{
+        //    if (media_Element.NaturalDuration.HasTimeSpan)
+        //    {
+        //        TimeSlider.Maximum = media_Element.NaturalDuration.TimeSpan.TotalSeconds;
+        //        TimeSlider.SmallChange = 1;
+        //        TimeSlider.LargeChange = Math.Max(1, media_Element.NaturalDuration.TimeSpan.TotalSeconds / 10);
+        //        TotalTime.Text = media_Element.NaturalDuration.TimeSpan.ToString(@"hh\:mm\:ss");
+        //    }
+
+        //    // Detect if media has video
+        //    bool hasVideo = media_Element.NaturalVideoWidth > 0 && media_Element.NaturalVideoHeight > 0;
+
+        //    if (hasVideo)
+        //    {
+        //        // Hide album art/cover panel
+        //        SongInfoPanel.Visibility = Visibility.Collapsed;
+        //        AlbumThumbnail.Visibility = Visibility.Collapsed;
+        //    }
+        //    else
+        //    {
+        //        // Show album art/cover panel
+        //        SongInfoPanel.Visibility = Visibility.Visible;
+        //        AlbumThumbnail.Visibility = Visibility.Visible;
+
+        //        if (currentTrackIndex >= 0 && currentTrackIndex < _playlist.Count)
+        //        {
+        //            var track = _playlist[currentTrackIndex];
+        //            AlbumThumbnail.Source = new BitmapImage(new Uri("Icons\\musical-note.png", UriKind.Relative));
+        //            CurrentTitle.Text = track.Title;
+        //            SongArtist.Text = track.Artist;
+        //        }
+        //    }
+        //}
+
+
+
         private void media_Element_MediaOpened(object sender, RoutedEventArgs e)
         {
             if (media_Element.NaturalDuration.HasTimeSpan)
@@ -353,20 +390,24 @@ namespace MediaPlayerApp
                 TimeSlider.SmallChange = 1;
                 TimeSlider.LargeChange = Math.Max(1, media_Element.NaturalDuration.TimeSpan.TotalSeconds / 10);
                 TotalTime.Text = media_Element.NaturalDuration.TimeSpan.ToString(@"hh\:mm\:ss");
+
+                // Update current track duration
+                if (currentTrackIndex >= 0 && currentTrackIndex < _playlist.Count)
+                {
+                    var track = _playlist[currentTrackIndex];
+                    track.Duration = media_Element.NaturalDuration.TimeSpan.ToString(@"mm\:ss");
+                }
             }
 
-            // Detect if media has video
             bool hasVideo = media_Element.NaturalVideoWidth > 0 && media_Element.NaturalVideoHeight > 0;
 
             if (hasVideo)
             {
-                // Hide album art/cover panel
                 SongInfoPanel.Visibility = Visibility.Collapsed;
                 AlbumThumbnail.Visibility = Visibility.Collapsed;
             }
             else
             {
-                // Show album art/cover panel
                 SongInfoPanel.Visibility = Visibility.Visible;
                 AlbumThumbnail.Visibility = Visibility.Visible;
 
@@ -376,9 +417,11 @@ namespace MediaPlayerApp
                     AlbumThumbnail.Source = new BitmapImage(new Uri("Icons\\musical-note.png", UriKind.Relative));
                     CurrentTitle.Text = track.Title;
                     SongArtist.Text = track.Artist;
+                    totalTime.Text = track.Duration;
                 }
             }
         }
+
 
 
 

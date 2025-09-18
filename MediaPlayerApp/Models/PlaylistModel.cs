@@ -4,11 +4,25 @@ namespace MediaPlayerApp.Models
 {
     public class PlaylistModel : INotifyPropertyChanged
     {
-        public string? Title { get; set; }
-        public string? Artist { get; set; }
-        public string? FilePath { get; set; }
-        public string? Duration { get; set; }
-        public string? Thumbnail { get; set; }
+        public string Title { get; set; } = "Unknown Title";
+        public string Artist { get; set; } = "Unknown Artist";
+        public string FilePath { get; set; } = string.Empty;
+        private string? _duration;
+        public string? Duration
+        {
+            get => _duration;
+            set
+            {
+                if (_duration != value)
+                {
+                    _duration = value;
+                    OnPropertyChanged(nameof(Duration));
+                }
+            }
+        }
+
+
+        public string Thumbnail { get; set; } = "Icons/musical-note.png";
 
         private bool _isPlaying;
         public bool IsPlaying

@@ -77,9 +77,9 @@
 
                         <!-- Song Info -->
                         <StackPanel Margin="0,8,0,0">
-                            <TextBlock x:Name="CurrentTitle" Text="{Binding Title}" FontSize="16" Foreground="Black" FontWeight="Bold" TextWrapping="Wrap"/>
-                            <TextBlock x:Name="SongArtist" Text="{Binding Artist}" FontSize="13" Foreground="Black"/>
-                            <TextBlock Text="{Binding Duration}" FontSize="12" Foreground="Black" TextAlignment="Center"/>
+                            <TextBlock x:Name="CurrentTitle" Text="{Binding Title}" FontSize="16" Foreground="Black" FontWeight="Bold" TextWrapping="Wrap" TextAlignment="Center"/>
+                            <TextBlock x:Name="SongArtist" Text="{Binding Artist}" FontSize="13" Foreground="Black" TextAlignment="Center"/>
+                            <TextBlock x:Name="totalTime" Text="{Binding Duration}" FontSize="12" Foreground="Black" TextAlignment="Center"/>
                         </StackPanel>
                     </StackPanel>
                 </Viewbox>
@@ -187,9 +187,33 @@
                                     </GridViewColumn.CellTemplate>
                                 </GridViewColumn>
 
-                                <GridViewColumn Header="Title" Width="200" DisplayMemberBinding="{Binding Title}" />
-                                <GridViewColumn Header="Artist" Width="150" DisplayMemberBinding="{Binding Artist}" />
-                                <GridViewColumn Header="Duration" Width="90" DisplayMemberBinding="{Binding Duration}" />
+                                <GridViewColumn Header="Title" Width="200">
+                                    <GridViewColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <TextBlock Text="{Binding Title, TargetNullValue='Unknown Title'}" 
+                       TextTrimming="CharacterEllipsis"/>
+                                        </DataTemplate>
+                                    </GridViewColumn.CellTemplate>
+                                </GridViewColumn>
+
+                                <GridViewColumn Header="Artist" Width="150">
+                                    <GridViewColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <TextBlock Text="{Binding Artist, TargetNullValue='Unknown Artist'}" 
+                       TextTrimming="CharacterEllipsis"/>
+                                        </DataTemplate>
+                                    </GridViewColumn.CellTemplate>
+                                </GridViewColumn>
+
+                                <GridViewColumn Header="Duration" Width="90">
+                                    <GridViewColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <TextBlock Text="{Binding Duration, TargetNullValue='--:--'}" 
+                       HorizontalAlignment="Center"/>
+                                        </DataTemplate>
+                                    </GridViewColumn.CellTemplate>
+                                </GridViewColumn>
+
                             </GridView>
                         </ListView.View>
                     </ListView>
