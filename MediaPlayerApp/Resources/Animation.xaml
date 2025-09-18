@@ -1,0 +1,60 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <!-- Fade In -->
+    <Storyboard x:Key="FadeInControls">
+        <DoubleAnimation
+      Storyboard.TargetName="PlayerControlsGrid"
+      Storyboard.TargetProperty="Opacity"
+      From="0" To="1"
+      Duration="0:0:0.3" />
+    </Storyboard>
+
+    <!-- Fade Out -->
+    <Storyboard x:Key="FadeOutControls">
+        <DoubleAnimation
+      Storyboard.TargetName="PlayerControlsGrid"
+      Storyboard.TargetProperty="Opacity"
+      From="1" To="0"
+      Duration="0:0:0.3" />
+    </Storyboard>
+
+    <Storyboard x:Key="FadeInPlaylist">
+        <DoubleAnimation Storyboard.TargetName="PlaylistListView"
+       Storyboard.TargetProperty="Opacity"
+       From="0" To="1" Duration="0:0:0.3"/>
+    </Storyboard>
+
+    <Storyboard x:Key="FadeOutPlaylist">
+        <DoubleAnimation Storyboard.TargetName="PlaylistListView"
+       Storyboard.TargetProperty="Opacity"
+       From="1" To="0" Duration="0:0:0.3"/>
+    </Storyboard>
+    
+    <!--Settings Overlay Animation-->
+    <Storyboard x:Key="ShowSettings">
+        <DoubleAnimation Storyboard.TargetName="SettingsOverlay"
+                     Storyboard.TargetProperty="Opacity"
+                     From="0" To="1" Duration="0:0:0.3"/>
+    </Storyboard>
+
+
+    <!-- Equalizer animation -->
+    <Storyboard x:Key="VisualizerStoryboard" RepeatBehavior="Forever">
+        <DoubleAnimation Storyboard.TargetName="Bar1" Storyboard.TargetProperty="Height"
+      From="5" To="50" Duration="0:0:0.5" AutoReverse="True" />
+        <DoubleAnimation Storyboard.TargetName="Bar2" Storyboard.TargetProperty="Height"
+      From="10" To="45" Duration="0:0:0.45" AutoReverse="True" BeginTime="0:0:0.1" />
+        <DoubleAnimation Storyboard.TargetName="Bar3" Storyboard.TargetProperty="Height"
+      From="15" To="55" Duration="0:0:0.6" AutoReverse="True" BeginTime="0:0:0.2" />
+        <DoubleAnimation Storyboard.TargetName="Bar4" Storyboard.TargetProperty="Height"
+      From="20" To="40" Duration="0:0:0.55" AutoReverse="True" BeginTime="0:0:0.3" />
+        <DoubleAnimation Storyboard.TargetName="Bar5" Storyboard.TargetProperty="Height"
+      From="10" To="60" Duration="0:0:0.7" AutoReverse="True" BeginTime="0:0:0.4" />
+        <DoubleAnimation Storyboard.TargetName="Bar6" Storyboard.TargetProperty="Height"
+      From="5" To="45" Duration="0:0:0.4" AutoReverse="True" BeginTime="0:0:0.5" />
+        <DoubleAnimation Storyboard.TargetName="Bar7" Storyboard.TargetProperty="Height"
+      From="15" To="50" Duration="0:0:0.5" AutoReverse="True" BeginTime="0:0:0.6" />
+    </Storyboard>
+
+</ResourceDictionary>

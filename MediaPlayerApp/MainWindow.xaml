@@ -5,81 +5,6 @@
         Icon="/Icons/logo.png"
         WindowStartupLocation="CenterScreen">
 
-    <Window.Resources>
-        <!-- Theme colors -->
-        <SolidColorBrush x:Key="PrimaryBackgroundColor" Color="#212121" />
-        <SolidColorBrush x:Key="SecondaryBackgroundColor" Color="#2C2C2C" />
-        <SolidColorBrush x:Key="Foreground" Color="White" />
-        <SolidColorBrush x:Key="AccentColor" Color="#FFD180" />
-        <SolidColorBrush x:Key="ButtonBackground" Color="#444444" />
-        <SolidColorBrush x:Key="ButtonForeground" Color="White" />
-        <SolidColorBrush x:Key="SliderBackground" Color="#666666" />
-        <SolidColorBrush x:Key="SliderThumbBackground" Color="#FFD180" />
-        <SolidColorBrush x:Key="MenuBackground" Color="LightGray" />
-        <SolidColorBrush x:Key="NoBackground" Color="Transparent" />
-        <SolidColorBrush x:Key="PlayingForeground" Color="#0370c8"/>
-
-
-
-        <!-- Equalizer animation -->
-        <Storyboard x:Key="VisualizerStoryboard" RepeatBehavior="Forever">
-            <DoubleAnimation Storyboard.TargetName="Bar1" Storyboard.TargetProperty="Height"
-                 From="5" To="50" Duration="0:0:0.5" AutoReverse="True" />
-            <DoubleAnimation Storyboard.TargetName="Bar2" Storyboard.TargetProperty="Height"
-                 From="10" To="45" Duration="0:0:0.45" AutoReverse="True" BeginTime="0:0:0.1" />
-            <DoubleAnimation Storyboard.TargetName="Bar3" Storyboard.TargetProperty="Height"
-                 From="15" To="55" Duration="0:0:0.6" AutoReverse="True" BeginTime="0:0:0.2" />
-            <DoubleAnimation Storyboard.TargetName="Bar4" Storyboard.TargetProperty="Height"
-                 From="20" To="40" Duration="0:0:0.55" AutoReverse="True" BeginTime="0:0:0.3" />
-            <DoubleAnimation Storyboard.TargetName="Bar5" Storyboard.TargetProperty="Height"
-                 From="10" To="60" Duration="0:0:0.7" AutoReverse="True" BeginTime="0:0:0.4" />
-            <DoubleAnimation Storyboard.TargetName="Bar6" Storyboard.TargetProperty="Height"
-                 From="5" To="45" Duration="0:0:0.4" AutoReverse="True" BeginTime="0:0:0.5" />
-            <DoubleAnimation Storyboard.TargetName="Bar7" Storyboard.TargetProperty="Height"
-                 From="15" To="50" Duration="0:0:0.5" AutoReverse="True" BeginTime="0:0:0.6" />
-        </Storyboard>
-
-        <!-- Fade In -->
-        <Storyboard x:Key="FadeInControls">
-            <DoubleAnimation
-                Storyboard.TargetName="PlayerControlsGrid"
-                Storyboard.TargetProperty="Opacity"
-                From="0" To="1"
-                Duration="0:0:0.3" />
-        </Storyboard>
-
-        <!-- Fade Out -->
-        <Storyboard x:Key="FadeOutControls">
-            <DoubleAnimation
-                Storyboard.TargetName="PlayerControlsGrid"
-                Storyboard.TargetProperty="Opacity"
-                From="1" To="0"
-                Duration="0:0:0.3" />
-        </Storyboard>
-
-        <Storyboard x:Key="FadeInPlaylist">
-            <DoubleAnimation Storyboard.TargetName="PlaylistListView"
-         Storyboard.TargetProperty="Opacity"
-         From="0" To="1" Duration="0:0:0.3"/>
-        </Storyboard>
-
-        <Storyboard x:Key="FadeOutPlaylist">
-            <DoubleAnimation Storyboard.TargetName="PlaylistListView"
-         Storyboard.TargetProperty="Opacity"
-         From="1" To="0" Duration="0:0:0.3"/>
-        </Storyboard>
-
-        <Style TargetType="Button">
-            <Setter Property="Height" Value="25" />
-            <Setter Property="Width" Value="40" />
-            <Setter Property="Margin" Value="2" />
-            <Setter Property="Background" Value="Transparent" />
-            <Setter Property="BorderThickness" Value="0" />
-        </Style>
-
-        <BitmapImage x:Key="DefaultCover" UriSource="/Icons/treble-clef.png"/>
-    </Window.Resources>
-    
     <Grid>
         <!-- Define rows -->
         <Grid.RowDefinitions>
@@ -94,7 +19,7 @@
         </Grid.RowDefinitions>
 
         <!-- ===== Menu bar ===== -->
-        <Menu Grid.Row="0">
+        <Menu Grid.Row="0" x:Name="TopMenu">
             <MenuItem Header="_File">
                 <MenuItem Header="Open..."/>
                 <MenuItem Header="Exit"/>
@@ -105,6 +30,7 @@
                 <MenuItem Header="Next"/>
                 <MenuItem Header="Previous"/>
                 <MenuItem Header="Stop"/>
+                <MenuItem Header="Clear Playlist" Click="ClearPlaylist_Click"/>
             </MenuItem>
             <MenuItem Header="_Help">
                 <MenuItem Header="How To"/>
@@ -119,11 +45,12 @@
         <!-- ===== Main Content (Media + Playlist) ===== -->
         <Grid Grid.Row="1">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition x:Name="MediaColumn" Width="3*"/>
+                <ColumnDefinition x:Name="MediaColumn" Width="*"/>
                 <!-- Media -->
                 <ColumnDefinition x:Name="SplitterColumn" Width="5"/>
                 <!-- Splitter -->
-                <ColumnDefinition x:Name="PlaylistColumn" Width="Auto"/>
+                <!--<ColumnDefinition x:Name="PlaylistColumn" Width="Auto"/>-->
+                <ColumnDefinition x:Name="PlaylistColumn" Width="2*"/>
                 <!-- Playlist -->
             </Grid.ColumnDefinitions>
 
@@ -133,25 +60,26 @@
                 <!-- Base MediaElement -->
                 <MediaElement x:Name="media_Element"
                   LoadedBehavior="Manual"
-                  Stretch="Uniform"
-                  />
+                  UnloadedBehavior="Manual"
+                  Stretch="Uniform" 
+                              />
 
                 <!-- 📀 Watermark-style Thumbnail + Song Info -->
-                <Viewbox HorizontalAlignment="Center" VerticalAlignment="Center" MaxWidth="300" MaxHeight="300">
+                <Viewbox Stretch="Uniform" x:Name="SongInfoPanel">
                     <StackPanel Orientation="Vertical" HorizontalAlignment="Center"
                     VerticalAlignment="Center" Margin="20" Opacity="0.75">
                         <!-- watermark effect -->
 
                         <!-- Album Cover -->
-                        <Border CornerRadius="8" BorderBrush="White" BorderThickness="1" Width="300" Height="300" Background="#22000000">
-                            <Image Source="/Icons/musical-note.png" Opacity="0.9" Stretch="UniformToFill"/>
+                        <Border CornerRadius="8" BorderBrush="{DynamicResource Foreground}" BorderThickness="1" Width="300" Height="300" Background="#22000000">
+                            <Image x:Name="AlbumThumbnail" Source="/Icons/musical-note.png" Opacity="0.9" Stretch="UniformToFill"/>
                         </Border>
 
                         <!-- Song Info -->
                         <StackPanel Margin="0,8,0,0">
-                            <TextBlock x:Name="CurrentTitle" Text="{Binding Title}" FontSize="16" Foreground="White" FontWeight="Bold" TextWrapping="Wrap"/>
-                            <TextBlock Text="{Binding Artist}" FontSize="13" Foreground="LightGray"/>
-                            <TextBlock Text="Genre: Pop  |  Duration: 3:45" FontSize="12" Foreground="Gray" TextAlignment="Center"/>
+                            <TextBlock x:Name="CurrentTitle" Text="{Binding Title}" FontSize="16" Foreground="Black" FontWeight="Bold" TextWrapping="Wrap"/>
+                            <TextBlock x:Name="SongArtist" Text="{Binding Artist}" FontSize="13" Foreground="Black"/>
+                            <TextBlock Text="{Binding Duration}" FontSize="12" Foreground="Black" TextAlignment="Center"/>
                         </StackPanel>
                     </StackPanel>
                 </Viewbox>
@@ -171,11 +99,11 @@
 
 
             <!-- ==== Splitter ==== -->
-            <GridSplitter Grid.Column="1" Width="5" HorizontalAlignment="Stretch"
-                          VerticalAlignment="Stretch" Background="LightGray"/>
+            <GridSplitter Grid.Column="1" x:Name="GridPlit" Width="5" HorizontalAlignment="Stretch"
+                          VerticalAlignment="Stretch" Background="{DynamicResource MenuBackground}"/>
 
             <!-- ==== Playlist ==== -->
-            <Grid Grid.Column="2">
+            <Grid Grid.Column="2" x:Name="PlaylistGrid" >
                 <Grid.RowDefinitions>
                     <RowDefinition Height="80"/>
                     <!-- ==== Search and Load File ==== -->
@@ -185,15 +113,21 @@
 
                 <!-- ==== Search & buttons ==== -->
                 <StackPanel Orientation="Horizontal" Height="40">
-                    <TextBox x:Name="SearchTextBox" TextChanged="SearchTextBox_TextChanged" Margin="5,0,5,0" Padding="3" FontSize="15" Width="250" Height="30" BorderBrush="Gray"/>
-                    <Button x:Name="OpenFileButton" Grid.Column="1" Foreground="{DynamicResource Foreground}" BorderBrush="{DynamicResource SliderBackground}" Margin="0,0,5,0" Width="50" Click="OpenFile_Click">
+                    <TextBox x:Name="SearchTextBox" TextChanged="SearchTextBox_TextChanged" Margin="5,0,5,0" 
+                             Padding="3" FontSize="15" Width="250" Height="30" BorderBrush="Gray"/>
+                    <Button x:Name="OpenFileButton" Grid.Column="1" Foreground="{DynamicResource Foreground}" 
+                            BorderBrush="{DynamicResource SliderBackground}" Margin="0,0,5,0" Width="50" Click="OpenFile_Click">
                         <Image Source="/Icons/treble-clef.png" />
                     </Button>
-                    <Button x:Name="OpenPlaylistButton" Grid.Column="3" Foreground="{DynamicResource Foreground}" BorderBrush="{DynamicResource SliderBackground}" Margin="5,0,0,0" Width="50" >
+                    
+                    <Button x:Name="OpenPlaylistButton" Grid.Column="3" Foreground="{DynamicResource Foreground}"
+                            BorderBrush="{DynamicResource SliderBackground}" Margin="5,0,0,0" Width="50" >
                         <Image Source="/Icons/open_playlist.png" />
                     </Button>
 
-                    <Button x:Name="SettingsButton"  Grid.Column="3" Foreground="{DynamicResource Foreground}" BorderBrush="{DynamicResource SliderBackground}" Margin="5,0,0,0" Width="50" Click="Settings_Click">
+                    <Button x:Name="SettingsButton"  Grid.Column="3" Foreground="{DynamicResource Foreground}" 
+                            BorderBrush="{DynamicResource SliderBackground}" Margin="5,0,0,0" Width="50" 
+                            Click="Settings_Click">
                         <Image Source="/Icons/settings.png" />
                     </Button>
                 </StackPanel>
@@ -209,19 +143,13 @@
                         <!-- Apply background highlight based on IsPlaying -->
                         <ListView.ItemContainerStyle>
                             <Style TargetType="ListViewItem">
-                                <Setter Property="Background" Value="{StaticResource NoBackground}"/>
+                                <Setter Property="Background" Value="{DynamicResource NoBackground}"/>
                                 <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
                                 <Style.Triggers>
                                     <DataTrigger Binding="{Binding IsPlaying}" Value="True">
-                                        <Setter Property="Background" Value="LightGray"/>
+                                        <Setter Property="Background" Value="{DynamicResource MenuBackground}"/>
                                         <!-- Darkish color -->
-                                        <!--<Setter Property="Foreground" Value="#0370c8"/>-->
-                                        <!--<Setter Property="Foreground" Value="{StaticResource PlayingForeground}"/>-->
-                                        <Setter Property="Foreground">
-                                            <Setter.Value>
-                                                <SolidColorBrush Color="#0370c8"/>
-                                            </Setter.Value>
-                                        </Setter>
+                                        <Setter Property="Foreground" Value="{DynamicResource PlayingForeground}"/>
                                     </DataTrigger>
                                 </Style.Triggers>
                             </Style>
@@ -268,7 +196,7 @@
 
                 </Border>
             </Grid>
-        </Grid>
+            </Grid>
 
         <!-- ===== Media Controls ===== -->
         <Grid Grid.Row="2" VerticalAlignment="Center" HorizontalAlignment="Center" x:Name="PlayerControlsGrid" >
@@ -295,7 +223,7 @@
                            Text="00:00:00" 
                            Margin="0,0,10,0"
                            VerticalAlignment="Center"
-                           Foreground="black"/>
+                           Foreground="{DynamicResource TextForeground}"/>
 
                 <Slider x:Name="TimeSlider"
                         Grid.Column="1"
@@ -315,51 +243,55 @@
                            Text="00:00:00" 
                            Margin="10,0,0,0"
                            VerticalAlignment="Center"
-                           Foreground="black"/>
+                           Foreground="{DynamicResource TextForeground}"/>
             </Grid>
 
-            <StackPanel Grid.Row="1" Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Center" Background="Transparent">
-                <Slider x:Name="SpeedSlider" Width="80" Minimum="0.5" Maximum="2" Value="1" TickPlacement="BottomRight" TickFrequency="0.25"
+            <StackPanel Grid.Row="1" Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Center" 
+                        Background="{DynamicResource NoBackground}">
+                <Slider x:Name="SpeedSlider" Width="80" Minimum="0.5" Maximum="2" Value="1" TickPlacement="BottomRight" 
+                        TickFrequency="0.25"
                             IsSnapToTickEnabled="True" ValueChanged="SpeedSlider_ValueChanged"/>
 
-                <Button x:Name="FullScreen">
+                <Button x:Name="FullScreen" Click="FullScreen_Click" ToolTip="Toggle Screen">
                     <Image x:Name="FullScreenImage" Source="/Icons/full-screen.png" />
                 </Button>
 
                 <!--======= Play Pause =========-->
-                <Button x:Name="PlayPauseButton" Click="PlayPause_Click">
+                <Button x:Name="PlayPauseButton" Click="PlayPause_Click" ToolTip="Play">
                     <Image x:Name="PlayPauseImage" Source="/Icons/play.png" />
                 </Button>
-                
-                
-                <Button Name="Previous" Click="Previous_Click">
+
+
+                <Button Name="Previous" Click="Previous_Click" ToolTip="Previous">
                     <Image Source="/Icons/previous.png" />
                 </Button>
-                <Button Name="Stop" Click="Stop_Click">
+                <Button Name="Stop" Click="Stop_Click" ToolTip="Stop">
                     <Image Source="/Icons/stop.png" />
                 </Button>
-                <Button Name="Next" Click="Next_Click">
+                <Button Name="Next" Click="Next_Click" ToolTip="Next">
                     <Image Source="/Icons/next.png" />
                 </Button>
-                <Button Name="Repeat" Click="Repeat_Click">
-                    <Image x:Name="RepeatImage" Source="/Icons/repeat.png" />
+                <Button Name="Repeat" Click="Repeat_Click" ToolTip="Repeat">
+                    <Image x:Name="RepeatImage" Source="/Icons/repeat.png"/>
                 </Button>
-                <Button Name="ShuffleButton" Click="Shuffle_Click">
+                <Button Name="ShuffleButton" Click="Shuffle_Click" ToolTip="Shuffle">
                     <Image Source="/Icons/shuffle.png" />
                 </Button>
-                <Button Name="TogglePlaylist">
+                <Button Name="TogglePlaylist" Click="TogglePlaylist_Click" ToolTip="Toggle Playlist">
                     <Image Source="/Icons/playlist.png" />
                 </Button>
 
                 <Grid>
                     <!-- Speaker Button -->
-                    <Button x:Name="speakerButton" Height="30" HorizontalAlignment="Center" VerticalAlignment="Center">
+                    <Button x:Name="speakerButton" Height="30" HorizontalAlignment="Center" VerticalAlignment="Center" 
+                            ToolTip="Volume">
                         <Image x:Name="VolumSpeaker" Source="/Icons/speaker.png" Stretch="Uniform"/>
                     </Button>
 
                      <!-- Volume Popup -->
                     <Popup x:Name="volumePopup" Placement="Right" StaysOpen="False" AllowsTransparency="True">
-                        <Border Background="{DynamicResource ButtonForeground}" BorderBrush="{DynamicResource SliderBackground}" BorderThickness="1" CornerRadius="5" Padding="5">
+                        <Border Background="{DynamicResource ButtonForeground}" BorderBrush="{DynamicResource SliderBackground}" 
+                                BorderThickness="1" CornerRadius="5" Padding="5">
                             <Slider x:Name="VolumeSlider"
                                     Minimum="0"
                                     Maximum="100"
@@ -380,7 +312,7 @@
         </Grid>
 
         <!-- ===== Status Bar ===== -->
-        <StatusBar Grid.Row="3">
+        <StatusBar Grid.Row="3" x:Name="Status">
             <StatusBarItem x:Name="NowPlayingText" Content="Now Playing: No Track Loaded"/>
             <Separator/>
             <StatusBarItem x:Name="RepeatModeText" Content="Repeat: Off"/>
@@ -389,8 +321,6 @@
             <Separator/>
             <StatusBarItem x:Name="TrackCountText" Content="Total Tracks: 0" HorizontalAlignment="Right"/>
         </StatusBar>
-        
-        
         
 
         <!-- ================== SETTINGS OVERLAY ================== -->

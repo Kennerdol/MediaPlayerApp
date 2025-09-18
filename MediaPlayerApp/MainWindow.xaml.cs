@@ -28,9 +28,12 @@ namespace MediaPlayerApp
         private bool isShuffling = false;
         private ICollectionView? _playlistView;
 
-        // Field to track fullscreen state
-        private bool isFullscreen = false;
-        // Timer to hide controls when mouse is inactive
+        // fullscreen state
+        private bool _isFullScreen = false;
+        private WindowState _previousWindowState;
+        private WindowStyle _previousWindowStyle;
+        private ResizeMode _previousResizeMode;
+
         private DispatcherTimer hideControlsTimer;
 
 
@@ -43,6 +46,8 @@ namespace MediaPlayerApp
             hideControlsTimer = new DispatcherTimer();
             hideControlsTimer.Interval = TimeSpan.FromSeconds(3); // hide controls after 3 seconds
             hideControlsTimer.Tick += (s, e) => HideControls();
+
+            media_Element.MediaOpened += media_Element_MediaOpened;
 
             hidePlaylistTimer = new DispatcherTimer();
             hidePlaylistTimer.Interval = TimeSpan.FromSeconds(3);
@@ -61,6 +66,9 @@ namespace MediaPlayerApp
             // Hide popup on mouse leave (optional: add delay if needed)
             volumePopup.MouseLeave += (s, e) => volumePopup.IsOpen = false;
 
+            // Update FullScreen button
+            UpdateFullScreenButton();
+
             ApplyTheme("Dark");
         }
 
@@ -74,11 +82,6 @@ namespace MediaPlayerApp
             hideControlsTimer.Start();
         }
 
-        private void PlayerControlsGrid_MouseEnter(object sender, MouseEventArgs e)
-        {
-            if (isFullscreen)
-                ShowControls();
-        }
 
 
         // Method to hide controls
@@ -144,6 +147,59 @@ namespace MediaPlayerApp
         }
 
 
+        // ======================== TOGGLE PLAYLIST ============================
+
+        private GridLength _lastPlaylistWidth = new GridLength(2, GridUnitType.Star);
+
+        //private void TogglePlaylist_Click(object sender, RoutedEventArgs e)
+        //{
+        //    if (PlaylistGrid.Visibility == Visibility.Visible)
+        //    {
+        //        // Save current playlist width before hiding
+        //        _lastPlaylistWidth = PlaylistColumn.Width;
+
+        //        PlaylistGrid.Visibility = Visibility.Collapsed;
+        //        GridPlit.Visibility = Visibility.Collapsed;   // hide splitter too
+        //        PlaylistColumn.Width = new GridLength(0);     // collapse playlist column
+        //        SplitterColumn.Width = new GridLength(0);     // collapse splitter column
+        //    }
+        //    else
+        //    {
+        //        PlaylistGrid.Visibility = Visibility.Visible;
+        //        GridPlit.Visibility = Visibility.Visible;
+        //        SplitterColumn.Width = new GridLength(5);     // restore splitter width
+        //        PlaylistColumn.Width = _lastPlaylistWidth;    // restore playlist width
+        //    }
+        //}
+
+ 
+
+        private void TogglePlaylist_Click(object sender, RoutedEventArgs e)
+        {
+            if (PlaylistGrid.Visibility == Visibility.Visible)
+            {
+                // Save current playlist width before hiding
+                _lastPlaylistWidth = PlaylistColumn.Width;
+
+                PlaylistGrid.Visibility = Visibility.Collapsed;
+                GridPlit.Visibility = Visibility.Collapsed;
+
+                PlaylistColumn.Width = new GridLength(0);         // collapse playlist
+                SplitterColumn.Width = new GridLength(0);         // collapse splitter
+                MediaColumn.Width = new GridLength(1, GridUnitType.Star); // fill 100%
+            }
+            else
+            {
+                PlaylistGrid.Visibility = Visibility.Visible;
+                GridPlit.Visibility = Visibility.Visible;
+
+                SplitterColumn.Width = new GridLength(5);         // restore splitter
+                PlaylistColumn.Width = _lastPlaylistWidth;        // restore playlist
+                MediaColumn.Width = new GridLength(3, GridUnitType.Star); // restore ratio
+            }
+        }
+
+
         private void SearchTextBox_TextChanged(object sender, C.TextChangedEventArgs e)
         {
             _playlistView?.Refresh(); // re-applies the filter
@@ -164,6 +220,13 @@ namespace MediaPlayerApp
                 CurrentTime.Text = media_Element.Position.ToString(@"hh\:mm\:ss");
                 TotalTime.Text = media_Element.NaturalDuration.TimeSpan.ToString(@"hh\:mm\:ss");
             }
+        }
+
+        private void ClearPlaylist_Click(object sender, EventArgs e)
+        {
+            Stop_Click(null!, null!);
+            _playlist.Clear();
+            UpdateFullScreenButton();
         }
 
 
@@ -214,54 +277,113 @@ namespace MediaPlayerApp
         }
 
 
+        // ============================FULL SCREEN =============================================
 
-        private void EnterFullscreen()
+        private void FullScreen_Click(object sender, RoutedEventArgs e)
         {
-            this.WindowStyle = WindowStyle.None;
-            this.WindowState = WindowState.Maximized;
-            isFullscreen = true;
+            if (!_isFullScreen)
+            {
+                // Save current state
+                _previousWindowState = this.WindowState;
+                _previousWindowStyle = this.WindowStyle;
+                _previousResizeMode = this.ResizeMode;
 
-            PlaylistListView.Visibility = Visibility.Collapsed;
-            HideControls(); // Hide controls initially
+                // Enter fullscreen
+                this.WindowStyle = WindowStyle.None;
+                this.ResizeMode = ResizeMode.NoResize;
+                this.WindowState = WindowState.Maximized;
+
+                // Optionally update the button icon
+                FullScreenImage.Source = new BitmapImage(new Uri("/Icons/exit-fullscreen.png", UriKind.Relative));
+
+                _isFullScreen = true;
+                TopMenu.Visibility = Visibility.Collapsed;
+                Status.Visibility = Visibility.Collapsed;
+            }
+            else
+            {
+                // Restore window state
+                this.WindowStyle = _previousWindowStyle;
+                this.ResizeMode = _previousResizeMode;
+                this.WindowState = _previousWindowState;
+
+                // Restore the fullscreen icon
+                FullScreenImage.Source = new BitmapImage(new Uri("/Icons/full-screen.png", UriKind.Relative));
+
+                _isFullScreen = false;
+                TopMenu.Visibility = Visibility.Visible;
+                Status.Visibility = Visibility.Visible;
+            }
+            TogglePlaylist_Click(null!, null!);
         }
 
-        private void ExitFullscreen()
-        {
-            this.WindowStyle = WindowStyle.SingleBorderWindow;
-            this.WindowState = WindowState.Normal;
-            isFullscreen = false;
 
-            PlaylistListView.Visibility = Visibility.Visible;
-            ShowControls(); // Show controls when exiting fullscreen
+        // Call this method whenever the playlist changes
+        private void UpdateFullScreenButton()
+        {
+            if (PlaylistListView.Items.Count == 0)
+            {
+                FullScreen.IsEnabled = false;
+            }
+            else
+            {
+                FullScreen.IsEnabled = true;
+            }
         }
+
+
+
+        protected override void OnPreviewKeyDown(KeyEventArgs e)
+        {
+            base.OnPreviewKeyDown(e);
+
+            if (_isFullScreen && e.Key == Key.Escape)
+            {
+                FullScreen_Click(null!, null!); // Exit fullscreen
+            }
+        }
+
+        // ================================================================================
+
+        private void media_Element_MediaOpened(object sender, RoutedEventArgs e)
+        {
+            if (media_Element.NaturalDuration.HasTimeSpan)
+            {
+                TimeSlider.Maximum = media_Element.NaturalDuration.TimeSpan.TotalSeconds;
+                TimeSlider.SmallChange = 1;
+                TimeSlider.LargeChange = Math.Max(1, media_Element.NaturalDuration.TimeSpan.TotalSeconds / 10);
+                TotalTime.Text = media_Element.NaturalDuration.TimeSpan.ToString(@"hh\:mm\:ss");
+            }
+
+            // Detect if media has video
+            bool hasVideo = media_Element.NaturalVideoWidth > 0 && media_Element.NaturalVideoHeight > 0;
+
+            if (hasVideo)
+            {
+                // Hide album art/cover panel
+                SongInfoPanel.Visibility = Visibility.Collapsed;
+                AlbumThumbnail.Visibility = Visibility.Collapsed;
+            }
+            else
+            {
+                // Show album art/cover panel
+                SongInfoPanel.Visibility = Visibility.Visible;
+                AlbumThumbnail.Visibility = Visibility.Visible;
+
+                if (currentTrackIndex >= 0 && currentTrackIndex < _playlist.Count)
+                {
+                    var track = _playlist[currentTrackIndex];
+                    AlbumThumbnail.Source = new BitmapImage(new Uri("Icons\\musical-note.png", UriKind.Relative));
+                    CurrentTitle.Text = track.Title;
+                    SongArtist.Text = track.Artist;
+                }
+            }
+        }
+
+
+
 
         // ============================= DRAG AND DROP AND REORDER ========================
-
-
-
-        //private void PlaylistListView_Drop(object sender, DragEventArgs e)
-        //{
-        //    if (e.Data.GetDataPresent(DataFormats.FileDrop))
-        //    {
-        //        string[] files = (string[])e.Data.GetData(DataFormats.FileDrop);
-
-        //        foreach (string file in files)
-        //        {
-        //            // Skip if already in playlist
-        //            if (_playlist.Any(p => string.Equals(p.FilePath, file, StringComparison.OrdinalIgnoreCase)))
-        //                continue;
-
-        //            _playlist.Add(new PlaylistModel
-        //            {
-        //                FilePath = file,
-        //                Title = Path.GetFileNameWithoutExtension(file),
-        //                Artist = "Unknown Artist",
-        //                Duration = "--:--",
-        //                Thumbnail = "Images/default_thumbnail.png"
-        //            });
-        //        }
-        //    }
-        //}
 
 
         private void PlaylistListView_Drop(object sender, DragEventArgs e)
@@ -298,6 +420,9 @@ namespace MediaPlayerApp
             {
                 // your reorder logic stays the same...
             }
+
+            // Update FullScreen button
+            UpdateFullScreenButton();
         }
 
 
@@ -339,6 +464,7 @@ namespace MediaPlayerApp
                 return; // nothing to stop
 
             media_Element.Stop();
+            //media_Element.Source = null;
 
             // Reset UI
             PlayPauseImage.Source = new BitmapImage(new Uri("/Icons/play.png", UriKind.Relative));
@@ -371,17 +497,6 @@ namespace MediaPlayerApp
                 CurrentTime.Text = TimeSpan.FromSeconds(TimeSlider.Value).ToString(@"hh\:mm\:ss");
             }
         }
-
-
-        //private void Mute_Click(object sender, RoutedEventArgs e)
-        //{
-        //    media_Element.IsMuted = !media_Element.IsMuted;
-
-        //    // Update icon
-        //    MuteImage.Source = media_Element.IsMuted
-        //        ? new BitmapImage(new Uri("/Icons/mute.png", UriKind.Relative))
-        //        : new BitmapImage(new Uri("/Icons/speaker.png", UriKind.Relative));
-        //}
 
 
         private void VolumeSlider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
@@ -450,6 +565,8 @@ namespace MediaPlayerApp
 
                 PlayTrackByIndex(0);
             }
+            // Update FullScreen button
+            UpdateFullScreenButton();
         }
 
 
@@ -470,7 +587,17 @@ namespace MediaPlayerApp
             var trackToPlay = _playlist[index];
             trackToPlay.IsPlaying = true;
             currentTrackIndex = index;
-            media_Element.Source = new Uri(trackToPlay.FilePath!);
+            try
+            {
+                media_Element.Source = new Uri(trackToPlay.FilePath!);
+            }
+            catch (Exception ex) {
+                MessageBox.Show($"Error loading file: {trackToPlay.FilePath}\n\n{ex.Message}",
+                        "Playback Error", MessageBoxButton.OK, MessageBoxImage.Error);
+
+                // Optionally remove the bad track from playlist
+                _playlist.Remove(trackToPlay);
+            }
 
             // Update status bar
             UpdateNowPlayingStatus($"{trackToPlay.Title} — {trackToPlay.Artist}");
@@ -609,28 +736,6 @@ namespace MediaPlayerApp
 
 
 
-        private void Window_MouseDoubleClick(object sender, MouseButtonEventArgs e)
-        {
-            // Don't toggle fullscreen if double-click came from the playlist
-            if (e.OriginalSource is DependencyObject source &&
-                !IsDescendantOf(source, PlaylistListView))
-            {
-                if (this.WindowState == WindowState.Normal)
-                {
-                    this.WindowStyle = WindowStyle.None;
-                    this.WindowState = WindowState.Maximized;
-                    isFullscreen = true;
-                }
-                else
-                {
-                    this.WindowStyle = WindowStyle.SingleBorderWindow;
-                    this.WindowState = WindowState.Normal;
-                    isFullscreen = false;
-                }
-            }
-        }
-
-
 
         // Helper to check if a control is a child of another
         private bool IsDescendantOf(DependencyObject source, DependencyObject parent)
@@ -647,6 +752,7 @@ namespace MediaPlayerApp
         private void MediaGrid_Drop(object sender, DragEventArgs e)
         {
             PlaylistListView_Drop(sender, e); // reuse drop logic
+
         }
 
 
@@ -655,33 +761,6 @@ namespace MediaPlayerApp
             // This allows the drop operation
             e.Effects = DragDropEffects.Copy;
             e.Handled = true;
-        }
-
-
-
-        private void MediaGrid_MouseMove(object sender, MouseEventArgs e)
-        {
-            if (!isFullscreen) return;
-
-            Point position = e.GetPosition(this);
-
-            double controlsTop = this.ActualHeight - PlayerControlsGrid.ActualHeight - 50;
-
-            if (position.Y >= controlsTop || position.Y <= this.ActualHeight) // near bottom or anywhere
-                ShowControls();
-        }
-
-
-        private void media_Element_MediaOpened(object sender, RoutedEventArgs e)
-        {
-            if (media_Element.NaturalDuration.HasTimeSpan)
-            {
-                // Use seconds everywhere (consistent with Timer_Tick which uses TotalSeconds)
-                TimeSlider.Maximum = media_Element.NaturalDuration.TimeSpan.TotalSeconds;
-                TimeSlider.SmallChange = 1;
-                TimeSlider.LargeChange = Math.Max(1, media_Element.NaturalDuration.TimeSpan.TotalSeconds / 10);
-                TotalTime.Text = media_Element.NaturalDuration.TimeSpan.ToString(@"hh\:mm\:ss");
-            }
         }
 
 
@@ -768,44 +847,26 @@ namespace MediaPlayerApp
         }
 
 
-        private void PlayerControlsGrid_MouseLeave(object sender, MouseEventArgs e)
-        {
-            if (isFullscreen)
-            {
-                HideControls();
-            }
-        }
-
-
-        
         // =============================== Themes  ============================
 
         private void ApplyTheme(string theme)
         {
-            switch (theme)
+            // Clear previous theme dictionaries
+            Resources.MergedDictionaries.Clear();
+
+            // Load Themes.xaml
+            var themeDict = new ResourceDictionary
             {
-                case "Dark":
-                    Resources["PrimaryBackgroundColor"] = new System.Windows.Media.SolidColorBrush(System.Windows.Media.Color.FromRgb(33, 33, 33));
-                    Resources["SecondaryBackgroundColor"] = new System.Windows.Media.SolidColorBrush(System.Windows.Media.Color.FromRgb(44, 44, 44));
-                    Resources["Foreground"] = new System.Windows.Media.SolidColorBrush(System.Windows.Media.Colors.White);
-                    Resources["AccentColor"] = new System.Windows.Media.SolidColorBrush(System.Windows.Media.Color.FromRgb(255, 209, 128));
-                    break;
+                Source = new Uri("/Resources/Themes.xaml", UriKind.Relative)
+            };
 
-                case "Light":
-                    Resources["PrimaryBackgroundColor"] = new System.Windows.Media.SolidColorBrush(System.Windows.Media.Colors.White);
-                    Resources["SecondaryBackgroundColor"] = new System.Windows.Media.SolidColorBrush(System.Windows.Media.Colors.LightGray);
-                    Resources["Foreground"] = new System.Windows.Media.SolidColorBrush(System.Windows.Media.Colors.Black);
-                    Resources["AccentColor"] = new System.Windows.Media.SolidColorBrush(System.Windows.Media.Colors.DodgerBlue);
-                    break;
-
-                case "LightGrey":
-                    Resources["PrimaryBackgroundColor"] = new System.Windows.Media.SolidColorBrush(System.Windows.Media.Color.FromRgb(220, 220, 220));
-                    Resources["SecondaryBackgroundColor"] = new System.Windows.Media.SolidColorBrush(System.Windows.Media.Color.FromRgb(200, 200, 200));
-                    Resources["Foreground"] = new System.Windows.Media.SolidColorBrush(System.Windows.Media.Colors.Black);
-                    Resources["AccentColor"] = new System.Windows.Media.SolidColorBrush(System.Windows.Media.Colors.DarkOrange);
-                    break;
+            // Extract the right sub-dictionary
+            if (themeDict[theme + "Theme"] is ResourceDictionary selectedTheme)
+            {
+                Resources.MergedDictionaries.Add(selectedTheme);
             }
         }
+
 
         private void Settings_Click(object sender, RoutedEventArgs e) => SettingsOverlay.Visibility = Visibility.Visible;
         private void DarkTheme_Click(object sender, RoutedEventArgs e) => ApplyTheme("Dark");

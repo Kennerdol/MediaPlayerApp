@@ -4,7 +4,12 @@
              xmlns:local="clr-namespace:MediaPlayerApp"
              StartupUri="MainWindow.xaml">
     <Application.Resources>
-        
-
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/Resources/Colours.xaml"/>
+                <ResourceDictionary Source="/Resources/Themes.xaml"/>
+                <ResourceDictionary Source="/Resources/Animation.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
     </Application.Resources>
 </Application>
