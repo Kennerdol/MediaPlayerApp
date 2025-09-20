@@ -10,7 +10,7 @@ using System.Windows.Media;
 using System.Windows.Media.Animation;
 using System.Windows.Media.Imaging;
 using System.Windows.Threading;
-using C = System.Windows.Controls;
+using System.Windows.Controls;
 
 namespace MediaPlayerApp
 {
@@ -200,7 +200,7 @@ namespace MediaPlayerApp
         }
 
 
-        private void SearchTextBox_TextChanged(object sender, C.TextChangedEventArgs e)
+        private void SearchTextBox_TextChanged(object sender, TextChangedEventArgs e)
         {
             _playlistView?.Refresh(); // re-applies the filter
         }
@@ -299,6 +299,7 @@ namespace MediaPlayerApp
                 _isFullScreen = true;
                 TopMenu.Visibility = Visibility.Collapsed;
                 Status.Visibility = Visibility.Collapsed;
+                PlayerControlsGrid.Visibility = Visibility.Collapsed;
             }
             else
             {
@@ -313,6 +314,7 @@ namespace MediaPlayerApp
                 _isFullScreen = false;
                 TopMenu.Visibility = Visibility.Visible;
                 Status.Visibility = Visibility.Visible;
+                PlayerControlsGrid.Visibility = Visibility.Visible;
             }
             TogglePlaylist_Click(null!, null!);
         }
@@ -328,6 +330,7 @@ namespace MediaPlayerApp
             else
             {
                 FullScreen.IsEnabled = true;
+                PlaylistColumn.IsEnabled = true;
             }
         }
 
@@ -872,15 +875,15 @@ namespace MediaPlayerApp
         }
 
 
-        private void media_Element_BufferingStarted(object sender, RoutedEventArgs e)
-        {
-            BufferingProgressBar.Visibility = Visibility.Visible;
-        }
+        //private void media_Element_BufferingStarted(object sender, RoutedEventArgs e)
+        //{
+        //    BufferingProgressBar.Visibility = Visibility.Visible;
+        //}
 
-        private void media_Element_BufferingEnded(object sender, RoutedEventArgs e)
-        {
-            BufferingProgressBar.Visibility = Visibility.Hidden;
-        }
+        //private void media_Element_BufferingEnded(object sender, RoutedEventArgs e)
+        //{
+        //    BufferingProgressBar.Visibility = Visibility.Hidden;
+        //}
 
 
         private void PlaylistListView_PreviewDragOver(object sender, DragEventArgs e)
