@@ -22,7 +22,6 @@ namespace MediaPlayerApp
         private readonly Stack<int> playbackHistory = new();
         private DispatcherTimer? timer;
         private int currentTrackIndex = -1;
-        private DispatcherTimer? hidePlaylistTimer;
 
         private bool isDraggingSlider = false;
         private bool isShuffling = false;
@@ -34,7 +33,6 @@ namespace MediaPlayerApp
         private WindowStyle _previousWindowStyle;
         private ResizeMode _previousResizeMode;
 
-        private DispatcherTimer hideControlsTimer;
 
 
         public MainWindow()
@@ -43,16 +41,8 @@ namespace MediaPlayerApp
 
             InitializePlaylist();
             SetupTimer();
-            hideControlsTimer = new DispatcherTimer();
-            hideControlsTimer.Interval = TimeSpan.FromSeconds(3); // hide controls after 3 seconds
-            hideControlsTimer.Tick += (s, e) => HideControls();
 
             media_Element.MediaOpened += media_Element_MediaOpened;
-
-            hidePlaylistTimer = new DispatcherTimer();
-            hidePlaylistTimer.Interval = TimeSpan.FromSeconds(3);
-            hidePlaylistTimer.Tick += (s, e) => HidePlaylist();
-
 
             media_Element.Volume = VolumeSlider.Value;
             media_Element.MediaEnded += media_Element_MediaEnded;
@@ -72,28 +62,12 @@ namespace MediaPlayerApp
             ApplyTheme("Dark");
         }
 
-        private void ShowControls()
-        {
-            PlayerControlsGrid.Visibility = Visibility.Visible;
-            var fadeIn = (Storyboard)this.FindResource("FadeInControls");
-            fadeIn.Begin();
-
-            hideControlsTimer.Stop();
-            hideControlsTimer.Start();
-        }
 
 
+        
+     
 
-        // Method to hide controls
-        private void HideControls()
-        {
-            var fadeOut = (Storyboard)this.FindResource("FadeOutControls");
-            fadeOut.Completed += (s, e) => PlayerControlsGrid.Visibility = Visibility.Collapsed;
-            fadeOut.Begin();
 
-            hideControlsTimer.Stop();
-        }
-       
         private void InitializePlaylist()
         {
             PlaylistListView.ItemsSource = _playlist;
@@ -127,24 +101,8 @@ namespace MediaPlayerApp
             return false;
         }
 
-        private void ShowPlaylist()
-        {
-            PlaylistListView.Visibility = Visibility.Visible;
-            var fadeIn = (Storyboard)this.FindResource("FadeInPlaylist");
-            fadeIn.Begin();
+     
 
-            hidePlaylistTimer?.Stop();
-            hidePlaylistTimer?.Start();
-        }
-
-        private void HidePlaylist()
-        {
-            var fadeOut = (Storyboard)this.FindResource("FadeOutPlaylist");
-            fadeOut.Completed += (s, e) => PlaylistListView.Visibility = Visibility.Collapsed;
-            fadeOut.Begin();
-
-            hidePlaylistTimer?.Stop();
-        }
 
 
         // ======================== TOGGLE PLAYLIST ============================
@@ -711,35 +669,6 @@ namespace MediaPlayerApp
             }
         }
 
-        //private void PlayTrack(PlaylistModel track)
-        //{
-        //    if (track == null) return;
-
-        //    // Stop current playback
-        //    media_Element.Stop();
-
-        //    // Set the source
-        //    media_Element.Source = new Uri(track.FilePath);
-        //    media_Element.Play();
-
-        //    // Update currentTrackIndex in the original playlist
-        //    currentTrackIndex = _playlist.IndexOf(track);
-
-        //    // Update IsPlaying flags for full playlist
-        //    foreach (var t in _playlist)
-        //        t.IsPlaying = t == track;
-
-        //    // Update UI
-        //    CurrentTitle.Text = track.Title;
-        //    SongArtist.Text = track.Artist;
-        //    totalTime.Text = track.Duration;
-
-        //    // Refresh the ListView so IsPlaying triggers apply
-        //    PlaylistListView.Items.Refresh();
-
-        //    // Scroll into view in filtered list
-        //    PlaylistListView.ScrollIntoView(track);
-        //}
 
 
         private void PlayTrack(PlaylistModel track)
@@ -836,7 +765,6 @@ namespace MediaPlayerApp
 
         // ===========  Animating the playlist ==============
 
-        private bool isPlaylistVisible = true;
         private GridLength originalPlaylistWidth;
 
 
@@ -994,6 +922,10 @@ namespace MediaPlayerApp
 
             _lastClickTime = currentTime;
         }
+
+       
+
+      
 
 
 
