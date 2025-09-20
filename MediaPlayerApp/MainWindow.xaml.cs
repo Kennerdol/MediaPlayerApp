@@ -151,29 +151,6 @@ namespace MediaPlayerApp
 
         private GridLength _lastPlaylistWidth = new GridLength(2, GridUnitType.Star);
 
-        //private void TogglePlaylist_Click(object sender, RoutedEventArgs e)
-        //{
-        //    if (PlaylistGrid.Visibility == Visibility.Visible)
-        //    {
-        //        // Save current playlist width before hiding
-        //        _lastPlaylistWidth = PlaylistColumn.Width;
-
-        //        PlaylistGrid.Visibility = Visibility.Collapsed;
-        //        GridPlit.Visibility = Visibility.Collapsed;   // hide splitter too
-        //        PlaylistColumn.Width = new GridLength(0);     // collapse playlist column
-        //        SplitterColumn.Width = new GridLength(0);     // collapse splitter column
-        //    }
-        //    else
-        //    {
-        //        PlaylistGrid.Visibility = Visibility.Visible;
-        //        GridPlit.Visibility = Visibility.Visible;
-        //        SplitterColumn.Width = new GridLength(5);     // restore splitter width
-        //        PlaylistColumn.Width = _lastPlaylistWidth;    // restore playlist width
-        //    }
-        //}
-
- 
-
         private void TogglePlaylist_Click(object sender, RoutedEventArgs e)
         {
             if (PlaylistGrid.Visibility == Visibility.Visible)
@@ -296,10 +273,12 @@ namespace MediaPlayerApp
                 // Optionally update the button icon
                 FullScreenImage.Source = new BitmapImage(new Uri("/Icons/exit-fullscreen.png", UriKind.Relative));
 
+                // Hide UI elements
                 _isFullScreen = true;
                 TopMenu.Visibility = Visibility.Collapsed;
                 Status.Visibility = Visibility.Collapsed;
                 PlayerControlsGrid.Visibility = Visibility.Collapsed;
+                
             }
             else
             {
@@ -312,11 +291,12 @@ namespace MediaPlayerApp
                 FullScreenImage.Source = new BitmapImage(new Uri("/Icons/full-screen.png", UriKind.Relative));
 
                 _isFullScreen = false;
+
+                // Show UI elements again
                 TopMenu.Visibility = Visibility.Visible;
                 Status.Visibility = Visibility.Visible;
                 PlayerControlsGrid.Visibility = Visibility.Visible;
             }
-            TogglePlaylist_Click(null!, null!);
         }
 
 
@@ -710,16 +690,95 @@ namespace MediaPlayerApp
             }
         }
 
+        //private void PlaylistListView_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        //{
+        //    if (PlaylistListView.SelectedIndex >= 0)
+        //    {
+        //        PlayTrackByIndex(PlaylistListView.SelectedIndex);
+
+        //        // Prevent this event from reaching the window
+        //        e.Handled = true;
+        //    }
+        //}
+
+
         private void PlaylistListView_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
-            if (PlaylistListView.SelectedIndex >= 0)
+            if (PlaylistListView.SelectedItem is PlaylistModel selectedTrack)
             {
-                PlayTrackByIndex(PlaylistListView.SelectedIndex);
-
-                // Prevent this event from reaching the window
-                e.Handled = true;
+                PlayTrack(selectedTrack); // Use a method that takes the track directly
+                e.Handled = true; // Prevents the event from bubbling up
             }
         }
+
+        //private void PlayTrack(PlaylistModel track)
+        //{
+        //    if (track == null) return;
+
+        //    // Stop current playback
+        //    media_Element.Stop();
+
+        //    // Set the source
+        //    media_Element.Source = new Uri(track.FilePath);
+        //    media_Element.Play();
+
+        //    // Update currentTrackIndex in the original playlist
+        //    currentTrackIndex = _playlist.IndexOf(track);
+
+        //    // Update IsPlaying flags for full playlist
+        //    foreach (var t in _playlist)
+        //        t.IsPlaying = t == track;
+
+        //    // Update UI
+        //    CurrentTitle.Text = track.Title;
+        //    SongArtist.Text = track.Artist;
+        //    totalTime.Text = track.Duration;
+
+        //    // Refresh the ListView so IsPlaying triggers apply
+        //    PlaylistListView.Items.Refresh();
+
+        //    // Scroll into view in filtered list
+        //    PlaylistListView.ScrollIntoView(track);
+        //}
+
+
+        private void PlayTrack(PlaylistModel track)
+        {
+            if (track == null) return;
+
+            // Stop current playback
+            media_Element.Stop();
+
+            // Set the source
+            media_Element.Source = new Uri(track.FilePath);
+            media_Element.Play();
+
+            // Update currentTrackIndex in the original playlist
+            currentTrackIndex = _playlist.IndexOf(track);
+
+            // Update IsPlaying flags for full playlist
+            foreach (var t in _playlist)
+                t.IsPlaying = t == track;
+
+            // Update UI
+            CurrentTitle.Text = track.Title;
+            SongArtist.Text = track.Artist;
+            totalTime.Text = track.Duration;
+
+            // Refresh the ListView so IsPlaying triggers apply
+            PlaylistListView.Items.Refresh();
+
+            // Scroll into view in filtered list
+            PlaylistListView.ScrollIntoView(track);
+
+            // Update status bar
+            UpdateNowPlayingStatus($"{track.Title} — {track.Artist}");
+        }
+
+
+
+
+
 
 
         // ───────────────────────────────
@@ -875,17 +934,6 @@ namespace MediaPlayerApp
         }
 
 
-        //private void media_Element_BufferingStarted(object sender, RoutedEventArgs e)
-        //{
-        //    BufferingProgressBar.Visibility = Visibility.Visible;
-        //}
-
-        //private void media_Element_BufferingEnded(object sender, RoutedEventArgs e)
-        //{
-        //    BufferingProgressBar.Visibility = Visibility.Hidden;
-        //}
-
-
         private void PlaylistListView_PreviewDragOver(object sender, DragEventArgs e)
         {
             e.Effects = e.Data.GetDataPresent(DataFormats.FileDrop) ? DragDropEffects.Copy : DragDropEffects.None;
@@ -903,7 +951,7 @@ namespace MediaPlayerApp
             // Load Themes.xaml
             var themeDict = new ResourceDictionary
             {
-                Source = new Uri("/Resources/Themes.xaml", UriKind.Relative)
+                Source = new Uri("/Resources/LightTheme.xaml", UriKind.Relative)
             };
 
             // Extract the right sub-dictionary
@@ -914,11 +962,40 @@ namespace MediaPlayerApp
         }
 
 
+
         private void Settings_Click(object sender, RoutedEventArgs e) => SettingsOverlay.Visibility = Visibility.Visible;
         private void DarkTheme_Click(object sender, RoutedEventArgs e) => ApplyTheme("Dark");
         private void LightTheme_Click(object sender, RoutedEventArgs e) => ApplyTheme("Light");
         private void LightGreyTheme_Click(object sender, RoutedEventArgs e) => ApplyTheme("LightGrey");
         private void CloseSettings_Click(object sender, RoutedEventArgs e) => SettingsOverlay.Visibility = Visibility.Hidden;
+
+
+        private void media_Element_MediaFailed(object sender, ExceptionRoutedEventArgs e)
+        {
+            MessageBox.Show($"Media failed to load: {e.ErrorException?.Message}",
+                            "Playback Error",
+                            MessageBoxButton.OK,
+                            MessageBoxImage.Error);
+        }
+
+        private DateTime _lastClickTime = DateTime.MinValue;
+        private const int DoubleClickThreshold = 300; // milliseconds
+
+        private void MediaElement_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            var currentTime = DateTime.Now;
+            var elapsed = (currentTime - _lastClickTime).TotalMilliseconds;
+
+            if (elapsed <= DoubleClickThreshold)
+            {
+                // Double click detected → toggle fullscreen
+                FullScreen_Click(sender, null);
+            }
+
+            _lastClickTime = currentTime;
+        }
+
+
 
 
     }

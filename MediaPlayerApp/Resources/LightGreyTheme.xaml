@@ -1,0 +1,13 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <!-- Light Grey Theme -->
+    <ResourceDictionary x:Key="LightGreyTheme">
+        <SolidColorBrush x:Key="PrimaryBackgroundColor" Color="#DCDCDC"/>
+        <SolidColorBrush x:Key="SecondaryBackgroundColor" Color="#C8C8C8"/>
+        <SolidColorBrush x:Key="Foreground" Color="Black"/>
+        <SolidColorBrush x:Key="AccentColor" Color="DarkOrange"/>
+    </ResourceDictionary>
+    
+
+</ResourceDictionary>

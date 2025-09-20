@@ -57,7 +57,7 @@
                 <ColumnDefinition x:Name="SplitterColumn" Width="3"/>
                 <!-- Splitter -->
                 <!--<ColumnDefinition x:Name="PlaylistColumn" Width="Auto"/>-->
-                <ColumnDefinition x:Name="PlaylistColumn" Width="2*"/>
+                <ColumnDefinition x:Name="PlaylistColumn" Width="Auto"/>
                 <!-- Playlist -->
             </Grid.ColumnDefinitions>
 
@@ -68,8 +68,7 @@
                 <MediaElement x:Name="media_Element"
                   LoadedBehavior="Manual"
                   UnloadedBehavior="Manual"
-                  Stretch="Uniform" 
-                              />
+                  Stretch="Uniform" MediaFailed="media_Element_MediaFailed" MouseLeftButtonDown="MediaElement_MouseLeftButtonDown"/>
 
                 <!-- 📀 Watermark-style Thumbnail + Song Info -->
                 <Viewbox Stretch="Uniform" x:Name="SongInfoPanel">
@@ -351,7 +350,7 @@
             <StatusBarItem x:Name="ShuffleModeText" Content="Shuffle: Off" HorizontalAlignment="Right"/>
             <Separator/>
             <StatusBarItem x:Name="TrackCountText" Content="Total Tracks: 0" HorizontalAlignment="Right"/>
-            <!--<StatusBarItem Content="{Binding Playlist.Count, StringFormat=Total Tracks: {0}}"/>-->
+
 
         </StatusBar>
         
