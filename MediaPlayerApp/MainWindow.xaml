@@ -5,12 +5,6 @@
         Icon="/Icons/logo.png"
         WindowStartupLocation="CenterScreen">
 
-    <Window.InputBindings>
-        <KeyBinding Key="Space" Command="{Binding PlayPauseCommand}"/>
-        <KeyBinding Key="N" Command="{Binding NextCommand}"/>
-    </Window.InputBindings>
-
-    
 
     <Grid>
         <!-- Define rows -->
@@ -142,6 +136,8 @@
                 <Border Grid.Row="1" BorderBrush="{DynamicResource SecondaryBackgroundColor}" BorderThickness="1" Margin="5">
                     <ListView x:Name="PlaylistListView"
                               MouseDoubleClick="PlaylistListView_MouseDoubleClick"
+                              PreviewMouseLeftButtonDown="PlaylistListView_PreviewMouseLeftButtonDown"
+                              PreviewMouseMove="PlaylistListView_PreviewMouseMove"
                               BorderThickness="0"
                               AllowDrop="True"
                               Drop="PlaylistListView_Drop">
@@ -314,15 +310,17 @@
                 <Grid>
                     <!-- Speaker Button -->
                     <Button x:Name="speakerButton" Height="30" HorizontalAlignment="Center" VerticalAlignment="Center" 
-                            ToolTip="Volume">
+                        ToolTip="Volume"
+                        MouseEnter="speakerButton_MouseEnter"
+                        MouseLeave="speakerButton_MouseLeave">
                         <Image x:Name="VolumSpeaker" Source="/Icons/speaker.png" Stretch="Uniform"/>
                     </Button>
 
-                     <!-- Volume Popup -->
+                    <!-- Volume Popup -->
                     <Popup x:Name="volumePopup" Placement="Right" StaysOpen="False" AllowsTransparency="True">
                         <Border Background="{DynamicResource ButtonForeground}" BorderBrush="{DynamicResource SliderBackground}" 
                                 BorderThickness="1" CornerRadius="5" Padding="5">
-                            <Slider x:Name="VolumeSlider"
+                                                <Slider x:Name="VolumeSlider"
                                     Minimum="0"
                                     Maximum="100"
                                     Width="100"
@@ -330,7 +328,6 @@
                                     SmallChange="2"
                                     LargeChange="5"
                                     TickFrequency="1"
-                                    IsSnapToTickEnabled="False"
                                     ValueChanged="VolumeSlider_ValueChanged"/>
                         </Border>
                     </Popup>
@@ -364,9 +361,9 @@
                     <TextBlock Text="Settings" FontSize="20" FontWeight="Bold" Foreground="{DynamicResource Foreground}" HorizontalAlignment="Center"/>
                     <TextBlock Text="Select a theme:" Margin="0,15,0,5" Foreground="{DynamicResource Foreground}"/>
                     <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-                        <Button Content="Dark Theme" Margin="5" Click="DarkTheme_Click"/>
-                        <Button Content="Light Theme" Margin="5" Click="LightTheme_Click"/>
-                        <Button Content="Light Grey" Margin="5" Click="LightGreyTheme_Click"/>
+                        <Button Content="Dark Theme" Margin="5" Click="DarkTheme_Click" Width="auto"/>
+                        <Button Content="Light Theme" Margin="5" Click="LightTheme_Click" Width="auto"/>
+                        <Button Content="Light Grey" Margin="5" Click="LightGreyTheme_Click" Width="auto"/>
                     </StackPanel>
                     <Button Content="Close" Margin="0,20,0,0" Click="CloseSettings_Click"/>
                 </StackPanel>

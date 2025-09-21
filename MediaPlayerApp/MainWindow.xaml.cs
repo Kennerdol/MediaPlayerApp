@@ -62,12 +62,6 @@ namespace MediaPlayerApp
             ApplyTheme("Dark");
         }
 
-
-
-        
-     
-
-
         private void InitializePlaylist()
         {
             PlaylistListView.ItemsSource = _playlist;
@@ -236,7 +230,7 @@ namespace MediaPlayerApp
                 TopMenu.Visibility = Visibility.Collapsed;
                 Status.Visibility = Visibility.Collapsed;
                 PlayerControlsGrid.Visibility = Visibility.Collapsed;
-                
+
             }
             else
             {
@@ -285,41 +279,6 @@ namespace MediaPlayerApp
         }
 
         // ================================================================================
-
-        //private void media_Element_MediaOpened(object sender, RoutedEventArgs e)
-        //{
-        //    if (media_Element.NaturalDuration.HasTimeSpan)
-        //    {
-        //        TimeSlider.Maximum = media_Element.NaturalDuration.TimeSpan.TotalSeconds;
-        //        TimeSlider.SmallChange = 1;
-        //        TimeSlider.LargeChange = Math.Max(1, media_Element.NaturalDuration.TimeSpan.TotalSeconds / 10);
-        //        TotalTime.Text = media_Element.NaturalDuration.TimeSpan.ToString(@"hh\:mm\:ss");
-        //    }
-
-        //    // Detect if media has video
-        //    bool hasVideo = media_Element.NaturalVideoWidth > 0 && media_Element.NaturalVideoHeight > 0;
-
-        //    if (hasVideo)
-        //    {
-        //        // Hide album art/cover panel
-        //        SongInfoPanel.Visibility = Visibility.Collapsed;
-        //        AlbumThumbnail.Visibility = Visibility.Collapsed;
-        //    }
-        //    else
-        //    {
-        //        // Show album art/cover panel
-        //        SongInfoPanel.Visibility = Visibility.Visible;
-        //        AlbumThumbnail.Visibility = Visibility.Visible;
-
-        //        if (currentTrackIndex >= 0 && currentTrackIndex < _playlist.Count)
-        //        {
-        //            var track = _playlist[currentTrackIndex];
-        //            AlbumThumbnail.Source = new BitmapImage(new Uri("Icons\\musical-note.png", UriKind.Relative));
-        //            CurrentTitle.Text = track.Title;
-        //            SongArtist.Text = track.Artist;
-        //        }
-        //    }
-        //}
 
 
 
@@ -370,6 +329,46 @@ namespace MediaPlayerApp
         // ============================= DRAG AND DROP AND REORDER ========================
 
 
+        //private void PlaylistListView_Drop(object sender, DragEventArgs e)
+        //{
+        //    if (e.Data.GetDataPresent(DataFormats.FileDrop))
+        //    {
+        //        string[] files = (string[])e.Data.GetData(DataFormats.FileDrop);
+
+        //        bool wasEmpty = _playlist.Count == 0;
+
+        //        foreach (string file in files)
+        //        {
+        //            // Skip if already in playlist
+        //            if (_playlist.Any(p => string.Equals(p.FilePath, file, StringComparison.OrdinalIgnoreCase)))
+        //                continue;
+
+        //            _playlist.Add(new PlaylistModel
+        //            {
+        //                FilePath = file,
+        //                Title = Path.GetFileNameWithoutExtension(file),
+        //                Artist = "Unknown Artist",
+        //                Duration = "--:--",
+        //                Thumbnail = "Images/default_thumbnail.png"
+        //            });
+        //        }
+
+        //        // Only auto-play if playlist was empty before
+        //        if (wasEmpty && _playlist.Count > 0)
+        //        {
+        //            PlayTrackByIndex(0);
+        //        }
+        //    }
+        //    else if (e.Data.GetDataPresent(typeof(PlaylistModel)))
+        //    {
+        //        // your reorder logic stays the same...
+        //    }
+
+        //    // Update FullScreen button
+        //    UpdateFullScreenButton();
+        //}
+
+
         private void PlaylistListView_Drop(object sender, DragEventArgs e)
         {
             if (e.Data.GetDataPresent(DataFormats.FileDrop))
@@ -380,9 +379,9 @@ namespace MediaPlayerApp
 
                 foreach (string file in files)
                 {
-                    // Skip if already in playlist
-                    if (_playlist.Any(p => string.Equals(p.FilePath, file, StringComparison.OrdinalIgnoreCase)))
-                        continue;
+                    //// Skip if already in playlist
+                    //if (_playlist.Any(p => string.Equals(p.FilePath, file, StringComparison.OrdinalIgnoreCase)))
+                    //    continue;
 
                     _playlist.Add(new PlaylistModel
                     {
@@ -402,12 +401,26 @@ namespace MediaPlayerApp
             }
             else if (e.Data.GetDataPresent(typeof(PlaylistModel)))
             {
-                // your reorder logic stays the same...
+                // ===== Reorder logic =====
+                var droppedTrack = e.Data.GetData(typeof(PlaylistModel)) as PlaylistModel;
+                var target = ((FrameworkElement)e.OriginalSource).DataContext as PlaylistModel;
+
+                if (droppedTrack == null || target == null || droppedTrack == target)
+                    return;
+
+                int oldIndex = _playlist.IndexOf(droppedTrack);
+                int newIndex = _playlist.IndexOf(target);
+
+                if (oldIndex != newIndex && oldIndex >= 0 && newIndex >= 0)
+                {
+                    _playlist.Move(oldIndex, newIndex);
+                }
             }
 
             // Update FullScreen button
             UpdateFullScreenButton();
         }
+
 
 
 
@@ -648,16 +661,6 @@ namespace MediaPlayerApp
             }
         }
 
-        //private void PlaylistListView_MouseDoubleClick(object sender, MouseButtonEventArgs e)
-        //{
-        //    if (PlaylistListView.SelectedIndex >= 0)
-        //    {
-        //        PlayTrackByIndex(PlaylistListView.SelectedIndex);
-
-        //        // Prevent this event from reaching the window
-        //        e.Handled = true;
-        //    }
-        //}
 
 
         private void PlaylistListView_MouseDoubleClick(object sender, MouseButtonEventArgs e)
@@ -667,6 +670,8 @@ namespace MediaPlayerApp
                 PlayTrack(selectedTrack); // Use a method that takes the track directly
                 e.Handled = true; // Prevents the event from bubbling up
             }
+
+
         }
 
 
@@ -876,18 +881,16 @@ namespace MediaPlayerApp
             // Clear previous theme dictionaries
             Resources.MergedDictionaries.Clear();
 
-            // Load Themes.xaml
+            // Build the correct theme path from Resources folder
             var themeDict = new ResourceDictionary
             {
-                Source = new Uri("/Resources/LightTheme.xaml", UriKind.Relative)
+                Source = new Uri($"/MediaPlayerApp;component/Resources/{theme}Theme.xaml", UriKind.RelativeOrAbsolute)
             };
 
-            // Extract the right sub-dictionary
-            if (themeDict[theme + "Theme"] is ResourceDictionary selectedTheme)
-            {
-                Resources.MergedDictionaries.Add(selectedTheme);
-            }
+            // Apply selected theme
+            Resources.MergedDictionaries.Add(themeDict);
         }
+
 
 
 
@@ -917,15 +920,51 @@ namespace MediaPlayerApp
             if (elapsed <= DoubleClickThreshold)
             {
                 // Double click detected → toggle fullscreen
-                FullScreen_Click(sender, null);
+                FullScreen_Click(sender, null!);
             }
 
             _lastClickTime = currentTime;
         }
 
-       
+        private Point _dragStartPoint;
 
-      
+        private void PlaylistListView_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            _dragStartPoint = e.GetPosition(null);
+        }
+
+        private void PlaylistListView_PreviewMouseMove(object sender, MouseEventArgs e)
+        {
+            Point mousePos = e.GetPosition(null);
+            Vector diff = _dragStartPoint - mousePos;
+
+            if (e.LeftButton == MouseButtonState.Pressed &&
+                (Math.Abs(diff.X) > SystemParameters.MinimumHorizontalDragDistance ||
+                 Math.Abs(diff.Y) > SystemParameters.MinimumVerticalDragDistance))
+            {
+
+                if (sender is ListView listView &&
+                    listView.SelectedItem is PlaylistModel track)
+                {
+                    DragDrop.DoDragDrop(listView, track, DragDropEffects.Move);
+                }
+            }
+        }
+
+
+        private void speakerButton_MouseEnter(object sender, MouseEventArgs e) => volumePopup.IsOpen = true;
+
+        private void speakerButton_MouseLeave(object sender, MouseEventArgs e)
+        {
+            if (!volumePopup.IsMouseOver) volumePopup.IsOpen = false;
+        }
+
+        private void volumePopup_MouseLeave(object sender, MouseEventArgs e) => volumePopup.IsOpen = false;
+
+        private void volumePopup_MouseEnter(object sender, MouseEventArgs e) => volumePopup.IsOpen = true;
+
+
+
 
 
 
