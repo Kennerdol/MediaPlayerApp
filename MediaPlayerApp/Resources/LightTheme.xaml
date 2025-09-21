@@ -1,166 +1,38 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
 
-    
-    <ResourceDictionary x:Key="LightTheme">
 
-        <!-- Button -->
-        <SolidColorBrush x:Key="ButtonForeground" Color="#FF040404" />
-        <SolidColorBrush x:Key="ButtonForegroundDisabled" Color="#FF838383" />
-        <SolidColorBrush x:Key="ButtonBackground" Color="White" />
-        <SolidColorBrush x:Key="ButtonDisabledBackground" Color="#FFF4F4F4" />
-        <SolidColorBrush x:Key="ButtonMouseOverBackground" Color="#BEE6FD" />
-        <SolidColorBrush x:Key="ButtonMouseOverBorderBrush" Color="#0078D7" />
-        <SolidColorBrush x:Key="ButtonPressedBackground" Color="#8FD4FC" />
-        <SolidColorBrush x:Key="ButtonPressedBorderBrush" Color="#FF2C628B" />
-        <SolidColorBrush x:Key="ButtonBorderBrush" Color="#FFAFAFAF" />
-        <SolidColorBrush x:Key="ButtonBorderBrushDisabled" Color="#FFADB2B5" />
-        <SolidColorBrush x:Key="AccentColor" Color="DodgerBlue"/>
+    <!-- Window -->
+    <SolidColorBrush x:Key="WindowBackground" Color="#FFF" />
+    <SolidColorBrush x:Key="WindowForeground" Color="#FF040404" />
 
-        <!-- ContextMenu -->
-        <SolidColorBrush x:Key="ContextMenuForeground" Color="#FF040404" />
-        <SolidColorBrush x:Key="ContextMenuBackground" Color="White" />
-        <SolidColorBrush x:Key="ContextMenuItemSeparator" Color="#CFCFCF" />
-        <SolidColorBrush x:Key="ContextMenuBorderBrush" Color="#CFCFCF" />
+    <SolidColorBrush x:Key="NoBackground" Color="Transparent" />
+    <SolidColorBrush x:Key="BorderBrush" Color="LightBlue" />
 
-        <!-- DataGrid -->
+    <!-- Splitter -->
+    <SolidColorBrush x:Key="Splittercolor" Color="#98A5B0" Opacity="0.4"/>
 
-        <SolidColorBrush x:Key="DataGridForeground" Color="#FF040404" />
-        <SolidColorBrush x:Key="DataGridBackground" Color="White" />
-        <SolidColorBrush x:Key="DataGridColumnHeaderForeground" Color="#FF040404" />
-        <SolidColorBrush x:Key="DataGridColumnHeaderBackground" Color="#F5F6F7" />
-        <SolidColorBrush x:Key="DataGridColumnHeaderDisabledBackground" Color="#FFF4F4F4" />
-        <SolidColorBrush x:Key="DataGridColumnHeaderDisabledBorderBrush" Color="#FFADB2B5" />
-        <SolidColorBrush x:Key="DataGridColumnHeaderMouseOverBackground" Color="#BEE6FD" />
-        <SolidColorBrush x:Key="DataGridColumnHeaderPressedBackground" Color="#8FD4FC" />
-        <SolidColorBrush x:Key="DataGridColumnHeaderSeparatorBackground" Color="#CFCFCF" />
-        <SolidColorBrush x:Key="DataGridCellForegroundDisabled" Color="#FF838383" />
-        <SolidColorBrush x:Key="DataGridCellSelectedForeground" Color="#FF040404" />
-        <SolidColorBrush x:Key="DataGridCellSelectedBackground" Color="#CDE8FF" />
-        <SolidColorBrush x:Key="DataGridCellSelectedBorderBrush" Color="#26A0DA" />
-        <SolidColorBrush x:Key="DataGridCellIsEditingForeground" Color="#FF040404" />
-        <SolidColorBrush x:Key="DataGridCellIsEditingBorderBrush" Color="#FF212121" />
-        <SolidColorBrush x:Key="DataGridCellIsEditingBackground" Color="#FFFFFF" />
-        <SolidColorBrush x:Key="DataGridFloatingColumnHeaderBrush" Color="#FF3296FA" />
-        <SolidColorBrush x:Key="DataGridBorderBrush" Color="#CFCFCF" />
-        <SolidColorBrush x:Key="DataGridLinesBorderBrush" Color="#E3E3E3" />
-        <SolidColorBrush x:Key="DataGridSortPathFill" Color="#7E7E7E" />
+    <!-- Playlist -->
+    <SolidColorBrush x:Key="PlaylistBorder" Color="#98A5B0" Opacity="0.4"/>
+    <SolidColorBrush x:Key="PlaylistBorderHover" Color="#98A5B0" Opacity="0.8"/>
+    <SolidColorBrush x:Key="NowPlaying" Color="#4E5454"/>
+    <SolidColorBrush x:Key="NowForeground" Color="#767FE7"/>
 
-        <!-- FocusVisual -->
-        <SolidColorBrush x:Key="FocusVisualBorderBrush" Color="#FF212121" />
+    <!-- Slider -->
+    <SolidColorBrush x:Key="SliderBackground" Color="#fff"/>
 
-        <!-- GridSplitter -->
-        <SolidColorBrush x:Key="GridSplitterBackground" Color="#FF212121" />
 
-        <!-- ListBox -->
+    <!-- Button -->
+    <SolidColorBrush x:Key="BorderLess" Color="Transparent" />
+    <SolidColorBrush x:Key="ButtonForeground" Color="#FF040404" />
+    <SolidColorBrush x:Key="ButtonForegroundDisabled" Color="#FF838383" />
+    <SolidColorBrush x:Key="ButtonBackground" Color="Transparent" />
 
-        <SolidColorBrush x:Key="ListBoxBackground" Color="White" />
-        <SolidColorBrush x:Key="ListBoxBorderBrush" Color="#CFCFCF" />
-        <SolidColorBrush x:Key="ListBoxForeground" Color="#FF040404" />
-        <SolidColorBrush x:Key="ListBoxForegroundDisabled" Color="#FF838383" />
-        <SolidColorBrush x:Key="ListBoxItemSelectedForeground" Color="#FF040404" />
-        <SolidColorBrush x:Key="ListBoxItemMouseOverForeground" Color="#FF040404" />
-        <SolidColorBrush x:Key="ListBoxDisabledBackground" Color="#FFF4F4F4" />
-        <SolidColorBrush x:Key="ListBoxItemMouseOverBackground" Color="#E5F3FF" />
-        <SolidColorBrush x:Key="ListBoxItemSelectedBackground" Color="#CDE8FF" />
+    <!-- Overlay -->
+    <SolidColorBrush x:Key="OverlayBackground" Color="#80000000" />
+    <SolidColorBrush x:Key="Overlaybg" Color="#AA000000" />
+    <SolidColorBrush x:Key="OverlayBG" Color="#FFF" />
+    <SolidColorBrush x:Key="AccentColor" Color="DodgerBlue"/>
 
-        <!-- Menu -->
 
-        <SolidColorBrush x:Key="MenuForeground" Color="#FF040404" />
-        <SolidColorBrush x:Key="MenuForegroundDisabled" Color="#FF838383" />
-
-        <!-- MenuItem -->
-
-        <SolidColorBrush x:Key="MenuItemDisabledForeground" Color="#FF838383" />
-        <SolidColorBrush x:Key="MenuItemMouseOverBackground" Color="#BEE6FD" />
-        <SolidColorBrush x:Key="MenuItemPressedBackground" Color="#8FD4FC" />
-        <SolidColorBrush x:Key="MenuItemCheckedBorderBrush" Color="#3399FF" />
-        <SolidColorBrush x:Key="MenuItemCheckPathFill" Color="#FF212121" />
-        <SolidColorBrush x:Key="MenuItemCheckDisabledPathFill" Color="#FF666666" />
-        <SolidColorBrush x:Key="MenuItemOpenSubMenuPathFill" Color="#FF212121" />
-        <SolidColorBrush x:Key="MenuItemOpenSubMenuMouseOverPathFill" Color="#0078D7" />
-        <SolidColorBrush x:Key="MenuItemOpenSubMenuDisabledPathFill" Color="#FF666666" />
-
-        <!-- ProgressBar -->
-
-        <SolidColorBrush x:Key="ProgressBarBackground" Color="White" />
-        <SolidColorBrush x:Key="ProgressBarDisabledBackground" Color="#FFF4F4F4" />
-        <SolidColorBrush x:Key="ProgressBarBorderBrush" Color="#FFAFAFAF" />
-        <SolidColorBrush x:Key="ProgressBarFill" Color="#FF06B025" />
-        <SolidColorBrush x:Key="ProgressBarDisabledFill" Color="#FFAFAFAF" />
-
-        <!-- StatusBar -->
-
-        <SolidColorBrush x:Key="StatusBarForeground" Color="White" />
-        <SolidColorBrush x:Key="StatusBarBackground" Color="#0078D7" />
-        <SolidColorBrush x:Key="StatusBarSeparatorBackground" Color="White" />
-
-        <!-- Slider -->
-
-        <SolidColorBrush x:Key="SliderBackground" Color="White" />
-        <SolidColorBrush x:Key="SliderBorderBrush" Color="#FFAFAFAF" />
-        <SolidColorBrush x:Key="SliderThumbDisabledBackground" Color="#FFF4F4F4" />
-        <SolidColorBrush x:Key="SliderThumbMouseOverBackground" Color="#BEE6FD" />
-        <SolidColorBrush x:Key="SliderThumbMouseOverBorderBrush" Color="#0078D7" />
-        <SolidColorBrush x:Key="SliderThumbPressedBackground" Color="#8FD4FC" />
-        <SolidColorBrush x:Key="SliderThumbPressedBorderBrush" Color="#FF2C628B" />
-        <SolidColorBrush x:Key="SliderThumbBorderBrush" Color="#FFAFAFAF" />
-        <SolidColorBrush x:Key="SliderThumbDisabledBorderBrush" Color="#FFADB2B5" />
-        <SolidColorBrush x:Key="SliderTagsFill" Color="#FF3296FA" />
-        <SolidColorBrush x:Key="SliderThumbFill" Color="#F5F6F7" />
-
-        <!-- ScrollBar -->
-
-        <SolidColorBrush x:Key="ScrollBarButtonBackground" Color="White" />
-        <SolidColorBrush x:Key="ScrollBarBackground" Color="White" />
-        <SolidColorBrush x:Key="ScrollBarBorderBrush" Color="#FFAFAFAF" />
-        <SolidColorBrush x:Key="ScrollBarPathFill" Color="#FF212121" />
-        <SolidColorBrush x:Key="ScrollBarDisabledPathFill" Color="#FF666666" />
-        <SolidColorBrush x:Key="ScrollBarMouseOverPathFill" Color="#0078D7" />
-        <SolidColorBrush x:Key="ScrollBarPressedPathFill" Color="#007ACC" />
-        <SolidColorBrush x:Key="ScrollBarThumbPathFill" Color="#CECECE" />
-        <SolidColorBrush x:Key="ScrollBarThumbMouseOverFill" Color="#A7A7A7" />
-        <SolidColorBrush x:Key="ScrollBarThumbPressedFill" Color="#606060" />
-
-        <!--  TextBox  -->
-
-        <SolidColorBrush x:Key="TextBoxForeground" Color="#FF040404" />
-        <SolidColorBrush x:Key="TextBoxForegroundDisabled" Color="#FF838383" />
-        <SolidColorBrush x:Key="TextBoxBackground" Color="White" />
-        <SolidColorBrush x:Key="TextBoxBackgroundDisabled" Color="#FFF4F4F4" />
-        <SolidColorBrush x:Key="TextBoxBorderBrush" Color="#FFAFAFAF" />
-        <SolidColorBrush x:Key="TextBoxBorderBrushDisabled" Color="#FFADB2B5" />
-        <SolidColorBrush x:Key="TextBoxSelectionBrush" Color="#FF3296FA" />
-        <SolidColorBrush x:Key="TextBoxMouseOverBorderBrush" Color="#0078D7" />
-        <SolidColorBrush x:Key="TextBoxIsEditingBorderBrush" Color="#FF212121" />
-        <SolidColorBrush x:Key="TextBoxIsInactiveSelectionHighlightBrush" Color="#FF666666" />
-
-        <!-- TextBlock -->
-
-        <SolidColorBrush x:Key="TextBlockForeground" Color="#FF040404" />
-        <SolidColorBrush x:Key="TextBlockForegroundDisabled" Color="#FF838383" />
-
-        <!-- ToolBar -->
-
-        <SolidColorBrush x:Key="ToolBarOverflowPathFill" Color="#FF212121" />
-        <SolidColorBrush x:Key="ToolBarOverflowDisabledPathFill" Color="#FF838383" />
-        <SolidColorBrush x:Key="ToolBarThumbPathFill" Color="#FF212121" />
-
-        <!-- ToolTip -->
-
-        <SolidColorBrush x:Key="ToolTipForeground" Color="#FF040404" />
-        <SolidColorBrush x:Key="ToolTipBackground" Color="#FF040404" />
-        <SolidColorBrush x:Key="ToolTipBorderBrush" Color="#FFAFAFAF" />
-
-        <!-- Window -->
-
-        <SolidColorBrush x:Key="WindowBackground" Color="#FFFFFF" />
-        <SolidColorBrush x:Key="WindowForeground" Color="#FF040404" />
-
-        <!--  Various  -->
-
-        <CornerRadius x:Key="ButtonCornerRadius">4</CornerRadius>
-        
-        
-    </ResourceDictionary>
 </ResourceDictionary>

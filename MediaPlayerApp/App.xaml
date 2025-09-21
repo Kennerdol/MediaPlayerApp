@@ -6,11 +6,9 @@
     <Application.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="/Resources/Colours.xaml"/>
-                <ResourceDictionary Source="/Resources/DarkTheme.xaml"/>
                 <ResourceDictionary Source="/Resources/LightTheme.xaml"/>
-                <ResourceDictionary Source="/Resources/LightGreyTheme.xaml"/>
                 <ResourceDictionary Source="/Resources/Animation.xaml"/>
+                <ResourceDictionary Source="/Resources/Styles.xaml" />
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Application.Resources>

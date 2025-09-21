@@ -1,13 +1,41 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
 
-    <!-- Light Grey Theme -->
-    <ResourceDictionary x:Key="LightGreyTheme">
-        <SolidColorBrush x:Key="PrimaryBackgroundColor" Color="#DCDCDC"/>
-        <SolidColorBrush x:Key="SecondaryBackgroundColor" Color="#C8C8C8"/>
-        <SolidColorBrush x:Key="Foreground" Color="Black"/>
-        <SolidColorBrush x:Key="AccentColor" Color="DarkOrange"/>
-    </ResourceDictionary>
-    
+    <!-- Window -->
+    <SolidColorBrush x:Key="WindowBackground" Color="#DCDCDC"/>
+    <SolidColorBrush x:Key="WindowForeground" Color="Black"/>
+
+    <!-- Button -->
+    <SolidColorBrush x:Key="ButtonForeground" Color="Black"/>
+    <SolidColorBrush x:Key="ButtonForegroundDisabled" Color="#666666"/>
+    <SolidColorBrush x:Key="ButtonBackground" Color="#C8C8C8"/>
+    <SolidColorBrush x:Key="ButtonDisabledBackground" Color="#E0E0E0"/>
+    <SolidColorBrush x:Key="ButtonMouseOverBackground" Color="#B0B0B0"/>
+    <SolidColorBrush x:Key="ButtonPressedBackground" Color="#A0A0A0"/>
+    <SolidColorBrush x:Key="ButtonBorderBrush" Color="#8C8C8C"/>
+    <SolidColorBrush x:Key="ButtonBorderBrushDisabled" Color="#AAAAAA"/>
+    <SolidColorBrush x:Key="AccentColor" Color="DarkOrange"/>
+
+    <!-- ListBox -->
+    <SolidColorBrush x:Key="ListBoxBackground" Color="#DCDCDC"/>
+    <SolidColorBrush x:Key="ListBoxBorderBrush" Color="#B0B0B0"/>
+    <SolidColorBrush x:Key="ListBoxForeground" Color="Black"/>
+    <SolidColorBrush x:Key="ListBoxItemSelectedBackground" Color="#C0C0C0"/>
+    <SolidColorBrush x:Key="ListBoxItemMouseOverBackground" Color="#BBBBBB"/>
+    <SolidColorBrush x:Key="ListBoxItemSelectedForeground" Color="Black"/>
+
+    <!-- TextBox -->
+    <SolidColorBrush x:Key="TextBoxForeground" Color="Black"/>
+    <SolidColorBrush x:Key="TextBoxBackground" Color="White"/>
+    <SolidColorBrush x:Key="TextBoxBorderBrush" Color="#A0A0A0"/>
+    <SolidColorBrush x:Key="TextBoxSelectionBrush" Color="DarkOrange"/>
+
+    <!-- StatusBar -->
+    <SolidColorBrush x:Key="StatusBarForeground" Color="Black"/>
+    <SolidColorBrush x:Key="StatusBarBackground" Color="#C8C8C8"/>
+    <SolidColorBrush x:Key="StatusBarSeparatorBackground" Color="Black"/>
+
+    <!-- Splitter -->
+    <SolidColorBrush x:Key="Splittercolor" Color="red" />
 
 </ResourceDictionary>

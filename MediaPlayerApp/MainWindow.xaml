@@ -3,7 +3,8 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         Title="Duducha" Height="500" Width="1100"
         Icon="/Icons/logo.png"
-        WindowStartupLocation="CenterScreen">
+        WindowStartupLocation="CenterScreen" 
+        Background="{DynamicResource WindowBackground}" Foreground="{DynamicResource WindowForeground}">
 
 
     <Grid>
@@ -20,7 +21,7 @@
         </Grid.RowDefinitions>
 
         <!-- ===== Menu bar ===== -->
-        <Menu Grid.Row="0" x:Name="TopMenu">
+        <Menu Grid.Row="0" x:Name="TopMenu" Background="{DynamicResource WindowBackground}">
             <MenuItem Header="_File">
                 <MenuItem Header="Open..."/>
                 <MenuItem Header="Exit"/>
@@ -38,8 +39,9 @@
                 <MenuItem Header="About"/>
                 <MenuItem Header="Contact"/>
             </MenuItem>
+            
             <MenuItem Header="_Settings">
-                <MenuItem Header="Theme"/>
+                <MenuItem Header="Preferences"/>
             </MenuItem>
         </Menu>
 
@@ -57,7 +59,7 @@
 
             <!-- ==== MediaElement ==== -->
             <!-- 🎬 Left Side (Media + Info + Visualizer) -->
-            <Grid Grid.Column="0"> <!--Margin="10"-->
+            <Grid Grid.Column="0" Margin="5" Background="{DynamicResource WindowBackground}">
                 <!-- Base MediaElement -->
                 <MediaElement x:Name="media_Element"
                   LoadedBehavior="Manual"
@@ -71,15 +73,15 @@
                         <!-- watermark effect -->
 
                         <!-- Album Cover -->
-                        <Border CornerRadius="8" BorderBrush="{DynamicResource Foreground}" BorderThickness="1" Width="300" Height="300" Background="#22000000">
+                        <Border CornerRadius="8" BorderBrush="{DynamicResource BorderBrush}" BorderThickness="1" Width="300" Height="300" Background="{DynamicResource NoBackground}">
                             <Image x:Name="AlbumThumbnail" Source="/Icons/musical-note.png" Opacity="0.9" Stretch="UniformToFill"/>
                         </Border>
 
                         <!-- Song Info -->
                         <StackPanel Margin="0,8,0,0">
-                            <TextBlock x:Name="CurrentTitle" Text="{Binding Title}" FontSize="16" Foreground="Black" FontWeight="Bold" TextWrapping="Wrap" TextAlignment="Center"/>
-                            <TextBlock x:Name="SongArtist" Text="{Binding Artist}" FontSize="13" Foreground="Black" TextAlignment="Center"/>
-                            <TextBlock x:Name="totalTime" Text="{Binding Duration}" FontSize="12" Foreground="Black" TextAlignment="Center"/>
+                            <TextBlock x:Name="CurrentTitle" Text="{Binding Title}" FontSize="16"  Foreground="{DynamicResource WindowForeground}" FontWeight="Bold" TextWrapping="Wrap" TextAlignment="Center"/>
+                            <TextBlock x:Name="SongArtist" Text="{Binding Artist}" FontSize="13" Foreground="{DynamicResource WindowForeground}" TextAlignment="Center"/>
+                            <TextBlock x:Name="totalTime" Text="{Binding Duration}" FontSize="12"  Foreground="{DynamicResource WindowForeground}" TextAlignment="Center"/>
                         </StackPanel>
                     </StackPanel>
                 </Viewbox>
@@ -100,7 +102,7 @@
 
             <!-- ==== Splitter ==== -->
             <GridSplitter Grid.Column="1" x:Name="GridPlit" Width="3" HorizontalAlignment="Stretch"
-                          VerticalAlignment="Stretch" Background="{DynamicResource MenuBackground}"/>
+                          VerticalAlignment="Stretch" Background="{DynamicResource Splittercolor}"/>
 
             <!-- ==== Playlist ==== -->
             <Grid Grid.Column="2" x:Name="PlaylistGrid" >
@@ -112,28 +114,28 @@
                 </Grid.RowDefinitions>
 
                 <!-- ==== Search & buttons ==== -->
-                <StackPanel Orientation="Horizontal" Height="40">
+                <StackPanel Orientation="Horizontal" Height="40" >
                     <TextBox x:Name="SearchTextBox" TextChanged="SearchTextBox_TextChanged" Margin="5,0,5,0" 
                              Padding="3" FontSize="15" Width="250" Height="30" BorderBrush="Gray"/>
-                    <Button x:Name="OpenFileButton" Grid.Column="1" Foreground="{DynamicResource Foreground}" 
-                            BorderBrush="{DynamicResource SliderBackground}" Margin="0,0,5,0" Width="50" Click="OpenFile_Click">
+                    <Button x:Name="OpenFileButton" Grid.Column="1" Background="{DynamicResource NoBackground}" 
+                            BorderBrush="{DynamicResource BorderLess}" Margin="0,0,5,0" Width="50" Click="OpenFile_Click">
                         <Image Source="/Icons/treble-clef.png" />
                     </Button>
-                    
-                    <Button x:Name="OpenPlaylistButton" Grid.Column="3" Foreground="{DynamicResource Foreground}"
-                            BorderBrush="{DynamicResource SliderBackground}" Margin="5,0,0,0" Width="50" >
+
+                    <Button x:Name="OpenPlaylistButton" Grid.Column="3" Background="{DynamicResource NoBackground}" 
+                            BorderBrush="{DynamicResource BorderLess}" Margin="5,0,0,0" Width="50" >
                         <Image Source="/Icons/open_playlist.png" />
                     </Button>
 
-                    <Button x:Name="SettingsButton"  Grid.Column="3" Foreground="{DynamicResource Foreground}" 
-                            BorderBrush="{DynamicResource SliderBackground}" Margin="5,0,0,0" Width="50" 
+                    <Button x:Name="SettingsButton"  Grid.Column="3" Background="{DynamicResource NoBackground}"
+                            BorderBrush="{DynamicResource BorderLess}" Margin="5,0,0,0" Width="50" 
                             Click="Settings_Click">
                         <Image Source="/Icons/settings.png" />
                     </Button>
                 </StackPanel>
                 
                 <!-- ==== Playlist list ==== -->
-                <Border Grid.Row="1" BorderBrush="{DynamicResource SecondaryBackgroundColor}" BorderThickness="1" Margin="5">
+                <Border Grid.Row="1" BorderBrush="{DynamicResource PlaylistBorder}" Margin="5">
                     <ListView x:Name="PlaylistListView"
                               MouseDoubleClick="PlaylistListView_MouseDoubleClick"
                               PreviewMouseLeftButtonDown="PlaylistListView_PreviewMouseLeftButtonDown"
@@ -149,9 +151,9 @@
                                 <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
                                 <Style.Triggers>
                                     <DataTrigger Binding="{Binding IsPlaying}" Value="True">
-                                        <Setter Property="Background" Value="{DynamicResource MenuBackground}"/>
+                                        <Setter Property="Background" Value="{DynamicResource NowPlaying}"/>
                                         <!-- Darkish color -->
-                                        <Setter Property="Foreground" Value="{DynamicResource PlayingForeground}"/>
+                                        <Setter Property="Foreground" Value="{DynamicResource NowForeground}"/>
                                     </DataTrigger>
                                 </Style.Triggers>
                             </Style>
@@ -249,9 +251,9 @@
                            Text="00:00:00" 
                            Margin="0,0,10,0"
                            VerticalAlignment="Center"
-                           Foreground="{DynamicResource TextForeground}"/>
+                           Foreground="{DynamicResource WindowForeground}"/>
 
-                <Slider x:Name="TimeSlider"
+                <Slider x:Name="TimeSlider" Background="{DynamicResource SliderBackground}"
                         Grid.Column="1"
                         Minimum="0"
                         Maximum="1"
@@ -269,47 +271,49 @@
                            Text="00:00:00" 
                            Margin="10,0,0,0"
                            VerticalAlignment="Center"
-                           Foreground="{DynamicResource TextForeground}"/>
+                           Foreground="{DynamicResource WindowForeground}"/>
             </Grid>
 
             <StackPanel Grid.Row="1" Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Center" 
                         Background="{DynamicResource NoBackground}">
+                <TextBlock x:Name="SpeedTB" Text="Spped" Foreground="{DynamicResource WindowForeground}"/>
+                
                 <Slider x:Name="SpeedSlider" Width="80" Minimum="0.5" Maximum="2" Value="1" TickPlacement="BottomRight" 
-                        TickFrequency="0.25"
+                        TickFrequency="0.25" Background="{DynamicResource SliderBackground}"
                             IsSnapToTickEnabled="True" ValueChanged="SpeedSlider_ValueChanged"/>
 
-                <Button x:Name="FullScreen" Click="FullScreen_Click" ToolTip="Toggle Screen">
+                <Button x:Name="FullScreen" Click="FullScreen_Click" ToolTip="Toggle Screen" Background="{DynamicResource ButtonBackground}">
                     <Image x:Name="FullScreenImage" Source="/Icons/full-screen.png" />
                 </Button>
 
                 <!--======= Play Pause =========-->
-                <Button x:Name="PlayPauseButton" Click="PlayPause_Click" ToolTip="Play">
+                <Button x:Name="PlayPauseButton" Click="PlayPause_Click" ToolTip="Play" Background="{DynamicResource ButtonBackground}">
                     <Image x:Name="PlayPauseImage" Source="/Icons/play.png" />
                 </Button>
 
 
-                <Button Name="Previous" Click="Previous_Click" ToolTip="Previous">
+                <Button Name="Previous" Click="Previous_Click" ToolTip="Previous" Background="{DynamicResource ButtonBackground}">
                     <Image Source="/Icons/previous.png" />
                 </Button>
-                <Button Name="Stop" Click="Stop_Click" ToolTip="Stop">
+                <Button Name="Stop" Click="Stop_Click" ToolTip="Stop" Background="{DynamicResource ButtonBackground}">
                     <Image Source="/Icons/stop.png" />
                 </Button>
-                <Button Name="Next" Click="Next_Click" ToolTip="Next">
+                <Button Name="Next" Click="Next_Click" ToolTip="Next" Background="{DynamicResource ButtonBackground}">
                     <Image Source="/Icons/next.png" />
                 </Button>
-                <Button Name="Repeat" Click="Repeat_Click" ToolTip="Repeat">
+                <Button Name="Repeat" Click="Repeat_Click" ToolTip="Repeat" Background="{DynamicResource ButtonBackground}">
                     <Image x:Name="RepeatImage" Source="/Icons/repeat.png"/>
                 </Button>
-                <Button Name="ShuffleButton" Click="Shuffle_Click" ToolTip="Shuffle">
+                <Button Name="ShuffleButton" Click="Shuffle_Click" ToolTip="Shuffle" Background="{DynamicResource ButtonBackground}">
                     <Image Source="/Icons/shuffle.png" />
                 </Button>
-                <Button Name="TogglePlaylist" Click="TogglePlaylist_Click" ToolTip="Toggle Playlist">
+                <Button Name="TogglePlaylist" Click="TogglePlaylist_Click" ToolTip="Toggle Playlist" Background="{DynamicResource ButtonBackground}">
                     <Image Source="/Icons/playlist.png" />
                 </Button>
 
                 <Grid>
                     <!-- Speaker Button -->
-                    <Button x:Name="speakerButton" Height="30" HorizontalAlignment="Center" VerticalAlignment="Center" 
+                    <Button x:Name="speakerButton" Height="30" HorizontalAlignment="Center" VerticalAlignment="Center" Background="{DynamicResource ButtonBackground}"
                         ToolTip="Volume"
                         MouseEnter="speakerButton_MouseEnter"
                         MouseLeave="speakerButton_MouseLeave">
@@ -318,7 +322,7 @@
 
                     <!-- Volume Popup -->
                     <Popup x:Name="volumePopup" Placement="Right" StaysOpen="False" AllowsTransparency="True">
-                        <Border Background="{DynamicResource ButtonForeground}" BorderBrush="{DynamicResource SliderBackground}" 
+                        <Border Background="{DynamicResource WindowBackground}" BorderBrush="{DynamicResource AccentColor}" 
                                 BorderThickness="1" CornerRadius="5" Padding="5">
                                                 <Slider x:Name="VolumeSlider"
                                     Minimum="0"
@@ -339,7 +343,7 @@
         </Grid>
 
         <!-- ===== Status Bar ===== -->
-        <StatusBar Grid.Row="3" x:Name="Status">
+        <StatusBar Grid.Row="3" x:Name="Status" Background="{DynamicResource WindowBackground}">
             <StatusBarItem x:Name="NowPlayingText" Content="Now Playing: No Track Loaded"/>
             <Separator/>
             <StatusBarItem x:Name="RepeatModeText" Content="Repeat: Off"/>
@@ -354,12 +358,12 @@
 
         <!-- ================== SETTINGS OVERLAY ================== -->
         <Grid x:Name="SettingsOverlay" Grid.RowSpan="3" Visibility="Hidden" Background="#AA000000">
-            <Border Width="300" Height="200" Background="{DynamicResource SecondaryBackgroundColor}"
+            <Border Width="300" Height="200" Background="{DynamicResource OverlayBackground}"
                 CornerRadius="10" BorderBrush="{DynamicResource AccentColor}" BorderThickness="2"
                 VerticalAlignment="Center" HorizontalAlignment="Center">
                 <StackPanel Margin="15">
-                    <TextBlock Text="Settings" FontSize="20" FontWeight="Bold" Foreground="{DynamicResource Foreground}" HorizontalAlignment="Center"/>
-                    <TextBlock Text="Select a theme:" Margin="0,15,0,5" Foreground="{DynamicResource Foreground}"/>
+                    <TextBlock Text="Settings" FontSize="20" FontWeight="Bold" Foreground="{DynamicResource WindowForeground}" HorizontalAlignment="Center"/>
+                    <TextBlock Text="Select a theme:" Margin="0,15,0,5" Foreground="{DynamicResource WindowForeground}"/>
                     <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
                         <Button Content="Dark Theme" Margin="5" Click="DarkTheme_Click" Width="auto"/>
                         <Button Content="Light Theme" Margin="5" Click="LightTheme_Click" Width="auto"/>

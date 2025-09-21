@@ -59,7 +59,14 @@ namespace MediaPlayerApp
             // Update FullScreen button
             UpdateFullScreenButton();
 
-            ApplyTheme("Dark");
+            //ApplyTheme("Light");
+
+            // Apply last saved theme or default to Light
+            string lastTheme = Properties.Settings.Default.LastTheme;
+            if (string.IsNullOrEmpty(lastTheme))
+                lastTheme = "Light";
+
+            ApplyTheme(lastTheme);
         }
 
         private void InitializePlaylist()
@@ -876,20 +883,39 @@ namespace MediaPlayerApp
 
         // =============================== Themes  ============================
 
+        //private void ApplyTheme(string theme)
+        //{
+        //    // Clear previous theme dictionaries
+        //    Resources.MergedDictionaries.Clear();
+
+        //    // Build the correct theme path from Resources folder
+        //    var themeDict = new ResourceDictionary
+        //    {
+        //        Source = new Uri($"/MediaPlayerApp;component/Resources/{theme}Theme.xaml", UriKind.RelativeOrAbsolute)
+        //    };
+
+        //    // Apply selected theme
+        //    Resources.MergedDictionaries.Add(themeDict);
+        //}
+
         private void ApplyTheme(string theme)
         {
             // Clear previous theme dictionaries
             Resources.MergedDictionaries.Clear();
 
-            // Build the correct theme path from Resources folder
+            // Load new theme
             var themeDict = new ResourceDictionary
             {
                 Source = new Uri($"/MediaPlayerApp;component/Resources/{theme}Theme.xaml", UriKind.RelativeOrAbsolute)
             };
-
-            // Apply selected theme
             Resources.MergedDictionaries.Add(themeDict);
+
+            // Save selected theme to user settings
+            Properties.Settings.Default.LastTheme = theme;
+            Properties.Settings.Default.Save();
         }
+
+
 
 
 
@@ -899,6 +925,8 @@ namespace MediaPlayerApp
         private void LightTheme_Click(object sender, RoutedEventArgs e) => ApplyTheme("Light");
         private void LightGreyTheme_Click(object sender, RoutedEventArgs e) => ApplyTheme("LightGrey");
         private void CloseSettings_Click(object sender, RoutedEventArgs e) => SettingsOverlay.Visibility = Visibility.Hidden;
+
+
 
 
         private void media_Element_MediaFailed(object sender, ExceptionRoutedEventArgs e)
