@@ -7,6 +7,7 @@
         <Setter Property="Margin" Value="2" />
         <Setter Property="BorderThickness" Value="1" />
         <Setter Property="Background" Value="{DynamicResource ButtonBackground}" />
+        <Setter Property="BorderBrush" Value="{DynamicResource BorderLess}" />
     </Style>
 
         <BitmapImage x:Key="DefaultCover" UriSource="/Icons/treble-clef.png"/>

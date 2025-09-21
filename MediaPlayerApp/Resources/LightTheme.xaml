@@ -13,8 +13,8 @@
     <SolidColorBrush x:Key="Splittercolor" Color="#98A5B0" Opacity="0.4"/>
 
     <!-- Playlist -->
-    <SolidColorBrush x:Key="PlaylistBorder" Color="#98A5B0" Opacity="0.4"/>
-    <SolidColorBrush x:Key="PlaylistBorderHover" Color="#98A5B0" Opacity="0.8"/>
+    <SolidColorBrush x:Key="PlaylistBorder" Color="#86A0AC"/>
+    <SolidColorBrush x:Key="PlaylistBorderHover" Color="#98A5B0"/>
     <SolidColorBrush x:Key="NowPlaying" Color="#4E5454"/>
     <SolidColorBrush x:Key="NowForeground" Color="#767FE7"/>
 

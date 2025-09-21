@@ -11,6 +11,7 @@ using System.Windows.Media.Animation;
 using System.Windows.Media.Imaging;
 using System.Windows.Threading;
 using System.Windows.Controls;
+using System.Collections.Generic;
 
 namespace MediaPlayerApp
 {
@@ -160,10 +161,31 @@ namespace MediaPlayerApp
 
         private void ClearPlaylist_Click(object sender, EventArgs e)
         {
+            // First stop media
             Stop_Click(null!, null!);
+
+            // Clear the media source so no frame remains on screen
+            media_Element.Source = null;
+
+            // Then clear playlist
             _playlist.Clear();
+
+            // Reset current track index
+            currentTrackIndex = -1;
+
+            // Update UI state
+            UpdateNowPlayingStatus("Now Playing: No Track Loaded");
+            media_Element.Source = null;
+            SongInfoPanel.Visibility = Visibility.Visible;
+            AlbumThumbnail.Visibility = Visibility.Visible;
+            AlbumThumbnail.Source = new BitmapImage(new Uri("/Icons/logo.png", UriKind.Relative));
+            CurrentTitle.Text = "";
+            SongArtist.Text = "";
+            totalTime.Text = "";
+            TotalTime.Text = "00:00:00";
             UpdateFullScreenButton();
         }
+
 
 
         // ==================== Playlist Playback ==========================
@@ -237,6 +259,10 @@ namespace MediaPlayerApp
                 TopMenu.Visibility = Visibility.Collapsed;
                 Status.Visibility = Visibility.Collapsed;
                 PlayerControlsGrid.Visibility = Visibility.Collapsed;
+                //PlaylistGrid.Visibility = Visibility.Collapsed;
+                //GridPlit.Visibility = Visibility.Collapsed;
+                PlaylistColumn.Width = new GridLength(0);         // collapse playlist
+                SplitterColumn.Width = new GridLength(0);         // collapse splitter
 
             }
             else
@@ -255,6 +281,10 @@ namespace MediaPlayerApp
                 TopMenu.Visibility = Visibility.Visible;
                 Status.Visibility = Visibility.Visible;
                 PlayerControlsGrid.Visibility = Visibility.Visible;
+                PlaylistColumn.Width = new GridLength(2, GridUnitType.Star); // restore playlist width
+                SplitterColumn.Width = new GridLength(3);         // restore splitter width
+                PlaylistGrid.Visibility = Visibility.Visible;
+                GridPlit.Visibility = Visibility.Visible;
             }
         }
 
@@ -302,7 +332,7 @@ namespace MediaPlayerApp
                 if (currentTrackIndex >= 0 && currentTrackIndex < _playlist.Count)
                 {
                     var track = _playlist[currentTrackIndex];
-                    track.Duration = media_Element.NaturalDuration.TimeSpan.ToString(@"mm\:ss");
+                    track.Duration = media_Element.NaturalDuration.TimeSpan.ToString(@"hh\:mm\:ss");
                 }
             }
 
@@ -464,7 +494,7 @@ namespace MediaPlayerApp
 
         private void Stop_Click(object sender, RoutedEventArgs e)
         {
-            if (_playlist.Count == 0 || currentTrackIndex < 0 || !isPlaying)
+            if (_playlist.Count == 0 || currentTrackIndex < 0 )
                 return; // nothing to stop
 
             media_Element.Stop();
@@ -474,6 +504,7 @@ namespace MediaPlayerApp
             PlayPauseImage.Source = new BitmapImage(new Uri("/Icons/play.png", UriKind.Relative));
             VisualizerPanel.Visibility = Visibility.Hidden;
             CurrentTime.Text = "00:00:00";
+            TotalTime.Text = "00:00:00";
             TimeSlider.Value = 0;
             isPlaying = false;
             timer?.Stop();
@@ -490,6 +521,14 @@ namespace MediaPlayerApp
             UpdateNowPlayingStatus("Now Playing: No Track Loaded");
             originalPlaylistWidth = PlaylistColumn.Width;
         }
+
+        private void Window_Closed(object sender, EventArgs e)
+        {
+            media_Element.MediaOpened -= media_Element_MediaOpened;
+            media_Element.MediaEnded -= media_Element_MediaEnded;
+            media_Element.Close(); // releases resources
+        }
+
 
 
         // ======= TimeSlider Drag/Change =====
@@ -645,28 +684,37 @@ namespace MediaPlayerApp
         {
             OpenFileDialog openFileDialog = new()
             {
-                Filter = "All Files|*.*",
-                Multiselect = true
+                Filter = "Text Files|*.txt"
             };
 
             if (openFileDialog.ShowDialog() == true)
             {
                 _playlist.Clear();
-                foreach (string file in openFileDialog.FileNames)
+
+                var filePaths = File.ReadAllLines(openFileDialog.FileName);
+
+                foreach (var path in filePaths)
                 {
-                    _playlist.Add(new PlaylistModel
+                    if (File.Exists(path)) // only add files that exist
                     {
-                        FilePath = file,
-                        Title = Path.GetFileNameWithoutExtension(file),
-                        Artist = "Unknown Artist",
-                        Duration = "--:--",
-                        Thumbnail = "Images/default_thumbnail.png"
-                    });
+                        _playlist.Add(new PlaylistModel
+                        {
+                            FilePath = path,
+                            Title = Path.GetFileNameWithoutExtension(path),
+                            Artist = "Unknown Artist",
+                            Duration = "--:--",
+                            Thumbnail = "Images/default_thumbnail.png"
+                        });
+                    }
                 }
 
-                PlayTrackByIndex(0);
+                if (_playlist.Count > 0)
+                    PlayTrackByIndex(0);
+                else
+                    MessageBox.Show("No valid media files found in the playlist.");
             }
         }
+
 
 
 
@@ -715,11 +763,6 @@ namespace MediaPlayerApp
             // Update status bar
             UpdateNowPlayingStatus($"{track.Title} — {track.Artist}");
         }
-
-
-
-
-
 
 
         // ───────────────────────────────
@@ -883,21 +926,6 @@ namespace MediaPlayerApp
 
         // =============================== Themes  ============================
 
-        //private void ApplyTheme(string theme)
-        //{
-        //    // Clear previous theme dictionaries
-        //    Resources.MergedDictionaries.Clear();
-
-        //    // Build the correct theme path from Resources folder
-        //    var themeDict = new ResourceDictionary
-        //    {
-        //        Source = new Uri($"/MediaPlayerApp;component/Resources/{theme}Theme.xaml", UriKind.RelativeOrAbsolute)
-        //    };
-
-        //    // Apply selected theme
-        //    Resources.MergedDictionaries.Add(themeDict);
-        //}
-
         private void ApplyTheme(string theme)
         {
             // Clear previous theme dictionaries
@@ -914,9 +942,6 @@ namespace MediaPlayerApp
             Properties.Settings.Default.LastTheme = theme;
             Properties.Settings.Default.Save();
         }
-
-
-
 
 
 
@@ -992,7 +1017,39 @@ namespace MediaPlayerApp
         private void volumePopup_MouseEnter(object sender, MouseEventArgs e) => volumePopup.IsOpen = true;
 
 
+       
+        private void SavePlaylist_Click(object sender, RoutedEventArgs e)
+        {
+            if (_playlist.Count == 0)
+            {
+                MessageBox.Show("No tracks in the playlist to save.");
+                return;
+            }
 
+            SaveFileDialog saveFileDialog = new()
+            {
+                Filter = "Text Files|*.txt",
+                FileName = "MyPlaylist.txt"
+            };
+
+            if (saveFileDialog.ShowDialog() == true)
+            {
+                try
+                {
+                    // Get all file paths from _playlist
+                    var filePaths = _playlist.Select(track => track.FilePath).ToList();
+
+                    // Save all paths to the chosen .txt file
+                    File.WriteAllLines(saveFileDialog.FileName, filePaths);
+
+                    MessageBox.Show("Playlist saved successfully!");
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"Error saving playlist: {ex.Message}");
+                }
+            }
+        }
 
 
 
