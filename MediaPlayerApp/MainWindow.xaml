@@ -140,7 +140,8 @@
                 <MediaElement x:Name="media_Element"
                   LoadedBehavior="Manual"
                   UnloadedBehavior="Manual"
-                  Stretch="Uniform" MediaFailed="media_Element_MediaFailed" MouseLeftButtonDown="MediaElement_MouseLeftButtonDown"/>
+                  Stretch="Uniform" MediaFailed="media_Element_MediaFailed" 
+                  MouseLeftButtonDown="MediaElement_MouseLeftButtonDown" />
 
                 <!-- 📀 Watermark-style Thumbnail + Song Info -->
                 <Viewbox Stretch="Uniform" x:Name="SongInfoPanel">
@@ -172,6 +173,14 @@
                     <Rectangle x:Name="Bar6" Fill="{DynamicResource AccentColor}" Width="10" Height="5" Margin="2,0"/>
                     <Rectangle x:Name="Bar7" Fill="{DynamicResource AccentColor}" Width="10" Height="15" Margin="2,0"/>
                 </StackPanel>
+
+                <!-- 🎛 Floating Controls (hidden in fullscreen until hover) -->
+                <Grid x:Name="FloatingControls" VerticalAlignment="Bottom" Background="#66000000" 
+                      Height="70" Visibility="Collapsed" Opacity="0.95">
+                    <!-- Reuse your existing PlayerControlsGrid -->
+                    <ContentControl Content="{Binding ElementName=PlayerControlsGrid}" />
+                </Grid>
+                
             </Grid>
 
 

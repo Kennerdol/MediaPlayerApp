@@ -15,8 +15,8 @@
     <!-- Playlist -->
     <SolidColorBrush x:Key="PlaylistBorder" Color="#86A0AC"/>
     <SolidColorBrush x:Key="PlaylistBorderHover" Color="#98A5B0"/>
-    <SolidColorBrush x:Key="NowPlaying" Color="#4E5454"/>
-    <SolidColorBrush x:Key="NowForeground" Color="#767FE7"/>
+    <SolidColorBrush x:Key="NowPlaying" Color="#9ba3a3"/>
+    <SolidColorBrush x:Key="NowForeground" Color="#010a0a"/>
 
     <!-- Slider -->
     <SolidColorBrush x:Key="SliderBackground" Color="#fff"/>

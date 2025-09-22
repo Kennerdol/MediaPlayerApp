@@ -24,6 +24,9 @@ namespace MediaPlayerApp
         private DispatcherTimer? timer;
         private int currentTrackIndex = -1;
 
+        // Controls timer
+        private readonly DispatcherTimer controlsHideTimer = new DispatcherTimer();
+
         private bool isDraggingSlider = false;
         private bool isShuffling = false;
         private ICollectionView? _playlistView;
@@ -42,6 +45,15 @@ namespace MediaPlayerApp
 
             InitializePlaylist();
             SetupTimer();
+
+
+            // Auto-hide controls after 3s
+            controlsHideTimer.Interval = TimeSpan.FromSeconds(3);
+            controlsHideTimer.Tick += (s, e) =>
+            {
+                FloatingControls.Visibility = Visibility.Collapsed;
+                controlsHideTimer.Stop();
+            };
 
             media_Element.MediaOpened += media_Element_MediaOpened;
 
@@ -528,8 +540,27 @@ namespace MediaPlayerApp
             media_Element.MediaOpened -= media_Element_MediaOpened;
             media_Element.MediaEnded -= media_Element_MediaEnded;
             media_Element.Close(); // releases resources
+            //media_Element.Stop();
         }
 
+
+        //private void media_Element_MouseMove(object sender, MouseEventArgs e)
+        //{
+        //    FloatingControls.Visibility = Visibility.Visible;
+        //    controlsHideTimer.Stop();
+        //    controlsHideTimer.Start();
+        //}
+
+        //private void media_Element_MouseEnter(object sender, MouseEventArgs e)
+        //{
+        //    FloatingControls.Visibility = Visibility.Visible;
+        //}
+
+        //private void media_Element_MouseLeave(object sender, MouseEventArgs e)
+        //{
+        //    FloatingControls.Visibility = Visibility.Collapsed;
+        //    controlsHideTimer.Stop();
+        //}
 
 
         // ======= TimeSlider Drag/Change =====
@@ -663,8 +694,12 @@ namespace MediaPlayerApp
             media_Element.Play();
 
             PlayPauseImage.Source = new BitmapImage(new Uri("/Icons/pause.png", UriKind.Relative));
-            //PlayPauseItem.Icon = new BitmapImage(new Uri("/Icons/pause.png", UriKind.Relative));
+
+            if (PlayPauseItem.Icon == null)
+                PlayPauseItem.Icon = new Image();
+
             ((Image)PlayPauseItem.Icon).Source = new BitmapImage(new Uri(iconPath, UriKind.Relative));
+
 
             isPlaying = true;
             timer?.Start(); // <- start updating the slider/time
