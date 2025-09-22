@@ -23,26 +23,71 @@
         <!-- ===== Menu bar ===== -->
         <Menu Grid.Row="0" x:Name="TopMenu" Background="{DynamicResource WindowBackground}">
             <MenuItem Header="_File">
-                <MenuItem Header="Open..."/>
-                <MenuItem Header="Exit"/>
+                <MenuItem Header="Load Playlist" Click="LoadPlaylist_Click">
+                    <MenuItem.Icon>
+                        <Image Source="/Icons/openPlaylist.png" Width="15" Height="15"/>
+                    </MenuItem.Icon>
+                </MenuItem>
+
+                <MenuItem Header="Save Playlist" Click="SavePlaylist_Click">
+                    <MenuItem.Icon>
+                        <Image Source="/Icons/save.png" Width="15" Height="15"/>
+                    </MenuItem.Icon>
+                </MenuItem>
+
+                <MenuItem Header="Clear Playlist" Click="ClearPlaylist_Click">
+                    <MenuItem.Icon>
+                        <Image Source="/Icons/clear.png" Width="15" Height="15"/>
+                    </MenuItem.Icon>
+                </MenuItem>
+
+                <MenuItem Header="Exit" Click="Exit_Click">
+                    <MenuItem.Icon>
+                        <Image Source="/Icons/shutdown.png" Width="15" Height="15"/>
+                    </MenuItem.Icon>
+                </MenuItem>
+                
             </MenuItem>
             <MenuItem Header="_Playback">
-                <MenuItem Header="Play"/>
-                <MenuItem Header="Pause"/>
-                <MenuItem Header="Next"/>
-                <MenuItem Header="Previous"/>
-                <MenuItem Header="Stop"/>
-                <MenuItem Header="Save Playlist" Click="SavePlaylist_Click"/>
-                <MenuItem Header="Clear Playlist" Click="ClearPlaylist_Click"/>
-            </MenuItem>
-            <MenuItem Header="_Help">
-                <MenuItem Header="How To"/>
-                <MenuItem Header="About"/>
-                <MenuItem Header="Contact"/>
+                <MenuItem Header="Play/Pause" Click="PlayPause_Click" x:Name="PlayPauseItem">
+                    <MenuItem.Icon>
+                        <Image Source="/Icons/play.png" Width="15" Height="15"/>
+                    </MenuItem.Icon>
+                </MenuItem>
+
+                <!--<MenuItem Header="Pause">
+                    <MenuItem.Icon>
+                        <Image Source="/Icons/pause.png" Width="15" Height="15"/>
+                    </MenuItem.Icon>
+                </MenuItem>-->
+
+                <MenuItem Header="Next" Click="Next_Click">
+                    <MenuItem.Icon>
+                        <Image Source="/Icons/next.png" Width="15" Height="15"/>
+                    </MenuItem.Icon>
+                </MenuItem>
+
+                <MenuItem Header="Previous" Click="Previous_Click">
+                    <MenuItem.Icon>
+                        <Image Source="/Icons/previous.png" Width="15" Height="15"/>
+                    </MenuItem.Icon>
+                </MenuItem>
+
+                <MenuItem Header="Stop" Click="Stop_Click">
+                    <MenuItem.Icon>
+                        <Image Source="/Icons/stop.png" Width="15" Height="15"/>
+                    </MenuItem.Icon>
+                </MenuItem>
+
+                
+
             </MenuItem>
 
             <MenuItem Header="_Settings">
                 <MenuItem Header="Themes">
+                    <MenuItem.Icon>
+                        <Image Source="/MediaPlayerApp;component/Icons/theme.png" Width="20" Height="20"/>
+                    </MenuItem.Icon>
                     <MenuItem Header="Light" Click="LightTheme_Click">
                         <MenuItem.Icon>
                             <Image Source="/MediaPlayerApp;component/Icons/light.png" Width="20" Height="20"/>
@@ -53,6 +98,24 @@
                             <Image Source="/MediaPlayerApp;component/Icons/dark.png" Width="20" Height="20"/>
                         </MenuItem.Icon>
                     </MenuItem>
+                </MenuItem>
+            </MenuItem>
+
+            <MenuItem Header="Help">
+                <MenuItem Header="How To" >
+                    <MenuItem.Icon>
+                        <Image Source="/MediaPlayerApp;component/Icons/help.png" Width="16" Height="16"/>
+                    </MenuItem.Icon>
+                </MenuItem>
+                <MenuItem Header="Check for Updates">
+                    <MenuItem.Icon>
+                        <Image Source="/MediaPlayerApp;component/Icons/updates.png"  Width="16" Height="16"/>
+                    </MenuItem.Icon>
+                </MenuItem>
+                <MenuItem Header="About">
+                    <MenuItem.Icon>
+                        <Image Source="/MediaPlayerApp;component/Icons/info.png"  Width="16" Height="16"/>
+                    </MenuItem.Icon>
                 </MenuItem>
             </MenuItem>
 
@@ -127,24 +190,29 @@
                 </Grid.RowDefinitions>
 
                 <!-- ==== Search & buttons ==== -->
-                <StackPanel Orientation="Horizontal" Height="40" >
-                    <TextBox x:Name="SearchTextBox" TextChanged="SearchTextBox_TextChanged" Margin="5,0,5,0" 
-                             Padding="3" FontSize="15" Width="250" Height="30" BorderBrush="{DynamicResource BorderBrush}" />
-                    <Button x:Name="OpenFileButton" Grid.Column="1" Background="{DynamicResource NoBackground}" 
+                <StackPanel Orientation="Horizontal" Height="40" HorizontalAlignment="Right">
+                    <Button x:Name="OpenFileButton" Grid.Column="1" Background="{DynamicResource NoBackground}" ToolTip="Load Media"
                             BorderBrush="{DynamicResource BorderLess}" Margin="0,0,5,0" Width="50" Click="OpenFile_Click">
                         <Image Source="/Icons/treble-clef.png" />
                     </Button>
-
-                    <Button x:Name="OpenPlaylistButton" Grid.Column="3" Background="{DynamicResource NoBackground}" 
-                            BorderBrush="{DynamicResource BorderLess}" Margin="5,0,0,0" Width="50" Click="LoadPlaylist_Click">
-                        <Image Source="/Icons/open_playlist.png" />
+                    
+                    <TextBox x:Name="SearchTextBox" TextChanged="SearchTextBox_TextChanged" Margin="5,0,5,0" 
+                             Padding="3" FontSize="15" Width="250" Height="30" BorderBrush="{DynamicResource BorderBrush}" />
+                    <Button x:Name="ClearSearch" Grid.Column="1" Background="{DynamicResource NoBackground}" ToolTip="Clear Search"
+                            BorderBrush="{DynamicResource BorderLess}" Margin="0,0,5,0" Width="50" Click="ClearSearch_Click">
+                        <Image Source="/Icons/ClearSearch.png" />
                     </Button>
 
-                    <Button x:Name="SettingsButton"  Grid.Column="3" Background="{DynamicResource NoBackground}"
+                    <!--<Button x:Name="OpenPlaylistButton" Grid.Column="3" Background="{DynamicResource NoBackground}" 
+                            BorderBrush="{DynamicResource BorderLess}" Margin="5,0,0,0" Width="50" Click="LoadPlaylist_Click">
+                        <Image Source="/Icons/open_playlist.png" />
+                    </Button>-->
+
+                    <!--<Button x:Name="SettingsButton"  Grid.Column="3" Background="{DynamicResource NoBackground}"
                             BorderBrush="{DynamicResource BorderLess}" Margin="5,0,0,0" Width="50" 
                             Click="Settings_Click">
                         <Image Source="/Icons/settings.png" />
-                    </Button>
+                    </Button>-->
                 </StackPanel>
                 
                 <!-- ==== Playlist list ==== -->

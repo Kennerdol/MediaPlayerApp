@@ -115,6 +115,7 @@ namespace MediaPlayerApp
         {
             if (PlaylistGrid.Visibility == Visibility.Visible)
             {
+
                 // Save current playlist width before hiding
                 _lastPlaylistWidth = PlaylistColumn.Width;
 
@@ -164,8 +165,8 @@ namespace MediaPlayerApp
             // First stop media
             Stop_Click(null!, null!);
 
-            // Clear the media source so no frame remains on screen
-            media_Element.Source = null;
+            //// Clear the media source so no frame remains on screen
+            //media_Element.Source = null;
 
             // Then clear playlist
             _playlist.Clear();
@@ -596,7 +597,7 @@ namespace MediaPlayerApp
 
             if (openFileDialog.ShowDialog() == true)
             {
-                _playlist.Clear();
+                //_playlist.Clear();
                 _playlist.Add(new PlaylistModel
                 {
                     FilePath = openFileDialog.FileName,
@@ -658,8 +659,13 @@ namespace MediaPlayerApp
             if (currentTrackIndex < 0 || currentTrackIndex >= _playlist.Count)
                 return; // no track loaded, do nothing
 
+            var iconPath = "/Icons/pause.png";
             media_Element.Play();
+
             PlayPauseImage.Source = new BitmapImage(new Uri("/Icons/pause.png", UriKind.Relative));
+            //PlayPauseItem.Icon = new BitmapImage(new Uri("/Icons/pause.png", UriKind.Relative));
+            ((Image)PlayPauseItem.Icon).Source = new BitmapImage(new Uri(iconPath, UriKind.Relative));
+
             isPlaying = true;
             timer?.Start(); // <- start updating the slider/time
 
@@ -668,6 +674,20 @@ namespace MediaPlayerApp
 
             // optionally: VisualizerPanel.Visibility = Visibility.Visible;
 
+        }
+
+        private void Exit_Click(object sender, RoutedEventArgs e)
+        {
+            var result = MessageBox.Show(
+                "Are you sure you want to exit Duducha?",
+                "Exit Confirmation",
+                MessageBoxButton.YesNo,
+                MessageBoxImage.Question);
+
+            if (result == MessageBoxResult.Yes)
+            {
+                Application.Current.Shutdown();
+            }
         }
 
 
@@ -679,6 +699,11 @@ namespace MediaPlayerApp
             timer?.Stop(); // <- stop updating time while paused
         }
 
+        private void ClearSearch_Click(object sender, RoutedEventArgs e)
+        {
+            SearchTextBox.Clear();
+            SearchTextBox.Focus();
+        }
 
         private void LoadPlaylist_Click(object sender, RoutedEventArgs e)
         {
@@ -852,69 +877,103 @@ namespace MediaPlayerApp
         }
 
 
+        //private void media_Element_MediaEnded(object sender, RoutedEventArgs e)
+        //{
+        //    switch (currentRepeatMode)
+        //    {
+        //        case RepeatMode.Single:
+        //            // Replay the same track
+        //            PlayTrackByIndex(currentTrackIndex);
+        //            break;
+
+        //        case RepeatMode.All:
+        //            int nextIndex;
+        //            if (isShuffling)
+        //            {
+        //                // Pick a random track (not the same one if possible)
+        //                do
+        //                {
+        //                    nextIndex = random.Next(_playlist.Count);
+        //                } while (_playlist.Count > 1 && nextIndex == currentTrackIndex);
+        //            }
+        //            else
+        //            {
+        //                // Sequential with wrap-around
+        //                nextIndex = (currentTrackIndex + 1) % _playlist.Count;
+        //            }
+
+        //            PlayTrackByIndex(nextIndex);
+        //            break;
+
+        //        case RepeatMode.Off:
+        //        default:
+        //            // Normal playback, just go to next if available, otherwise stop
+        //            if (isShuffling)
+        //            {
+        //                // Shuffle until playlist ends naturally
+        //                if (_playlist.Count > 1)
+        //                {
+        //                    int shuffleIndex;
+        //                    do
+        //                    {
+        //                        shuffleIndex = random.Next(_playlist.Count);
+        //                    } while (shuffleIndex == currentTrackIndex);
+
+        //                    PlayTrackByIndex(shuffleIndex);
+        //                }
+        //                else
+        //                {
+        //                    Stop_Click(null!, null!);
+        //                }
+        //            }
+        //            else
+        //            {
+        //                if (currentTrackIndex < _playlist.Count - 1)
+        //                {
+        //                    PlayTrackByIndex(currentTrackIndex + 1);
+        //                }
+        //                else
+        //                {
+        //                    Stop_Click(null!, null!); // reached end
+        //                }
+        //            }
+        //            break;
+        //    }
+        //}
+
+
         private void media_Element_MediaEnded(object sender, RoutedEventArgs e)
         {
+            if (_playlist.Count == 0) return;
+
             switch (currentRepeatMode)
             {
                 case RepeatMode.Single:
-                    // Replay the same track
                     PlayTrackByIndex(currentTrackIndex);
                     break;
 
                 case RepeatMode.All:
-                    int nextIndex;
-                    if (isShuffling)
-                    {
-                        // Pick a random track (not the same one if possible)
-                        do
-                        {
-                            nextIndex = random.Next(_playlist.Count);
-                        } while (_playlist.Count > 1 && nextIndex == currentTrackIndex);
-                    }
-                    else
-                    {
-                        // Sequential with wrap-around
-                        nextIndex = (currentTrackIndex + 1) % _playlist.Count;
-                    }
-
-                    PlayTrackByIndex(nextIndex);
+                    PlayNextTrack();
                     break;
 
                 case RepeatMode.Off:
-                default:
-                    // Normal playback, just go to next if available, otherwise stop
-                    if (isShuffling)
-                    {
-                        // Shuffle until playlist ends naturally
-                        if (_playlist.Count > 1)
-                        {
-                            int shuffleIndex;
-                            do
-                            {
-                                shuffleIndex = random.Next(_playlist.Count);
-                            } while (shuffleIndex == currentTrackIndex);
-
-                            PlayTrackByIndex(shuffleIndex);
-                        }
-                        else
-                        {
-                            Stop_Click(null!, null!);
-                        }
-                    }
+                    if (currentTrackIndex < _playlist.Count - 1)
+                        PlayNextTrack();
                     else
-                    {
-                        if (currentTrackIndex < _playlist.Count - 1)
-                        {
-                            PlayTrackByIndex(currentTrackIndex + 1);
-                        }
-                        else
-                        {
-                            Stop_Click(null!, null!); // reached end
-                        }
-                    }
+                        Stop_Click(null!, null!);
                     break;
             }
         }
+
+        private void PlayNextTrack()
+        {
+            int nextIndex = isShuffling
+                ? random.Next(_playlist.Count)
+                : (currentTrackIndex + 1) % _playlist.Count;
+
+            PlayTrackByIndex(nextIndex);
+        }
+
 
 
         private void PlaylistListView_PreviewDragOver(object sender, DragEventArgs e)
