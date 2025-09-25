@@ -6,6 +6,10 @@
         WindowStartupLocation="CenterScreen" 
         Background="{DynamicResource WindowBackground}" Foreground="{DynamicResource WindowForeground}">
 
+    <Window.Resources>
+        
+    </Window.Resources>
+   
 
     <Grid>
         <!-- Define rows -->
@@ -21,100 +25,95 @@
         </Grid.RowDefinitions>
 
         <!-- ===== Menu bar ===== -->
-        <Menu Grid.Row="0" x:Name="TopMenu" Background="{DynamicResource WindowBackground}">
-            <MenuItem Header="_File">
-                <MenuItem Header="Load Playlist" Click="LoadPlaylist_Click">
+        <Menu Grid.Row="0" x:Name="TopMenu" Background="{DynamicResource WindowBackground}" 
+              Foreground="{DynamicResource WindowForeground}">
+            <MenuItem Header="_File" BorderThickness="0" BorderBrush="{DynamicResource WindowBackground}">
+                <MenuItem Header="Load Playlist" Click="LoadPlaylist_Click" Background="{DynamicResource WindowBackground}" 
+                          Foreground="{DynamicResource WindowForeground}" BorderThickness="0" BorderBrush="{DynamicResource WindowBackground}">
                     <MenuItem.Icon>
-                        <Image Source="/Icons/openPlaylist.png" Width="15" Height="15"/>
+                        <Image Source="/Icons/openPlaylist.png" Style="{Binding icon}"/>
                     </MenuItem.Icon>
                 </MenuItem>
 
-                <MenuItem Header="Save Playlist" Click="SavePlaylist_Click">
+                <MenuItem Header="Save Playlist" Click="SavePlaylist_Click" BorderThickness="0" Background="{DynamicResource WindowBackground}" Foreground="{DynamicResource WindowForeground}">
                     <MenuItem.Icon>
-                        <Image Source="/Icons/save.png" Width="15" Height="15"/>
+                        <Image Source="/Icons/save.png" Style="{Binding icon}"/>
                     </MenuItem.Icon>
                 </MenuItem>
 
-                <MenuItem Header="Clear Playlist" Click="ClearPlaylist_Click">
+                <MenuItem Header="Clear Playlist" Click="ClearPlaylist_Click" BorderThickness="0" Background="{DynamicResource WindowBackground}" Foreground="{DynamicResource WindowForeground}">
                     <MenuItem.Icon>
-                        <Image Source="/Icons/clear.png" Width="15" Height="15"/>
+                        <Image Source="/Icons/clear.png" Style="{Binding icon}"/>
                     </MenuItem.Icon>
                 </MenuItem>
 
-                <MenuItem Header="Exit" Click="Exit_Click">
+                <MenuItem Header="Exit" Click="Exit_Click" BorderThickness="0" Background="{DynamicResource WindowBackground}" Foreground="{DynamicResource WindowForeground}">
                     <MenuItem.Icon>
-                        <Image Source="/Icons/shutdown.png" Width="15" Height="15"/>
+                        <Image Source="/Icons/shutdown.png" Style="{Binding icon}"/>
                     </MenuItem.Icon>
                 </MenuItem>
                 
             </MenuItem>
-            <MenuItem Header="_Playback">
-                <MenuItem Header="Play/Pause" Click="PlayPause_Click" x:Name="PlayPauseItem">
+            <MenuItem Header="_Playback" Background="{DynamicResource WindowBackground}" Foreground="{DynamicResource WindowForeground}">
+                <MenuItem Header="Play/Pause" Click="PlayPause_Click" x:Name="PlayPauseItem" Foreground="{DynamicResource WindowForeground}">
                     <MenuItem.Icon>
-                        <Image Source="/Icons/play.png" Width="15" Height="15"/>
+                        <Image Source="/Icons/play.png" Style="{Binding icon}"/>
                     </MenuItem.Icon>
                 </MenuItem>
 
-                <!--<MenuItem Header="Pause">
+                <MenuItem Header="Next" Click="Next_Click" Foreground="{DynamicResource WindowForeground}">
                     <MenuItem.Icon>
-                        <Image Source="/Icons/pause.png" Width="15" Height="15"/>
-                    </MenuItem.Icon>
-                </MenuItem>-->
-
-                <MenuItem Header="Next" Click="Next_Click">
-                    <MenuItem.Icon>
-                        <Image Source="/Icons/next.png" Width="15" Height="15"/>
+                        <Image Source="/Icons/next.png" Style="{Binding icon}"/>
                     </MenuItem.Icon>
                 </MenuItem>
 
-                <MenuItem Header="Previous" Click="Previous_Click">
+                <MenuItem Header="Previous" Click="Previous_Click" Foreground="{DynamicResource WindowForeground}">
                     <MenuItem.Icon>
-                        <Image Source="/Icons/previous.png" Width="15" Height="15"/>
+                        <Image Source="/Icons/previous.png" Style="{Binding icon}"/>
                     </MenuItem.Icon>
                 </MenuItem>
 
-                <MenuItem Header="Stop" Click="Stop_Click">
+                <MenuItem Header="Stop" Click="Stop_Click" Foreground="{DynamicResource WindowForeground}">
                     <MenuItem.Icon>
-                        <Image Source="/Icons/stop.png" Width="15" Height="15"/>
+                        <Image Source="/Icons/stop.png" Style="{Binding icon}"/>
                     </MenuItem.Icon>
                 </MenuItem>
-
-                
 
             </MenuItem>
 
-            <MenuItem Header="_Settings">
-                <MenuItem Header="Themes">
+            <MenuItem Header="_Settings" Foreground="{DynamicResource WindowForeground}">
+                <MenuItem Header="Themes" Foreground="{DynamicResource WindowForeground}">
                     <MenuItem.Icon>
-                        <Image Source="/MediaPlayerApp;component/Icons/theme.png" Width="20" Height="20"/>
+                        <Image Source="/MediaPlayerApp;component/Icons/theme.png" Style="{Binding icon}"/>
                     </MenuItem.Icon>
-                    <MenuItem Header="Light" Click="LightTheme_Click">
+                    <MenuItem Header="Light" Click="LightTheme_Click" Foreground="{DynamicResource WindowForeground}">
                         <MenuItem.Icon>
-                            <Image Source="/MediaPlayerApp;component/Icons/light.png" Width="20" Height="20"/>
+                            <Image Source="/MediaPlayerApp;component/Icons/light.png" Style="{Binding icon}"/>
                         </MenuItem.Icon>
                     </MenuItem>
-                    <MenuItem Header="Dark" Click="DarkTheme_Click">
+                    <MenuItem Header="Dark" Click="DarkTheme_Click" Foreground="{DynamicResource WindowForeground}">
                         <MenuItem.Icon>
-                            <Image Source="/MediaPlayerApp;component/Icons/dark.png" Width="20" Height="20"/>
+                            <Image Source="/MediaPlayerApp;component/Icons/dark-theme.png" Style="{Binding icon}"/>
                         </MenuItem.Icon>
                     </MenuItem>
                 </MenuItem>
             </MenuItem>
 
-            <MenuItem Header="Help">
-                <MenuItem Header="How To" >
+            <MenuItem Header="Help" Foreground="{DynamicResource WindowForeground}">
+                <MenuItem Header="How To" Foreground="{DynamicResource WindowForeground}">
                     <MenuItem.Icon>
-                        <Image Source="/MediaPlayerApp;component/Icons/help.png" Width="16" Height="16"/>
+                        <Image Source="/MediaPlayerApp;component/Icons/help.png" Style="{Binding icon}"/>
                     </MenuItem.Icon>
                 </MenuItem>
-                <MenuItem Header="Check for Updates">
+
+                <MenuItem Header="Check for Updates" Foreground="{DynamicResource WindowForeground}">
                     <MenuItem.Icon>
-                        <Image Source="/MediaPlayerApp;component/Icons/updates.png"  Width="16" Height="16"/>
+                        <Image Source="/MediaPlayerApp;component/Icons/updates.png"  Style="{Binding icon}"/>
                     </MenuItem.Icon>
                 </MenuItem>
-                <MenuItem Header="About">
+                <MenuItem Header="About" Foreground="{DynamicResource WindowForeground}">
                     <MenuItem.Icon>
-                        <Image Source="/MediaPlayerApp;component/Icons/info.png"  Width="16" Height="16"/>
+                        <Image Source="/MediaPlayerApp;component/Icons/info.png"  Style="{Binding icon}"/>
                     </MenuItem.Icon>
                 </MenuItem>
             </MenuItem>
@@ -164,7 +163,7 @@
                 </Viewbox>
                 <!-- 🎶 Equalizer Overlay -->
                 <StackPanel x:Name="VisualizerPanel"  Orientation="Horizontal"  HorizontalAlignment="Center"
-                VerticalAlignment="Center" Margin="0,0,0,50" Visibility="Hidden">
+                    VerticalAlignment="Center" Margin="0,0,0,50" Visibility="Hidden">
                     <Rectangle x:Name="Bar1" Fill="{DynamicResource AccentColor}" Width="10" Height="5" Margin="2,0"/>
                     <Rectangle x:Name="Bar2" Fill="{DynamicResource AccentColor}" Width="10" Height="10" Margin="2,0"/>
                     <Rectangle x:Name="Bar3" Fill="{DynamicResource AccentColor}" Width="10" Height="15" Margin="2,0"/>
@@ -173,21 +172,121 @@
                     <Rectangle x:Name="Bar6" Fill="{DynamicResource AccentColor}" Width="10" Height="5" Margin="2,0"/>
                     <Rectangle x:Name="Bar7" Fill="{DynamicResource AccentColor}" Width="10" Height="15" Margin="2,0"/>
                 </StackPanel>
-
-                <!-- 🎛 Floating Controls (hidden in fullscreen until hover) -->
-                <Grid x:Name="FloatingControls" VerticalAlignment="Bottom" Background="#66000000" 
-                      Height="70" Visibility="Collapsed" Opacity="0.95">
-                    <!-- Reuse your existing PlayerControlsGrid -->
-                    <ContentControl Content="{Binding ElementName=PlayerControlsGrid}" />
-                </Grid>
                 
+                <!-- ================= Overlay Controls ============================ -->
+                <Grid VerticalAlignment="Bottom" HorizontalAlignment="Center" 
+                      x:Name="PlayerControlsGrid" Background="{DynamicResource OverlayBackground}" 
+                      Visibility="Collapsed" Height="80">
+                    <Grid.RowDefinitions>
+                        <RowDefinition />
+                        <RowDefinition />
+                    </Grid.RowDefinitions>
+
+                    <!-- ⏳ Progress Bar -->
+                    <Grid VerticalAlignment="Center" HorizontalAlignment="Stretch" >
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <!-- Current time -->
+                            <ColumnDefinition Width="*"/>
+                            <!-- Slider (expands) -->
+                            <ColumnDefinition Width="Auto"/>
+                            <!-- Total time -->
+                        </Grid.ColumnDefinitions>
+
+                        <TextBlock x:Name="CurrentTime"
+                   Grid.Column="0"
+                   Text="00:00:00" 
+                   Margin="0,0,10,0"
+                   VerticalAlignment="Center"
+                   Foreground="{DynamicResource WindowForeground}"/>
+
+                        <Slider x:Name="TimeSlider" Background="{DynamicResource SliderBackground}"
+                Grid.Column="1"
+                Minimum="0"
+                Maximum="1"
+                Value="0"
+                VerticalAlignment="Center"
+                HorizontalAlignment="Stretch"
+                IsMoveToPointEnabled="True"
+                Cursor="Hand"
+                PreviewMouseLeftButtonDown="TimeSlider_PreviewMouseLeftButtonDown"
+                PreviewMouseLeftButtonUp="TimeSlider_PreviewMouseLeftButtonUp"
+                ValueChanged="TimeSlider_ValueChanged">
+
+                        </Slider>
+
+                        <TextBlock x:Name="TotalTime"
+                   Grid.Column="2"
+                   Text="00:00:00" 
+                   Margin="10,0,0,0"
+                   VerticalAlignment="Center"
+                   Foreground="{DynamicResource WindowForeground}"/>
+                    </Grid>
+
+                    <StackPanel Grid.Row="1" Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Center" 
+                        Background="{DynamicResource NoBackground}">
+                        <Button x:Name="FullScreen" Click="FullScreen_Click" ToolTip="Toggle Screen" >
+                            <Image x:Name="FullScreenImage" Source="/Icons/full-screen.png" />
+                        </Button>
+
+                        <!--======= Play Pause =========-->
+                        <Button x:Name="PlayPauseButton" Click="PlayPause_Click" ToolTip="Play" >
+                            <Image x:Name="PlayPauseImage" Source="/Icons/play.png" />
+                        </Button>
+
+
+                        <Button Name="Previous" Click="Previous_Click" ToolTip="Previous" >
+                            <Image Source="/Icons/previous.png" />
+                        </Button>
+                        <Button Name="Stop" Click="Stop_Click" ToolTip="Stop" >
+                            <Image Source="/Icons/stop.png" />
+                        </Button>
+                        <Button Name="Next" Click="Next_Click" ToolTip="Next" >
+                            <Image Source="/Icons/next.png" />
+                        </Button>
+                        <Button Name="Repeat" Click="Repeat_Click" ToolTip="Repeat" >
+                            <Image x:Name="RepeatImage" Source="/Icons/repeat.png"/>
+                        </Button>
+                        <Button Name="ShuffleButton" Click="Shuffle_Click" ToolTip="Shuffle" >
+                            <Image Source="/Icons/shuffle.png" />
+                        </Button>
+                        
+
+                        <Grid>
+                            <!-- Speaker Button -->
+                            <Button x:Name="speakerButton" Height="30" HorizontalAlignment="Center" VerticalAlignment="Center"
+                                ToolTip="Volume"
+                                MouseEnter="speakerButton_MouseEnter"
+                                MouseLeave="speakerButton_MouseLeave">
+                                <Image x:Name="VolumSpeaker" Source="/Icons/speaker.png" Stretch="Uniform"/>
+                            </Button>
+
+                            <!-- Volume Popup -->
+                            <Popup x:Name="volumePopup" Placement="Right" StaysOpen="False" AllowsTransparency="True">
+                                <Border Background="{DynamicResource WindowBackground}" BorderBrush="{DynamicResource AccentColor}" 
+                        BorderThickness="1" CornerRadius="5" Padding="5">
+                                    <Slider x:Name="VolumeSlider"
+                            Minimum="0"
+                            Maximum="100"
+                            Width="100"
+                            Value="20"
+                            SmallChange="2"
+                            LargeChange="5"
+                            TickFrequency="1"
+                            ValueChanged="VolumeSlider_ValueChanged"/>
+                                </Border>
+                            </Popup>
+                        </Grid>
+                    </StackPanel>
+                </Grid>
             </Grid>
 
 
 
             <!-- ==== Splitter ==== -->
             <GridSplitter Grid.Column="1" x:Name="GridPlit" Width="3" HorizontalAlignment="Stretch"
-                          VerticalAlignment="Stretch" Background="{DynamicResource Splittercolor}"/>
+                          VerticalAlignment="Stretch" ShowsPreview="True" ResizeBehavior="PreviousAndNext"
+                          Background="{DynamicResource Splittercolor}"/>
 
             <!-- ==== Playlist ==== -->
             <Grid Grid.Column="2" x:Name="PlaylistGrid" >
@@ -211,17 +310,6 @@
                             BorderBrush="{DynamicResource BorderLess}" Margin="0,0,5,0" Width="50" Click="ClearSearch_Click">
                         <Image Source="/Icons/ClearSearch.png" />
                     </Button>
-
-                    <!--<Button x:Name="OpenPlaylistButton" Grid.Column="3" Background="{DynamicResource NoBackground}" 
-                            BorderBrush="{DynamicResource BorderLess}" Margin="5,0,0,0" Width="50" Click="LoadPlaylist_Click">
-                        <Image Source="/Icons/open_playlist.png" />
-                    </Button>-->
-
-                    <!--<Button x:Name="SettingsButton"  Grid.Column="3" Background="{DynamicResource NoBackground}"
-                            BorderBrush="{DynamicResource BorderLess}" Margin="5,0,0,0" Width="50" 
-                            Click="Settings_Click">
-                        <Image Source="/Icons/settings.png" />
-                    </Button>-->
                 </StackPanel>
                 
                 <!-- ==== Playlist list ==== -->
@@ -233,6 +321,42 @@
                               BorderThickness="0"
                               AllowDrop="True"
                               Drop="PlaylistListView_Drop">
+
+                        <!-- ✅ Right-click menu -->
+                        <ListView.ContextMenu>
+                            <ContextMenu>
+                                <MenuItem Header="Add File" Click="OpenFile_Click">
+                                    <MenuItem.Icon>
+                                        <Image Source="/Icons/add.png" Style="{Binding icon}"/>
+                                    </MenuItem.Icon>
+                                </MenuItem>
+                                <Separator/>
+                                <MenuItem Header="Play" Click="Playlist_Play_Click">
+                                    <MenuItem.Icon>
+                                        <Image Source="/Icons/play.png" Style="{Binding icon}"/>
+                                    </MenuItem.Icon>
+                                </MenuItem>
+                                <Separator/>
+                                <MenuItem Header="Stop" Click="Stop_Click">
+                                    <MenuItem.Icon>
+                                        <Image Source="/Icons/stop.png" Style="{Binding icon}"/>
+                                    </MenuItem.Icon>
+                                </MenuItem>
+                                <Separator/>
+                                <MenuItem Header="Remove" Click="Playlist_Remove_Click">
+                                    <MenuItem.Icon>
+                                        <Image Source="/Icons/remove.png" Style="{Binding icon}"/>
+                                    </MenuItem.Icon>
+                                </MenuItem>
+                                <Separator/>
+                                <MenuItem Header="Clear Playlist" Click="ClearPlaylist_Click">
+                                    <MenuItem.Icon>
+                                        <Image Source="/Icons/clear.png" Style="{Binding icon}"/>
+                                    </MenuItem.Icon>
+                                </MenuItem>
+                                
+                            </ContextMenu>
+                        </ListView.ContextMenu>
 
                         <!-- Apply background highlight based on IsPlaying -->
                         <ListView.ItemContainerStyle>
@@ -270,7 +394,6 @@
                                                x:Name="PlayingIcon"/>
                                             </Grid>
                                             
-
                                             <DataTemplate.Triggers>
                                                 <DataTrigger Binding="{Binding IsPlaying}" Value="True">
                                                     <Setter TargetName="DefaultIcon" Property="Visibility" Value="Collapsed"/>
@@ -307,43 +430,39 @@
                                         </DataTemplate>
                                     </GridViewColumn.CellTemplate>
                                 </GridViewColumn>
-
                             </GridView>
                         </ListView.View>
                     </ListView>
-
                 </Border>
             </Grid>
             </Grid>
 
         <!-- ===== Media Controls ===== -->
-        <Grid Grid.Row="2" VerticalAlignment="Center" HorizontalAlignment="Center" x:Name="PlayerControlsGrid" >
+        <Grid Grid.Row="2" VerticalAlignment="Center" HorizontalAlignment="Center" x:Name="ControlsGrid" >
             <Grid.RowDefinitions>
                 <RowDefinition />
                 <RowDefinition />
             </Grid.RowDefinitions>
 
-            <!--<ProgressBar x:Name="BufferingProgressBar" Height="5" Margin="0,5" IsIndeterminate="True" Visibility="Hidden"/>-->
-
-            <!-- ⏳ Progress Bar -->
+             <!--⏳ Progress Bar--> 
             <Grid VerticalAlignment="Center" HorizontalAlignment="Stretch" >
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="Auto"/>
-                    <!-- Current time -->
+                     <!--Current time--> 
                     <ColumnDefinition Width="*"/>
-                    <!-- Slider (expands) -->
+                     <!--Slider (expands)--> 
                     <ColumnDefinition Width="Auto"/>
-                    <!-- Total time -->
+                     <!--Total time--> 
                 </Grid.ColumnDefinitions>
 
-                <TextBlock x:Name="CurrentTime"
+                <TextBlock x:Name="time"
                            Grid.Column="0"
                            Text="00:00:00" 
                            Margin="0,0,10,0"
                            VerticalAlignment="Center"
                            Foreground="{DynamicResource WindowForeground}"/>
 
-                <Slider x:Name="TimeSlider" Background="{DynamicResource SliderBackground}"
+                <Slider x:Name="slider" Background="{DynamicResource SliderBackground}"
                         Grid.Column="1"
                         Minimum="0"
                         Maximum="1"
@@ -358,7 +477,7 @@
 
                 </Slider>
 
-                <TextBlock x:Name="TotalTime"
+                <TextBlock x:Name="TotalDuration"
                            Grid.Column="2"
                            Text="00:00:00" 
                            Margin="10,0,0,0"
@@ -368,35 +487,33 @@
 
             <StackPanel Grid.Row="1" Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Center" 
                         Background="{DynamicResource NoBackground}">
-                <TextBlock x:Name="SpeedTB" Text="Speed" Foreground="{DynamicResource WindowForeground}" VerticalAlignment="Center" Margin="0, 0, 2, 0"/>
-                
+                <TextBlock x:Name="Speed_TB" Text="Speed" Foreground="{DynamicResource WindowForeground}" VerticalAlignment="Center" Margin="0, 0, 2, 0"/>
+
                 <Slider x:Name="SpeedSlider" Width="80" Minimum="0.5" Maximum="2" Value="1" TickPlacement="BottomRight" VerticalAlignment="Center"
                         TickFrequency="0.25" Background="{DynamicResource SliderBackground}"
                             IsSnapToTickEnabled="True" ValueChanged="SpeedSlider_ValueChanged"/>
 
-                <Button x:Name="FullScreen" Click="FullScreen_Click" ToolTip="Toggle Screen" >
-                    <Image x:Name="FullScreenImage" Source="/Icons/full-screen.png" />
+                <Button x:Name="Full_Screen" Click="FullScreen_Click" ToolTip="Toggle Screen" >
+                    <Image x:Name="FullScreen_Image" Source="/Icons/full-screen.png" />
                 </Button>
 
-                <!--======= Play Pause =========-->
-                <Button x:Name="PlayPauseButton" Click="PlayPause_Click" ToolTip="Play" >
-                    <Image x:Name="PlayPauseImage" Source="/Icons/play.png" />
+                <Button x:Name="Play_PauseButton" Click="PlayPause_Click" ToolTip="Play" >
+                    <Image x:Name="Play_PauseImage" Source="/Icons/play.png" />
                 </Button>
 
-
-                <Button Name="Previous" Click="Previous_Click" ToolTip="Previous" >
+                <Button Name="Prev" Click="Previous_Click" ToolTip="Previous" >
                     <Image Source="/Icons/previous.png" />
                 </Button>
-                <Button Name="Stop" Click="Stop_Click" ToolTip="Stop" >
+                <Button Name="stop" Click="Stop_Click" ToolTip="Stop" >
                     <Image Source="/Icons/stop.png" />
                 </Button>
-                <Button Name="Next" Click="Next_Click" ToolTip="Next" >
+                <Button Name="next" Click="Next_Click" ToolTip="Next" >
                     <Image Source="/Icons/next.png" />
                 </Button>
-                <Button Name="Repeat" Click="Repeat_Click" ToolTip="Repeat" >
-                    <Image x:Name="RepeatImage" Source="/Icons/repeat.png"/>
+                <Button Name="repeat" Click="Repeat_Click" ToolTip="Repeat" >
+                    <Image x:Name="Repeat_Image" Source="/Icons/repeat.png"/>
                 </Button>
-                <Button Name="ShuffleButton" Click="Shuffle_Click" ToolTip="Shuffle" >
+                <Button Name="shuffle" Click="Shuffle_Click" ToolTip="Shuffle" >
                     <Image Source="/Icons/shuffle.png" />
                 </Button>
                 <Button Name="TogglePlaylist" Click="TogglePlaylist_Click" ToolTip="Toggle Playlist">
@@ -404,19 +521,19 @@
                 </Button>
 
                 <Grid>
-                    <!-- Speaker Button -->
-                    <Button x:Name="speakerButton" Height="30" HorizontalAlignment="Center" VerticalAlignment="Center"
+                     <!--Speaker Button--> 
+                    <Button x:Name="volumeBtn" Height="30" HorizontalAlignment="Center" VerticalAlignment="Center"
                         ToolTip="Volume"
                         MouseEnter="speakerButton_MouseEnter"
                         MouseLeave="speakerButton_MouseLeave">
-                        <Image x:Name="VolumSpeaker" Source="/Icons/speaker.png" Stretch="Uniform"/>
+                        <Image x:Name="Volum_Speaker" Source="/Icons/speaker.png" Stretch="Uniform"/>
                     </Button>
 
-                    <!-- Volume Popup -->
-                    <Popup x:Name="volumePopup" Placement="Right" StaysOpen="False" AllowsTransparency="True">
+                     <!--Volume Popup--> 
+                    <Popup x:Name="volume_Popup" Placement="Right" StaysOpen="False" AllowsTransparency="True">
                         <Border Background="{DynamicResource WindowBackground}" BorderBrush="{DynamicResource AccentColor}" 
                                 BorderThickness="1" CornerRadius="5" Padding="5">
-                                                <Slider x:Name="VolumeSlider"
+                            <Slider x:Name="Volume_Slider"
                                     Minimum="0"
                                     Maximum="100"
                                     Width="100"
@@ -428,10 +545,7 @@
                         </Border>
                     </Popup>
                 </Grid>
-
             </StackPanel>
-
-            
         </Grid>
 
         <!-- ===== Status Bar ===== -->
@@ -443,26 +557,6 @@
             <StatusBarItem x:Name="ShuffleModeText" Content="Shuffle: Off" HorizontalAlignment="Right"/>
             <Separator/>
             <StatusBarItem x:Name="TrackCountText" Content="Total Tracks: 0" HorizontalAlignment="Right"/>
-
         </StatusBar>
-        
-
-        <!-- ================== SETTINGS OVERLAY ================== -->
-        <Grid x:Name="SettingsOverlay" Grid.RowSpan="3" Visibility="Hidden" Background="#AA000000">
-            <Border Width="300" Height="200" Background="{DynamicResource OverlayBackground}"
-                CornerRadius="10" BorderBrush="{DynamicResource AccentColor}" BorderThickness="2"
-                VerticalAlignment="Center" HorizontalAlignment="Center">
-                <StackPanel Margin="15">
-                    <TextBlock Text="Settings" FontSize="20" FontWeight="Bold" Foreground="{DynamicResource WindowForeground}" HorizontalAlignment="Center"/>
-                    <TextBlock Text="Select a theme:" Margin="0,15,0,5" Foreground="{DynamicResource WindowForeground}"/>
-                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-                        <Button Content="Dark Theme" Margin="5" Click="DarkTheme_Click" Width="auto"/>
-                        <Button Content="Light Theme" Margin="5" Click="LightTheme_Click" Width="auto"/>
-                        <Button Content="Light Grey" Margin="5" Click="LightGreyTheme_Click" Width="auto"/>
-                    </StackPanel>
-                    <Button Content="Close" Margin="0,20,0,0" Click="CloseSettings_Click"/>
-                </StackPanel>
-            </Border>
-        </Grid>
     </Grid>
 </Window>

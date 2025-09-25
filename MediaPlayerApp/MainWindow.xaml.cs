@@ -4,14 +4,13 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.IO;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
 using System.Windows.Media.Imaging;
 using System.Windows.Threading;
-using System.Windows.Controls;
-using System.Collections.Generic;
 
 namespace MediaPlayerApp
 {
@@ -23,6 +22,8 @@ namespace MediaPlayerApp
         private readonly Stack<int> playbackHistory = new();
         private DispatcherTimer? timer;
         private int currentTrackIndex = -1;
+        private Point _lastMousePosition;
+
 
         // Controls timer
         private readonly DispatcherTimer controlsHideTimer = new DispatcherTimer();
@@ -51,9 +52,11 @@ namespace MediaPlayerApp
             controlsHideTimer.Interval = TimeSpan.FromSeconds(3);
             controlsHideTimer.Tick += (s, e) =>
             {
-                FloatingControls.Visibility = Visibility.Collapsed;
+                HideControls();
                 controlsHideTimer.Stop();
             };
+
+            media_Element.MouseMove += media_Element_MouseMove;
 
             media_Element.MediaOpened += media_Element_MediaOpened;
 
@@ -71,8 +74,6 @@ namespace MediaPlayerApp
 
             // Update FullScreen button
             UpdateFullScreenButton();
-
-            //ApplyTheme("Light");
 
             // Apply last saved theme or default to Light
             string lastTheme = Properties.Settings.Default.LastTheme;
@@ -102,7 +103,6 @@ namespace MediaPlayerApp
         }
 
 
-
         private bool PlaylistFilter(object obj)
         {
             if (obj is PlaylistModel item)
@@ -117,8 +117,6 @@ namespace MediaPlayerApp
 
      
 
-
-
         // ======================== TOGGLE PLAYLIST ============================
 
         private GridLength _lastPlaylistWidth = new GridLength(2, GridUnitType.Star);
@@ -130,10 +128,8 @@ namespace MediaPlayerApp
 
                 // Save current playlist width before hiding
                 _lastPlaylistWidth = PlaylistColumn.Width;
-
                 PlaylistGrid.Visibility = Visibility.Collapsed;
                 GridPlit.Visibility = Visibility.Collapsed;
-
                 PlaylistColumn.Width = new GridLength(0);         // collapse playlist
                 SplitterColumn.Width = new GridLength(0);         // collapse splitter
                 MediaColumn.Width = new GridLength(1, GridUnitType.Star); // fill 100%
@@ -142,7 +138,6 @@ namespace MediaPlayerApp
             {
                 PlaylistGrid.Visibility = Visibility.Visible;
                 GridPlit.Visibility = Visibility.Visible;
-
                 SplitterColumn.Width = new GridLength(5);         // restore splitter
                 PlaylistColumn.Width = _lastPlaylistWidth;        // restore playlist
                 MediaColumn.Width = new GridLength(3, GridUnitType.Star); // restore ratio
@@ -206,7 +201,6 @@ namespace MediaPlayerApp
         private void Next_Click(object sender, RoutedEventArgs e)
         {
             if (_playlist.Count == 0) return;
-
             int nextIndex;
             if (isShuffling)
             {
@@ -228,7 +222,6 @@ namespace MediaPlayerApp
         private void Previous_Click(object sender, RoutedEventArgs e)
         {
             if (_playlist.Count == 0) return;
-
             int prevIndex;
             if (isShuffling)
             {
@@ -243,7 +236,6 @@ namespace MediaPlayerApp
                 // Wrap around to last track if at the first
                 prevIndex = (currentTrackIndex - 1 + _playlist.Count) % _playlist.Count;
             }
-
             PlayTrackByIndex(prevIndex);
         }
 
@@ -269,13 +261,13 @@ namespace MediaPlayerApp
 
                 // Hide UI elements
                 _isFullScreen = true;
-                TopMenu.Visibility = Visibility.Collapsed;
-                Status.Visibility = Visibility.Collapsed;
-                PlayerControlsGrid.Visibility = Visibility.Collapsed;
-                //PlaylistGrid.Visibility = Visibility.Collapsed;
-                //GridPlit.Visibility = Visibility.Collapsed;
-                PlaylistColumn.Width = new GridLength(0);         // collapse playlist
-                SplitterColumn.Width = new GridLength(0);         // collapse splitter
+                HideUIs();
+                HideControls(); //Show Controls;
+                ControlsGrid.Visibility = Visibility.Collapsed;
+
+                // Start hidden overlay behavior
+                PlayerControlsGrid.Opacity = 1;
+                media_Element.MouseMove += media_Element_MouseMove;
 
             }
             else
@@ -291,18 +283,18 @@ namespace MediaPlayerApp
                 _isFullScreen = false;
 
                 // Show UI elements again
-                TopMenu.Visibility = Visibility.Visible;
-                Status.Visibility = Visibility.Visible;
-                PlayerControlsGrid.Visibility = Visibility.Visible;
-                PlaylistColumn.Width = new GridLength(2, GridUnitType.Star); // restore playlist width
-                SplitterColumn.Width = new GridLength(3);         // restore splitter width
-                PlaylistGrid.Visibility = Visibility.Visible;
-                GridPlit.Visibility = Visibility.Visible;
+                ShowUIs();
+                ShowControls(); 
+                ControlsGrid.Visibility = Visibility.Visible;
+
+                // Always visible in windowed mode
+                PlayerControlsGrid.Opacity = 0;
+                media_Element.MouseMove -= media_Element_MouseMove;
             }
         }
 
 
-        // Call this method whenever the playlist changes
+         // Call this method whenever the playlist changes
         private void UpdateFullScreenButton()
         {
             if (PlaylistListView.Items.Count == 0)
@@ -317,7 +309,6 @@ namespace MediaPlayerApp
         }
 
 
-
         protected override void OnPreviewKeyDown(KeyEventArgs e)
         {
             base.OnPreviewKeyDown(e);
@@ -329,7 +320,6 @@ namespace MediaPlayerApp
         }
 
         // ================================================================================
-
 
 
         private void media_Element_MediaOpened(object sender, RoutedEventArgs e)
@@ -374,50 +364,7 @@ namespace MediaPlayerApp
 
 
 
-
-
         // ============================= DRAG AND DROP AND REORDER ========================
-
-
-        //private void PlaylistListView_Drop(object sender, DragEventArgs e)
-        //{
-        //    if (e.Data.GetDataPresent(DataFormats.FileDrop))
-        //    {
-        //        string[] files = (string[])e.Data.GetData(DataFormats.FileDrop);
-
-        //        bool wasEmpty = _playlist.Count == 0;
-
-        //        foreach (string file in files)
-        //        {
-        //            // Skip if already in playlist
-        //            if (_playlist.Any(p => string.Equals(p.FilePath, file, StringComparison.OrdinalIgnoreCase)))
-        //                continue;
-
-        //            _playlist.Add(new PlaylistModel
-        //            {
-        //                FilePath = file,
-        //                Title = Path.GetFileNameWithoutExtension(file),
-        //                Artist = "Unknown Artist",
-        //                Duration = "--:--",
-        //                Thumbnail = "Images/default_thumbnail.png"
-        //            });
-        //        }
-
-        //        // Only auto-play if playlist was empty before
-        //        if (wasEmpty && _playlist.Count > 0)
-        //        {
-        //            PlayTrackByIndex(0);
-        //        }
-        //    }
-        //    else if (e.Data.GetDataPresent(typeof(PlaylistModel)))
-        //    {
-        //        // your reorder logic stays the same...
-        //    }
-
-        //    // Update FullScreen button
-        //    UpdateFullScreenButton();
-        //}
-
 
         private void PlaylistListView_Drop(object sender, DragEventArgs e)
         {
@@ -470,8 +417,6 @@ namespace MediaPlayerApp
             // Update FullScreen button
             UpdateFullScreenButton();
         }
-
-
 
 
         // ===================================== CONTROLS ==================================
@@ -544,25 +489,6 @@ namespace MediaPlayerApp
         }
 
 
-        //private void media_Element_MouseMove(object sender, MouseEventArgs e)
-        //{
-        //    FloatingControls.Visibility = Visibility.Visible;
-        //    controlsHideTimer.Stop();
-        //    controlsHideTimer.Start();
-        //}
-
-        //private void media_Element_MouseEnter(object sender, MouseEventArgs e)
-        //{
-        //    FloatingControls.Visibility = Visibility.Visible;
-        //}
-
-        //private void media_Element_MouseLeave(object sender, MouseEventArgs e)
-        //{
-        //    FloatingControls.Visibility = Visibility.Collapsed;
-        //    controlsHideTimer.Stop();
-        //}
-
-
         // ======= TimeSlider Drag/Change =====
 
         private void TimeSlider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
@@ -593,11 +519,74 @@ namespace MediaPlayerApp
             media_Element.SpeedRatio = SpeedSlider.Value;
         }
 
-
         private void speakerButton_Click(object sender, RoutedEventArgs e)
         {
             volumePopup.IsOpen = !volumePopup.IsOpen;
         }
+
+        private void HideControls()
+        {
+            if (_isFullScreen)
+                PlayerControlsGrid.Visibility = Visibility.Collapsed;
+        }
+
+
+
+        private void ShowControls()
+        {
+            if (_isFullScreen)
+                PlayerControlsGrid.Visibility = Visibility.Visible;
+        }
+
+        private void HideUIs()
+        {
+            TopMenu.Visibility = Visibility.Collapsed;
+            Status.Visibility = Visibility.Collapsed;
+            PlaylistColumn.Width = new GridLength(0);         // collapse playlist
+            SplitterColumn.Width = new GridLength(0);         // collapse splitter
+            GridPlit.Visibility = Visibility.Collapsed;
+        }
+
+        private void ShowUIs()
+        {
+            TopMenu.Visibility = Visibility.Visible;
+            Status.Visibility = Visibility.Visible;
+            PlaylistColumn.Width = new GridLength(2, GridUnitType.Star); // restore playlist width
+            SplitterColumn.Width = new GridLength(3);         // restore splitter width
+            GridPlit.Visibility = Visibility.Visible;
+        }
+
+        //private void media_Element_MouseMove(object sender, MouseEventArgs e)
+        //{
+        //    if (_isFullScreen)
+        //    {
+        //        ShowControls();
+
+        //        // Restart the auto-hide timer
+        //        controlsHideTimer.Stop();
+        //        controlsHideTimer.Start();
+        //    }
+        //}
+
+
+        private void media_Element_MouseMove(object sender, MouseEventArgs e)
+        {
+            if (!_isFullScreen) return;
+
+            Point currentPos = e.GetPosition(media_Element);
+
+            // Only trigger if mouse really moved
+            if (currentPos != _lastMousePosition)
+            {
+                ShowControls();
+
+                controlsHideTimer.Stop();
+                controlsHideTimer.Start();
+
+                _lastMousePosition = currentPos;
+            }
+        }
+
 
 
         // ───────────────────────────────
@@ -684,7 +673,6 @@ namespace MediaPlayerApp
             PlaylistListView.ScrollIntoView(PlaylistListView.SelectedItem);
         }
 
-
         private void PlayMedia()
         {
             if (currentTrackIndex < 0 || currentTrackIndex >= _playlist.Count)
@@ -710,6 +698,40 @@ namespace MediaPlayerApp
             // optionally: VisualizerPanel.Visibility = Visibility.Visible;
 
         }
+
+
+        // ContextMenu
+        private void Playlist_Play_Click(object sender, RoutedEventArgs e)
+        {
+            if (PlaylistListView.SelectedItem is PlaylistModel track)
+            {
+                currentTrackIndex = _playlist.IndexOf(track);
+                PlayMedia();
+            }
+        }
+
+        private void Playlist_Remove_Click(object sender, RoutedEventArgs e)
+        {
+            if (PlaylistListView.SelectedItem is PlaylistModel track)
+            {
+                _playlist.Remove(track);
+                if (_playlist.Count == 0)
+                {
+                    Stop_Click(null!, null!);
+                }
+            }
+        }
+
+        private void Playlist_OpenLocation_Click(object sender, RoutedEventArgs e)
+        {
+            if (PlaylistListView.SelectedItem is PlaylistModel track && File.Exists(track.FilePath))
+            {
+                string? dir = Path.GetDirectoryName(track.FilePath);
+                if (dir != null)
+                    System.Diagnostics.Process.Start("explorer.exe", dir);
+            }
+        }
+
 
         private void Exit_Click(object sender, RoutedEventArgs e)
         {
@@ -776,8 +798,6 @@ namespace MediaPlayerApp
         }
 
 
-
-
         private void PlaylistListView_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
             if (PlaylistListView.SelectedItem is PlaylistModel selectedTrack)
@@ -790,39 +810,51 @@ namespace MediaPlayerApp
         }
 
 
+        //private void PlayTrack(PlaylistModel track)
+        //{
+        //    if (track == null) return;
+
+        //    // Stop current playback
+        //    media_Element.Stop();
+
+        //    // Set the source
+        //    media_Element.Source = new Uri(track.FilePath);
+        //    media_Element.Play();
+
+        //    // Update currentTrackIndex in the original playlist
+        //    currentTrackIndex = _playlist.IndexOf(track);
+
+        //    // Update IsPlaying flags for full playlist
+        //    foreach (var t in _playlist)
+        //        t.IsPlaying = t == track;
+
+        //    // Update UI
+        //    CurrentTitle.Text = track.Title;
+        //    SongArtist.Text = track.Artist;
+        //    totalTime.Text = track.Duration;
+
+        //    // Refresh the ListView so IsPlaying triggers apply
+        //    PlaylistListView.Items.Refresh();
+
+        //    // Scroll into view in filtered list
+        //    PlaylistListView.ScrollIntoView(track);
+
+        //    // Update status bar
+        //    UpdateNowPlayingStatus($"{track.Title} — {track.Artist}");
+        //}
+
 
         private void PlayTrack(PlaylistModel track)
         {
             if (track == null) return;
 
-            // Stop current playback
-            media_Element.Stop();
-
-            // Set the source
-            media_Element.Source = new Uri(track.FilePath);
-            media_Element.Play();
-
-            // Update currentTrackIndex in the original playlist
-            currentTrackIndex = _playlist.IndexOf(track);
-
-            // Update IsPlaying flags for full playlist
-            foreach (var t in _playlist)
-                t.IsPlaying = t == track;
-
-            // Update UI
-            CurrentTitle.Text = track.Title;
-            SongArtist.Text = track.Artist;
-            totalTime.Text = track.Duration;
-
-            // Refresh the ListView so IsPlaying triggers apply
-            PlaylistListView.Items.Refresh();
-
-            // Scroll into view in filtered list
-            PlaylistListView.ScrollIntoView(track);
-
-            // Update status bar
-            UpdateNowPlayingStatus($"{track.Title} — {track.Artist}");
+            int index = _playlist.IndexOf(track);
+            if (index >= 0)
+            {
+                PlayTrackByIndex(index);
+            }
         }
+
 
 
         // ───────────────────────────────
@@ -883,8 +915,6 @@ namespace MediaPlayerApp
         private GridLength originalPlaylistWidth;
 
 
-
-
         // Helper to check if a control is a child of another
         private bool IsDescendantOf(DependencyObject source, DependencyObject parent)
         {
@@ -910,71 +940,6 @@ namespace MediaPlayerApp
             e.Effects = DragDropEffects.Copy;
             e.Handled = true;
         }
-
-
-        //private void media_Element_MediaEnded(object sender, RoutedEventArgs e)
-        //{
-        //    switch (currentRepeatMode)
-        //    {
-        //        case RepeatMode.Single:
-        //            // Replay the same track
-        //            PlayTrackByIndex(currentTrackIndex);
-        //            break;
-
-        //        case RepeatMode.All:
-        //            int nextIndex;
-        //            if (isShuffling)
-        //            {
-        //                // Pick a random track (not the same one if possible)
-        //                do
-        //                {
-        //                    nextIndex = random.Next(_playlist.Count);
-        //                } while (_playlist.Count > 1 && nextIndex == currentTrackIndex);
-        //            }
-        //            else
-        //            {
-        //                // Sequential with wrap-around
-        //                nextIndex = (currentTrackIndex + 1) % _playlist.Count;
-        //            }
-
-        //            PlayTrackByIndex(nextIndex);
-        //            break;
-
-        //        case RepeatMode.Off:
-        //        default:
-        //            // Normal playback, just go to next if available, otherwise stop
-        //            if (isShuffling)
-        //            {
-        //                // Shuffle until playlist ends naturally
-        //                if (_playlist.Count > 1)
-        //                {
-        //                    int shuffleIndex;
-        //                    do
-        //                    {
-        //                        shuffleIndex = random.Next(_playlist.Count);
-        //                    } while (shuffleIndex == currentTrackIndex);
-
-        //                    PlayTrackByIndex(shuffleIndex);
-        //                }
-        //                else
-        //                {
-        //                    Stop_Click(null!, null!);
-        //                }
-        //            }
-        //            else
-        //            {
-        //                if (currentTrackIndex < _playlist.Count - 1)
-        //                {
-        //                    PlayTrackByIndex(currentTrackIndex + 1);
-        //                }
-        //                else
-        //                {
-        //                    Stop_Click(null!, null!); // reached end
-        //                }
-        //            }
-        //            break;
-        //    }
-        //}
 
 
         private void media_Element_MediaEnded(object sender, RoutedEventArgs e)
@@ -1010,7 +975,6 @@ namespace MediaPlayerApp
         }
 
 
-
         private void PlaylistListView_PreviewDragOver(object sender, DragEventArgs e)
         {
             e.Effects = e.Data.GetDataPresent(DataFormats.FileDrop) ? DragDropEffects.Copy : DragDropEffects.None;
@@ -1019,7 +983,6 @@ namespace MediaPlayerApp
 
 
         // =============================== Themes  ============================
-
         private void ApplyTheme(string theme)
         {
             // Clear previous theme dictionaries
@@ -1038,14 +1001,11 @@ namespace MediaPlayerApp
         }
 
 
-
-        private void Settings_Click(object sender, RoutedEventArgs e) => SettingsOverlay.Visibility = Visibility.Visible;
+        //private void Settings_Click(object sender, RoutedEventArgs e) => SettingsOverlay.Visibility = Visibility.Visible;
         private void DarkTheme_Click(object sender, RoutedEventArgs e) => ApplyTheme("Dark");
         private void LightTheme_Click(object sender, RoutedEventArgs e) => ApplyTheme("Light");
         private void LightGreyTheme_Click(object sender, RoutedEventArgs e) => ApplyTheme("LightGrey");
-        private void CloseSettings_Click(object sender, RoutedEventArgs e) => SettingsOverlay.Visibility = Visibility.Hidden;
-
-
+        //private void CloseSettings_Click(object sender, RoutedEventArgs e) => SettingsOverlay.Visibility = Visibility.Hidden;
 
 
         private void media_Element_MediaFailed(object sender, ExceptionRoutedEventArgs e)
@@ -1144,9 +1104,6 @@ namespace MediaPlayerApp
                 }
             }
         }
-
-
-
 
     }
 }
