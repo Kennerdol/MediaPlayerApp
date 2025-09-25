@@ -161,9 +161,16 @@ namespace MediaPlayerApp
             if (media_Element.NaturalDuration.HasTimeSpan && !isDraggingSlider)
             {
                 TimeSlider.Maximum = media_Element.NaturalDuration.TimeSpan.TotalSeconds;
+                slider.Maximum = media_Element.NaturalDuration.TimeSpan.TotalSeconds; // Overlay
+
                 TimeSlider.Value = media_Element.Position.TotalSeconds;
+                slider.Value = media_Element.Position.TotalSeconds; // Overlay
+
                 CurrentTime.Text = media_Element.Position.ToString(@"hh\:mm\:ss");
+                time.Text = media_Element.Position.ToString(@"hh\:mm\:ss"); // Overlay
+
                 TotalTime.Text = media_Element.NaturalDuration.TimeSpan.ToString(@"hh\:mm\:ss");
+                TotalDuration.Text = media_Element.NaturalDuration.TimeSpan.ToString(@"hh\:mm\:ss"); // Overlay
             }
         }
 
@@ -328,8 +335,15 @@ namespace MediaPlayerApp
             {
                 TimeSlider.Maximum = media_Element.NaturalDuration.TimeSpan.TotalSeconds;
                 TimeSlider.SmallChange = 1;
+
+                slider.Maximum = media_Element.NaturalDuration.TimeSpan.TotalSeconds;
+                slider.SmallChange = 1;
+
                 TimeSlider.LargeChange = Math.Max(1, media_Element.NaturalDuration.TimeSpan.TotalSeconds / 10);
+                slider.LargeChange = Math.Max(1, media_Element.NaturalDuration.TimeSpan.TotalSeconds / 10);
+
                 TotalTime.Text = media_Element.NaturalDuration.TimeSpan.ToString(@"hh\:mm\:ss");
+                TotalDuration.Text = media_Element.NaturalDuration.TimeSpan.ToString(@"hh\:mm\:ss");
 
                 // Update current track duration
                 if (currentTrackIndex >= 0 && currentTrackIndex < _playlist.Count)
@@ -460,10 +474,13 @@ namespace MediaPlayerApp
 
             // Reset UI
             PlayPauseImage.Source = new BitmapImage(new Uri("/Icons/play.png", UriKind.Relative));
+            Play_PauseImage.Source = new BitmapImage(new Uri("/Icons/play.png", UriKind.Relative));
             VisualizerPanel.Visibility = Visibility.Hidden;
             CurrentTime.Text = "00:00:00";
             TotalTime.Text = "00:00:00";
+            time.Text = "00:00:00";
             TimeSlider.Value = 0;
+            slider.Value = 0; //Overlay
             isPlaying = false;
             timer?.Stop();
 
@@ -496,6 +513,7 @@ namespace MediaPlayerApp
             if (isDraggingSlider)
             {
                 CurrentTime.Text = TimeSpan.FromSeconds(TimeSlider.Value).ToString(@"hh\:mm\:ss");
+                time.Text = TimeSpan.FromSeconds(slider.Value).ToString(@"hh\:mm\:ss");
             }
         }
 
@@ -601,6 +619,7 @@ namespace MediaPlayerApp
         {
             isDraggingSlider = false;
             media_Element.Position = TimeSpan.FromSeconds(TimeSlider.Value);
+            media_Element.Position = TimeSpan.FromSeconds(slider.Value);
         }
 
 
@@ -682,6 +701,7 @@ namespace MediaPlayerApp
             media_Element.Play();
 
             PlayPauseImage.Source = new BitmapImage(new Uri("/Icons/pause.png", UriKind.Relative));
+            Play_PauseImage.Source = new BitmapImage(new Uri("/Icons/pause.png", UriKind.Relative));
 
             if (PlayPauseItem.Icon == null)
                 PlayPauseItem.Icon = new Image();
@@ -752,6 +772,7 @@ namespace MediaPlayerApp
         {
             media_Element.Pause();
             PlayPauseImage.Source = new BitmapImage(new Uri("/Icons/play.png", UriKind.Relative));
+            Play_PauseImage.Source = new BitmapImage(new Uri("/Icons/play.png", UriKind.Relative));
             isPlaying = false;
             timer?.Stop(); // <- stop updating time while paused
         }

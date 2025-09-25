@@ -194,24 +194,24 @@
                         </Grid.ColumnDefinitions>
 
                         <TextBlock x:Name="CurrentTime"
-                   Grid.Column="0"
-                   Text="00:00:00" 
-                   Margin="0,0,10,0"
-                   VerticalAlignment="Center"
-                   Foreground="{DynamicResource WindowForeground}"/>
+                           Grid.Column="0"
+                           Text="00:00:00" 
+                           Margin="0,0,10,0"
+                           VerticalAlignment="Center"
+                           Foreground="{DynamicResource WindowForeground}"/>
 
                         <Slider x:Name="TimeSlider" Background="{DynamicResource SliderBackground}"
-                Grid.Column="1"
-                Minimum="0"
-                Maximum="1"
-                Value="0"
-                VerticalAlignment="Center"
-                HorizontalAlignment="Stretch"
-                IsMoveToPointEnabled="True"
-                Cursor="Hand"
-                PreviewMouseLeftButtonDown="TimeSlider_PreviewMouseLeftButtonDown"
-                PreviewMouseLeftButtonUp="TimeSlider_PreviewMouseLeftButtonUp"
-                ValueChanged="TimeSlider_ValueChanged">
+                            Grid.Column="1"
+                            Minimum="0"
+                            Maximum="1"
+                            Value="0"
+                            VerticalAlignment="Center"
+                            HorizontalAlignment="Stretch"
+                            IsMoveToPointEnabled="True"
+                            Cursor="Hand"
+                            PreviewMouseLeftButtonDown="TimeSlider_PreviewMouseLeftButtonDown"
+                            PreviewMouseLeftButtonUp="TimeSlider_PreviewMouseLeftButtonUp"
+                            ValueChanged="TimeSlider_ValueChanged">
 
                         </Slider>
 
