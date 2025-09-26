@@ -1,13 +1,16 @@
 ﻿using MediaPlayerApp.Models;
+using MediaPlayerApp.Views;
 using Microsoft.Win32;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.IO;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Input;
 using System.Windows.Media;
+using System.Windows.Media.Effects;
 using System.Windows.Media.Imaging;
 using System.Windows.Threading;
 
@@ -497,7 +500,8 @@ namespace MediaPlayerApp
                 return; // nothing to stop
 
             media_Element.Stop();
-            //media_Element.Source = null;
+            //media_Element.Position = TimeSpan.Zero;
+            media_Element.Source = null;
 
             // Reset UI
             PlayPauseImage.Source = new BitmapImage(new Uri("/Icons/play.png", UriKind.Relative));
@@ -1280,5 +1284,54 @@ namespace MediaPlayerApp
             }
         }
 
+
+        //About Window
+        private void About_Click(object sender, RoutedEventArgs e)
+        {
+            // Apply blur
+            ApplyBlur(true);
+
+            AboutWindowView about = new AboutWindowView();
+            about.Owner = this; // Center relative to MainWindow
+            about.ShowDialog();
+
+            // Remove blur after AboutWindow closes
+            ApplyBlur(false);
+        }
+
+        private void ApplyBlur(bool isBlurred)
+        {
+            if (isBlurred)
+            {
+                this.Effect = new BlurEffect { Radius = 8 };
+                BlurOverlay.Visibility = Visibility.Visible;
+                BlurOverlay.Opacity = 0.9; // adjust for darkness
+            }
+            else
+            {
+                this.Effect = null;
+                BlurOverlay.Visibility = Visibility.Collapsed;
+            }
+        }
+
+        private void HowTo_Click(object sender, RoutedEventArgs e)
+        {
+            string url = "https://github.com/Kennerdol/MediaPlayerApp/blob/master/README.md";
+
+            try
+            {
+                // .NET Core / .NET 5+ way to open URL in default browser
+                ProcessStartInfo psi = new ProcessStartInfo
+                {
+                    FileName = url,
+                    UseShellExecute = true
+                };
+                Process.Start(psi);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Unable to open the URL: {ex.Message}");
+            }
+        }
     }
 }

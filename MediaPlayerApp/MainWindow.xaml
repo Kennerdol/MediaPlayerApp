@@ -135,20 +135,20 @@
             </MenuItem>
 
             <MenuItem Header="Help" Foreground="{DynamicResource WindowForeground}">
-                <MenuItem Header="How To" Foreground="{DynamicResource WindowForeground}">
+                <MenuItem Header="How To" Foreground="{DynamicResource WindowForeground}" Click="HowTo_Click">
                     <MenuItem.Icon>
-                        <Image Source="/MediaPlayerApp;component/Icons/help.png" Style="{Binding icon}"/>
+                        <Image Source="/Icons/help.png" Style="{Binding icon}"/>
                     </MenuItem.Icon>
                 </MenuItem>
 
                 <MenuItem Header="Check for Updates" Foreground="{DynamicResource WindowForeground}">
                     <MenuItem.Icon>
-                        <Image Source="/MediaPlayerApp;component/Icons/updates.png"  Style="{Binding icon}"/>
+                        <Image Source="/Icons/updates.png"  Style="{Binding icon}"/>
                     </MenuItem.Icon>
                 </MenuItem>
-                <MenuItem Header="About" Foreground="{DynamicResource WindowForeground}">
+                <MenuItem Header="About" Foreground="{DynamicResource WindowForeground}" Click="About_Click">
                     <MenuItem.Icon>
-                        <Image Source="/MediaPlayerApp;component/Icons/info.png"  Style="{Binding icon}"/>
+                        <Image Source="/Icons/info.png"  Style="{Binding icon}"/>
                     </MenuItem.Icon>
                 </MenuItem>
             </MenuItem>
@@ -586,5 +586,15 @@
             <Separator/>
             <StatusBarItem x:Name="TrackCountText" Content="Total Tracks: 0" HorizontalAlignment="Right"/>
         </StatusBar>
+
+        <!-- Blackish overlay for modal blur -->
+        <Rectangle x:Name="BlurOverlay"
+               Fill="Black"
+               Opacity="0"
+               Visibility="Collapsed"
+               Panel.ZIndex="1000"
+               HorizontalAlignment="Stretch"
+               VerticalAlignment="Stretch"/>
+
     </Grid>
 </Window>
