@@ -37,7 +37,7 @@ Supports audio and video playback, playlists, themes, full-screen mode, and more
 2. Open the solution in Visual Studio.
 3. Build and run the project.
 
-🎥 #Screenshots
+## 🎥 Screenshots
 
 (Add a few images or GIFs here — e.g., normal view, fullscreen view, playlist, etc.)
 
@@ -47,13 +47,13 @@ Supports audio and video playback, playlists, themes, full-screen mode, and more
 - Switch Theme → Use the Settings → Themes menu
 - Toggle Fullscreen → Click the fullscreen button or press F11
 
-📌 #Roadmap
+## 📌 Roadmap
  - Add drag-to-resize playlist pane
  - Add keyboard shortcuts (space = play/pause, arrow keys = seek, etc.)
  - Add support for album art metadata
  - Improve equalizer visualization
 
-🤝 #Contributing
+## 🤝 Contributing
 
 Contributions are welcome!
 - Fork the repo
@@ -61,5 +61,5 @@ Contributions are welcome!
 - Commit your changes
 - Open a Pull Request
 
-📜 ##License
+## 📜 License
 This project is licensed under the [MIT License](./LICENSE) — see the LICENSE file for details.
