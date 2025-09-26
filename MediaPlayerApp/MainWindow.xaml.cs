@@ -114,7 +114,7 @@ namespace MediaPlayerApp
             return false;
         }
 
-     
+
 
         // ======================== TOGGLE PLAYLIST ============================
 
@@ -137,7 +137,7 @@ namespace MediaPlayerApp
             {
                 PlaylistGrid.Visibility = Visibility.Visible;
                 GridPlit.Visibility = Visibility.Visible;
-                SplitterColumn.Width = new GridLength(5);  
+                SplitterColumn.Width = new GridLength(5);
                 PlaylistColumn.Width = _lastPlaylistWidth;
                 MediaColumn.Width = new GridLength(3, GridUnitType.Star); // restore ratio
             }
@@ -292,7 +292,7 @@ namespace MediaPlayerApp
 
                 // Show UI elements again
                 ShowUIs();
-                ShowControls(); 
+                ShowControls();
                 ControlsGrid.Visibility = Visibility.Visible;
 
 
@@ -307,7 +307,7 @@ namespace MediaPlayerApp
         }
 
 
-         // Call this method whenever the playlist changes
+        // Call this method whenever the playlist changes
         private void UpdateFullScreenButton()
         {
             if (PlaylistListView.Items.Count == 0)
@@ -466,13 +466,13 @@ namespace MediaPlayerApp
                 var track = _playlist[currentTrackIndex];
                 UpdateNowPlayingStatus($"{track.Title} — {track.Artist}");
             }
-               
+
         }
 
 
         private void Stop_Click(object sender, RoutedEventArgs e)
         {
-            if (_playlist.Count == 0 || currentTrackIndex < 0 )
+            if (_playlist.Count == 0 || currentTrackIndex < 0)
                 return; // nothing to stop
 
             media_Element.Stop();
@@ -525,26 +525,58 @@ namespace MediaPlayerApp
         }
 
 
-        private void VolumeSlider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
+        //private void VolumeSlider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
+        //{
+        //    //media_Element.Volume = VolumeSlider.Value;
+        //    if (media_Element != null)
+        //    {
+        //        media_Element.Volume = VolumeSlider.Value;
+        //    }
+
+        //    // Optional: update icon
+        //    VolumeSpeaker.Source = VolumeSlider.Value == 0
+        //        ? new BitmapImage(new Uri("/Icons/mute.png", UriKind.Relative))
+        //        : new BitmapImage(new Uri("/Icons/speaker.png", UriKind.Relative));
+        //}
+
+        //private void VolumeSlider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
+        //{
+        //    media_Element.Volume = VolumeSlider.Value;
+
+        //    // Optional: Change speaker icon based on volume
+        //    if (VolumeSlider.Value == 0)
+        //        VolumeSpeaker.Source = new BitmapImage(new Uri("/Icons/mute.png", UriKind.Relative));
+        //    else if (VolumeSlider.Value <= 0.5)
+        //        VolumeSpeaker.Source = new BitmapImage(new Uri("/Icons/volume-low.png", UriKind.Relative));
+        //    else
+        //        VolumeSpeaker.Source = new BitmapImage(new Uri("/Icons/volume-high.png", UriKind.Relative));
+        //}
+
+
+        private void ChangeSpeed_Click(object sender, RoutedEventArgs e)
         {
-            //media_Element.Volume = VolumeSlider.Value;
-            if (media_Element != null)
+            if (sender is MenuItem clickedItem && double.TryParse(clickedItem.Tag?.ToString(), out double speed))
             {
-                media_Element.Volume = VolumeSlider.Value / 100.0; // scale 0-100 → 0.0-1.0
+                // Set the speed
+                media_Element.SpeedRatio = speed;
+
+                // Uncheck all siblings
+                if (clickedItem.Parent is MenuItem parent)
+                {
+                    foreach (var item in parent.Items)
+                    {
+                        if (item is MenuItem mi)
+                            mi.IsChecked = false;
+                    }
+                }
+
+                // Check the clicked item
+                clickedItem.IsChecked = true;
             }
-
-            // Optional: update icon
-            VolumSpeaker.Source = VolumeSlider.Value == 0
-                ? new BitmapImage(new Uri("/Icons/mute.png", UriKind.Relative))
-                : new BitmapImage(new Uri("/Icons/speaker.png", UriKind.Relative));
         }
 
-        private void SpeedSlider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
-        {
-            media_Element.SpeedRatio = SpeedSlider.Value;
-        }
 
-        private void speakerButton_Click(object sender, RoutedEventArgs e)
+        private void SpeakerButton_Click(object sender, RoutedEventArgs e)
         {
             volumePopup.IsOpen = !volumePopup.IsOpen;
         }
@@ -555,6 +587,97 @@ namespace MediaPlayerApp
                 PlayerControlsGrid.Visibility = Visibility.Collapsed;
         }
 
+        //private void VolumeSlider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
+        //{
+        //    media_Element.Volume = VolumeSlider.Value;
+
+        //    // Optional: Change speaker icon based on volume
+        //    if (VolumeSlider.Value == 0 || Volume_Slider.Value == 0)
+        //    {
+        //        VolumeSpeaker.Source = new BitmapImage(new Uri("/Icons/mute.png", UriKind.Relative));
+        //        VolumeIcon.Source = new BitmapImage(new Uri("/Icons/mute.png", UriKind.Relative));
+        //    }
+                
+        //    else if (VolumeSlider.Value < 0.5 || Volume_Slider.Value < 0.5)
+        //    {
+        //        VolumeSpeaker.Source = new BitmapImage(new Uri("/Icons/volume-low.png", UriKind.Relative));
+        //        VolumeIcon.Source = new BitmapImage(new Uri("/Icons/volume-low.png", UriKind.Relative));
+        //    }
+
+        //    else
+        //    {
+        //        VolumeSpeaker.Source = new BitmapImage(new Uri("/Icons/volume-high.png", UriKind.Relative));
+        //        VolumeIcon.Source = new BitmapImage(new Uri("/Icons/volume-high.png", UriKind.Relative));
+        //    }
+                
+        //}
+
+
+        private void VolumeSlider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
+        {
+            if (media_Element == null) return;
+
+            // Determine which slider fired
+            Slider slider = sender as Slider;
+            if (slider == null) return;
+
+            // Update media volume
+            media_Element.Volume = slider.Value;
+
+            // Update the corresponding icon
+            if (slider == VolumeSlider && VolumeSpeaker != null)
+            {
+                VolumeSpeaker.Source = GetVolumeIcon(slider.Value);
+            }
+            else if (slider == Volume_Slider && VolumeIcon != null)
+            {
+                VolumeIcon.Source = GetVolumeIcon(slider.Value);
+            }
+
+            // Optional: keep both sliders in sync
+            if (slider != VolumeSlider && VolumeSlider != null)
+                VolumeSlider.Value = slider.Value;
+            if (slider != Volume_Slider && Volume_Slider != null)
+                Volume_Slider.Value = slider.Value;
+        }
+
+        // Helper method to get the correct icon
+        private BitmapImage GetVolumeIcon(double value)
+        {
+            string iconPath;
+            if (value == 0) iconPath = "/Icons/mute.png";
+            else if (value < 0.5) iconPath = "/Icons/volume-low.png";
+            else iconPath = "/Icons/volume-high.png";
+
+            return new BitmapImage(new Uri(iconPath, UriKind.Relative));
+        }
+
+
+        private double _lastVolume = 0.5; // default
+
+        private void VolumeBtn_Click(object sender, RoutedEventArgs e)
+        {
+            if (media_Element.Volume > 0)
+            {
+                // Save current volume and mute
+                _lastVolume = media_Element.Volume;
+                media_Element.Volume = 0;
+                VolumeSlider.Value = 0;
+
+                VolumeSpeaker.Source = new BitmapImage(new Uri("/Icons/mute.png", UriKind.Relative));
+            }
+            else
+            {
+                // Restore volume
+                media_Element.Volume = _lastVolume;
+                VolumeSlider.Value = _lastVolume;
+
+                if (_lastVolume < 0.5)
+                    VolumeSpeaker.Source = new BitmapImage(new Uri("/Icons/volume-low.png", UriKind.Relative));
+                else
+                    VolumeSpeaker.Source = new BitmapImage(new Uri("/Icons/volume-high.png", UriKind.Relative));
+            }
+        }
 
 
         private void ShowControls()
@@ -584,17 +707,6 @@ namespace MediaPlayerApp
             GridPlit.Visibility = Visibility.Visible;
         }
 
-        //private void media_Element_MouseMove(object sender, MouseEventArgs e)
-        //{
-        //    if (_isFullScreen)
-        //    {
-        //        ShowControls();
-
-        //        // Restart the auto-hide timer
-        //        controlsHideTimer.Stop();
-        //        controlsHideTimer.Start();
-        //    }
-        //}
 
 
         private void media_Element_MouseMove(object sender, MouseEventArgs e)
@@ -1089,12 +1201,20 @@ namespace MediaPlayerApp
             }
         }
 
-
-        private void speakerButton_MouseEnter(object sender, MouseEventArgs e) => volumePopup.IsOpen = true;
+        private void speakerButton_MouseEnter(object sender, MouseEventArgs e)
+        {
+            if (!volumePopup.IsMouseOver)
+            {
+                volumePopup.IsOpen = true;
+            }
+        }
 
         private void speakerButton_MouseLeave(object sender, MouseEventArgs e)
         {
-            if (!volumePopup.IsMouseOver) volumePopup.IsOpen = false;
+            if (!volumePopup.IsMouseOver)
+            {
+                volumePopup.IsOpen = false;
+            }
         }
 
         private void volumePopup_MouseLeave(object sender, MouseEventArgs e) => volumePopup.IsOpen = false;

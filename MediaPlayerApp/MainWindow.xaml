@@ -79,21 +79,56 @@
                     </MenuItem.Icon>
                 </MenuItem>
 
+                <MenuItem Header="Speed" Foreground="{DynamicResource WindowForeground}">
+                    <MenuItem.Icon>
+                        <Image Source="/Icons/speed.png" Style="{Binding icon}"/>
+                    </MenuItem.Icon>
+                    <MenuItem Header="Slower" IsCheckable="True" Click="ChangeSpeed_Click" Tag="0.5" Foreground="{DynamicResource WindowForeground}">
+                        <MenuItem.Icon>
+                            <Image Source="/Icons/speed-fast.png" Style="{Binding icon}"/>
+                        </MenuItem.Icon>
+                    </MenuItem>
+
+                    <MenuItem Header="Slow" IsCheckable="True" Click="ChangeSpeed_Click" Tag="0.75" Foreground="{DynamicResource WindowForeground}">
+                        <MenuItem.Icon>
+                            <Image Source="/Icons/speed-fast.png" Style="{Binding icon}"/>
+                        </MenuItem.Icon>
+                    </MenuItem>
+
+                    <MenuItem Header="Normal" IsCheckable="True" Click="ChangeSpeed_Click" Tag="1" Foreground="{DynamicResource WindowForeground}">
+                        <MenuItem.Icon>
+                            <Image Source="/Icons/speed-normal.png" Style="{Binding icon}"/>
+                        </MenuItem.Icon>
+                    </MenuItem>
+
+                    <MenuItem Header="Fast" IsCheckable="True" Click="ChangeSpeed_Click" Tag="1.5" Foreground="{DynamicResource WindowForeground}">
+                        <MenuItem.Icon>
+                            <Image Source="/Icons/speed-fast.png" Style="{Binding icon}"/>
+                        </MenuItem.Icon>
+                    </MenuItem>
+
+                    <MenuItem Header="Faster" IsCheckable="True" Click="ChangeSpeed_Click" Tag="2.0" Foreground="{DynamicResource WindowForeground}">
+                        <MenuItem.Icon>
+                            <Image Source="/Icons/speed-faster.png" Style="{Binding icon}"/>
+                        </MenuItem.Icon>
+                    </MenuItem>
+                </MenuItem>
+
             </MenuItem>
 
             <MenuItem Header="_Settings" Foreground="{DynamicResource WindowForeground}">
                 <MenuItem Header="Themes" Foreground="{DynamicResource WindowForeground}">
                     <MenuItem.Icon>
-                        <Image Source="/MediaPlayerApp;component/Icons/theme.png" Style="{Binding icon}"/>
+                        <Image Source="/Icons/theme.png" Style="{Binding icon}"/>
                     </MenuItem.Icon>
                     <MenuItem Header="Light" Click="LightTheme_Click" Foreground="{DynamicResource WindowForeground}">
                         <MenuItem.Icon>
-                            <Image Source="/MediaPlayerApp;component/Icons/light.png" Style="{Binding icon}"/>
+                            <Image Source="/Icons/light.png" Style="{Binding icon}"/>
                         </MenuItem.Icon>
                     </MenuItem>
                     <MenuItem Header="Dark" Click="DarkTheme_Click" Foreground="{DynamicResource WindowForeground}">
                         <MenuItem.Icon>
-                            <Image Source="/MediaPlayerApp;component/Icons/dark-theme.png" Style="{Binding icon}"/>
+                            <Image Source="/Icons/dark-theme.png" Style="{Binding icon}"/>
                         </MenuItem.Icon>
                     </MenuItem>
                 </MenuItem>
@@ -253,27 +288,30 @@
                         
 
                         <Grid>
-                            <!-- Speaker Button -->
-                            <Button x:Name="speakerButton" Height="30" HorizontalAlignment="Center" VerticalAlignment="Center"
+                            <!-- Volume Button -->
+                            <Button x:Name="speakerButton" Height="30" 
+                                    HorizontalAlignment="Center" VerticalAlignment="Center"
                                 ToolTip="Volume"
                                 MouseEnter="speakerButton_MouseEnter"
                                 MouseLeave="speakerButton_MouseLeave">
-                                <Image x:Name="VolumSpeaker" Source="/Icons/speaker.png" Stretch="Uniform"/>
+                                <Image x:Name="VolumeSpeaker" Source="/Icons/volume-low.png" Stretch="Uniform"/>
                             </Button>
 
                             <!-- Volume Popup -->
-                            <Popup x:Name="volumePopup" Placement="Right" StaysOpen="False" AllowsTransparency="True">
-                                <Border Background="{DynamicResource WindowBackground}" BorderBrush="{DynamicResource AccentColor}" 
-                        BorderThickness="1" CornerRadius="5" Padding="5">
-                                    <Slider x:Name="VolumeSlider"
-                            Minimum="0"
-                            Maximum="100"
-                            Width="100"
-                            Value="20"
-                            SmallChange="2"
-                            LargeChange="5"
-                            TickFrequency="1"
-                            ValueChanged="VolumeSlider_ValueChanged"/>
+                            <Popup x:Name="volumePopup" Placement="Right" 
+                                   StaysOpen="False" AllowsTransparency="True">
+                                <Border Background="{DynamicResource WindowBackground}" 
+                                        BorderBrush="{DynamicResource AccentColor}" 
+                                        BorderThickness="1" CornerRadius="5" Padding="5">
+                                <Slider x:Name="VolumeSlider"
+                                        Minimum="0"
+                                        Maximum="1"
+                                        Width="100"
+                                        Value="0.2"
+                                        SmallChange="0.05"
+                                        LargeChange="0.1"
+                                        TickFrequency="0.05"
+                                        ValueChanged="VolumeSlider_ValueChanged"/>
                                 </Border>
                             </Popup>
                         </Grid>
@@ -308,7 +346,7 @@
                              Padding="3" FontSize="15" Width="250" Height="30" BorderBrush="{DynamicResource BorderBrush}" />
                     <Button x:Name="ClearSearch" Grid.Column="1" Background="{DynamicResource NoBackground}" ToolTip="Clear Search"
                             BorderBrush="{DynamicResource BorderLess}" Margin="0,0,5,0" Width="50" Click="ClearSearch_Click">
-                        <Image Source="/Icons/ClearSearch.png" />
+                        <Image Source="/Icons/clear.png" />
                     </Button>
                 </StackPanel>
                 
@@ -435,7 +473,7 @@
                     </ListView>
                 </Border>
             </Grid>
-            </Grid>
+        </Grid>
 
         <!-- ===== Media Controls ===== -->
         <Grid Grid.Row="2" VerticalAlignment="Center" HorizontalAlignment="Center" x:Name="ControlsGrid" >
@@ -487,11 +525,6 @@
 
             <StackPanel Grid.Row="1" Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Center" 
                         Background="{DynamicResource NoBackground}">
-                <TextBlock x:Name="Speed_TB" Text="Speed" Foreground="{DynamicResource WindowForeground}" VerticalAlignment="Center" Margin="0, 0, 2, 0"/>
-
-                <Slider x:Name="SpeedSlider" Width="80" Minimum="0.5" Maximum="2" Value="1" TickPlacement="BottomRight" VerticalAlignment="Center"
-                        TickFrequency="0.25" Background="{DynamicResource SliderBackground}"
-                            IsSnapToTickEnabled="True" ValueChanged="SpeedSlider_ValueChanged"/>
 
                 <Button x:Name="Full_Screen" Click="FullScreen_Click" ToolTip="Toggle Screen" >
                     <Image x:Name="FullScreen_Image" Source="/Icons/full-screen.png" />
@@ -520,31 +553,26 @@
                     <Image Source="/Icons/playlist.png" />
                 </Button>
 
-                <Grid>
-                     <!--Speaker Button--> 
-                    <Button x:Name="volumeBtn" Height="30" HorizontalAlignment="Center" VerticalAlignment="Center"
-                        ToolTip="Volume"
-                        MouseEnter="speakerButton_MouseEnter"
-                        MouseLeave="speakerButton_MouseLeave">
-                        <Image x:Name="Volum_Speaker" Source="/Icons/speaker.png" Stretch="Uniform"/>
+                <StackPanel Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Center" >
+                     <!--Volume Button-->
+                    <Button x:Name="volumeBtn" Height="30" VerticalAlignment="Center" 
+                            Click="VolumeBtn_Click" ToolTip="Mute/Unmute">
+                        <Image x:Name="VolumeIcon" Source="/Icons/volume-low.png" Stretch="Uniform"/>
                     </Button>
 
-                     <!--Volume Popup--> 
-                    <Popup x:Name="volume_Popup" Placement="Right" StaysOpen="False" AllowsTransparency="True">
-                        <Border Background="{DynamicResource WindowBackground}" BorderBrush="{DynamicResource AccentColor}" 
-                                BorderThickness="1" CornerRadius="5" Padding="5">
-                            <Slider x:Name="Volume_Slider"
-                                    Minimum="0"
-                                    Maximum="100"
-                                    Width="100"
-                                    Value="20"
-                                    SmallChange="2"
-                                    LargeChange="5"
-                                    TickFrequency="1"
-                                    ValueChanged="VolumeSlider_ValueChanged"/>
-                        </Border>
-                    </Popup>
-                </Grid>
+                     <!--Volume Slider-->
+
+                    <Slider x:Name="Volume_Slider" VerticalAlignment="Center" HorizontalAlignment="Left"
+                                        Minimum="0"
+                                        Maximum="1"
+                                        Width="80"
+                                        Value="0.2"
+                                        SmallChange="0.05"
+                                        LargeChange="0.1"
+                                        TickFrequency="0.05"
+                                        ValueChanged="VolumeSlider_ValueChanged"/>
+                    
+                </StackPanel>
             </StackPanel>
         </Grid>
 
