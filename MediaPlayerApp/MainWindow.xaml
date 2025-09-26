@@ -446,7 +446,7 @@
                                     <GridViewColumn.CellTemplate>
                                         <DataTemplate>
                                             <TextBlock Text="{Binding Title, TargetNullValue='Unknown Title'}" 
-                       TextTrimming="CharacterEllipsis"/>
+                                                        TextTrimming="CharacterEllipsis"/>
                                         </DataTemplate>
                                     </GridViewColumn.CellTemplate>
                                 </GridViewColumn>
@@ -455,7 +455,7 @@
                                     <GridViewColumn.CellTemplate>
                                         <DataTemplate>
                                             <TextBlock Text="{Binding Artist, TargetNullValue='Unknown Artist'}" 
-                       TextTrimming="CharacterEllipsis"/>
+                                                    TextTrimming="CharacterEllipsis"/>
                                         </DataTemplate>
                                     </GridViewColumn.CellTemplate>
                                 </GridViewColumn>
@@ -464,7 +464,7 @@
                                     <GridViewColumn.CellTemplate>
                                         <DataTemplate>
                                             <TextBlock Text="{Binding Duration, TargetNullValue='--:--'}" 
-                       HorizontalAlignment="Center"/>
+                                                    HorizontalAlignment="Center"/>
                                         </DataTemplate>
                                     </GridViewColumn.CellTemplate>
                                 </GridViewColumn>

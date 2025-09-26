@@ -44,6 +44,7 @@ namespace MediaPlayerApp
             InitializeComponent();
 
             InitializePlaylist();
+            UpdateFullScreenButton();
             SetupTimer();
 
 
@@ -72,7 +73,7 @@ namespace MediaPlayerApp
             volumePopup.MouseLeave += (s, e) => volumePopup.IsOpen = false;
 
             // Update FullScreen button
-            UpdateFullScreenButton();
+            //UpdateFullScreenButton();
 
             // Apply last saved theme or default to Light
             string lastTheme = Properties.Settings.Default.LastTheme;
@@ -118,7 +119,8 @@ namespace MediaPlayerApp
 
         // ======================== TOGGLE PLAYLIST ============================
 
-        private GridLength _lastPlaylistWidth = new GridLength(2, GridUnitType.Star);
+        private GridLength _lastSplitterWidth;
+        private GridLength _lastPlaylistWidth;
 
         private void TogglePlaylist_Click(object sender, RoutedEventArgs e)
         {
@@ -127,19 +129,24 @@ namespace MediaPlayerApp
 
                 // Save current playlist width before hiding
                 _lastPlaylistWidth = PlaylistColumn.Width;
+                _lastSplitterWidth = SplitterColumn.Width;
+
                 PlaylistGrid.Visibility = Visibility.Collapsed;
                 GridPlit.Visibility = Visibility.Collapsed;
-                PlaylistColumn.Width = new GridLength(0);         // collapse playlist
-                SplitterColumn.Width = new GridLength(0);         // collapse splitter
-                MediaColumn.Width = new GridLength(1, GridUnitType.Star); // fill 100%
+
+                PlaylistColumn.Width = new GridLength(0);
+                SplitterColumn.Width = new GridLength(0);
+                MediaColumn.Width = new GridLength(1, GridUnitType.Star);
             }
             else
             {
                 PlaylistGrid.Visibility = Visibility.Visible;
                 GridPlit.Visibility = Visibility.Visible;
-                SplitterColumn.Width = new GridLength(5);
+
+                // Restore previous widths
+                SplitterColumn.Width = _lastSplitterWidth;
                 PlaylistColumn.Width = _lastPlaylistWidth;
-                MediaColumn.Width = new GridLength(3, GridUnitType.Star); // restore ratio
+                MediaColumn.Width = new GridLength(3, GridUnitType.Star);
             }
         }
 
@@ -197,7 +204,7 @@ namespace MediaPlayerApp
             SongArtist.Text = "";
             totalTime.Text = "";
             TotalTime.Text = "00:00:00";
-            UpdateFullScreenButton();
+            //UpdateFullScreenButton();
         }
 
 
@@ -310,14 +317,22 @@ namespace MediaPlayerApp
         // Call this method whenever the playlist changes
         private void UpdateFullScreenButton()
         {
+            // Disable if playlist empty
             if (PlaylistListView.Items.Count == 0)
             {
-                FullScreen.IsEnabled = false;
+                Full_Screen.IsEnabled = false;
+            }
+
+            // Check if current media is video
+            if (media_Element.NaturalVideoWidth == 0 && media_Element.NaturalVideoHeight == 0)
+            {
+                // No video, only audio
+                Full_Screen.IsEnabled = false;
             }
             else
             {
-                FullScreen.IsEnabled = true;
-                PlaylistColumn.IsEnabled = true;
+                // Video is present
+                Full_Screen.IsEnabled = true;
             }
         }
 
@@ -363,11 +378,17 @@ namespace MediaPlayerApp
 
             if (hasVideo)
             {
+                // Enable fullscreen if playlist isn’t empty
+                Full_Screen.IsEnabled = PlaylistListView.Items.Count > 0;
+
                 SongInfoPanel.Visibility = Visibility.Collapsed;
                 AlbumThumbnail.Visibility = Visibility.Collapsed;
             }
             else
             {
+                // Disable fullscreen for audio
+                Full_Screen.IsEnabled = false;
+
                 SongInfoPanel.Visibility = Visibility.Visible;
                 AlbumThumbnail.Visibility = Visibility.Visible;
 
@@ -435,7 +456,7 @@ namespace MediaPlayerApp
             }
 
             // Update FullScreen button
-            UpdateFullScreenButton();
+            //UpdateFullScreenButton();
         }
 
 
@@ -771,7 +792,7 @@ namespace MediaPlayerApp
                 PlayTrackByIndex(0);
             }
             // Update FullScreen button
-            UpdateFullScreenButton();
+            //UpdateFullScreenButton();
         }
 
 
@@ -805,7 +826,7 @@ namespace MediaPlayerApp
             }
 
             // Update status bar
-            UpdateNowPlayingStatus($"{trackToPlay.Title} — {trackToPlay.Artist}");
+            UpdateNowPlayingStatus($"{trackToPlay.Title}");
 
             PlayMedia();
 
@@ -835,9 +856,9 @@ namespace MediaPlayerApp
             timer?.Start(); // <- start updating the slider/time
 
             var track = _playlist[currentTrackIndex];
-            UpdateNowPlayingStatus($"{track.Title} — {track.Artist}");
+            UpdateNowPlayingStatus($"{track.Title}");
 
-            // optionally: VisualizerPanel.Visibility = Visibility.Visible;
+             VisualizerPanel.Visibility = Visibility.Visible;
 
         }
 
@@ -856,12 +877,14 @@ namespace MediaPlayerApp
         {
             if (PlaylistListView.SelectedItem is PlaylistModel track)
             {
+                Stop_Click(null!, null!);
                 _playlist.Remove(track);
-                if (_playlist.Count == 0)
-                {
-                    Stop_Click(null!, null!);
-                }
+                //if (_playlist.Count == 0)
+                //{
+                //    Stop_Click(null!, null!);
+                //}
             }
+            //UpdateFullScreenButton();
         }
 
         private void Playlist_OpenLocation_Click(object sender, RoutedEventArgs e)
@@ -872,6 +895,7 @@ namespace MediaPlayerApp
                 if (dir != null)
                     System.Diagnostics.Process.Start("explorer.exe", dir);
             }
+            //UpdateFullScreenButton();
         }
 
 
