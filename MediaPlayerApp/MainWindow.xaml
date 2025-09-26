@@ -176,14 +176,14 @@
                 <!-- ================= Overlay Controls ============================ -->
                 <Grid VerticalAlignment="Bottom" HorizontalAlignment="Center" 
                       x:Name="PlayerControlsGrid" Background="{DynamicResource OverlayBackground}" 
-                      Visibility="Collapsed" Height="80">
+                      Visibility="Collapsed" Height="Auto" Width="550" Margin="5">
                     <Grid.RowDefinitions>
                         <RowDefinition />
                         <RowDefinition />
                     </Grid.RowDefinitions>
 
                     <!-- ⏳ Progress Bar -->
-                    <Grid VerticalAlignment="Center" HorizontalAlignment="Stretch" >
+                    <Grid VerticalAlignment="Center" HorizontalAlignment="Stretch" Margin="5">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="Auto"/>
                             <!-- Current time -->

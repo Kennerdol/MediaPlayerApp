@@ -8,7 +8,6 @@ using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Media.Animation;
 using System.Windows.Media.Imaging;
 using System.Windows.Threading;
 
@@ -138,8 +137,8 @@ namespace MediaPlayerApp
             {
                 PlaylistGrid.Visibility = Visibility.Visible;
                 GridPlit.Visibility = Visibility.Visible;
-                SplitterColumn.Width = new GridLength(5);         // restore splitter
-                PlaylistColumn.Width = _lastPlaylistWidth;        // restore playlist
+                SplitterColumn.Width = new GridLength(5);  
+                PlaylistColumn.Width = _lastPlaylistWidth;
                 MediaColumn.Width = new GridLength(3, GridUnitType.Star); // restore ratio
             }
         }
@@ -263,6 +262,8 @@ namespace MediaPlayerApp
                 this.ResizeMode = ResizeMode.NoResize;
                 this.WindowState = WindowState.Maximized;
 
+                media_Element.MouseMove -= media_Element_MouseMove;
+
                 // Optionally update the button icon
                 FullScreenImage.Source = new BitmapImage(new Uri("/Icons/exit-fullscreen.png", UriKind.Relative));
 
@@ -293,6 +294,11 @@ namespace MediaPlayerApp
                 ShowUIs();
                 ShowControls(); 
                 ControlsGrid.Visibility = Visibility.Visible;
+
+
+                media_Element.MouseMove += media_Element_MouseMove;
+
+
 
                 // Always visible in windowed mode
                 PlayerControlsGrid.Opacity = 0;
@@ -478,6 +484,7 @@ namespace MediaPlayerApp
             VisualizerPanel.Visibility = Visibility.Hidden;
             CurrentTime.Text = "00:00:00";
             TotalTime.Text = "00:00:00";
+            TotalDuration.Text = "00:00:00";
             time.Text = "00:00:00";
             TimeSlider.Value = 0;
             slider.Value = 0; //Overlay
@@ -555,6 +562,9 @@ namespace MediaPlayerApp
             if (_isFullScreen)
                 PlayerControlsGrid.Visibility = Visibility.Visible;
         }
+
+
+
 
         private void HideUIs()
         {

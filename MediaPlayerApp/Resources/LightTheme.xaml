@@ -29,10 +29,8 @@
     <SolidColorBrush x:Key="ButtonBackground" Color="Transparent" />
 
     <!-- Overlay -->
-    <SolidColorBrush x:Key="OverlayBackground" Color="#80000000" />
-    <SolidColorBrush x:Key="Overlaybg" Color="#AA000000" />
-    <SolidColorBrush x:Key="OverlayBG" Color="#FFF" />
-    <SolidColorBrush x:Key="AccentColor" Color="DodgerBlue"/>
+    <SolidColorBrush x:Key="OverlayBackground" Color="#FFF" />
+    <SolidColorBrush x:Key="OverlayBG" Color="#80000000" />
 
 
 </ResourceDictionary>
