@@ -142,7 +142,7 @@ namespace MediaPlayerApp
 
                 PlaylistColumn.Width = new GridLength(0);
                 SplitterColumn.Width = new GridLength(0);
-                MediaColumn.Width = new GridLength(1, GridUnitType.Star);
+                //MediaColumn.Width = new GridLength(1, GridUnitType.Star);
             }
             else
             {
@@ -152,7 +152,7 @@ namespace MediaPlayerApp
                 // Restore previous widths
                 SplitterColumn.Width = _lastSplitterWidth;
                 PlaylistColumn.Width = _lastPlaylistWidth;
-                MediaColumn.Width = new GridLength(3, GridUnitType.Star);
+                //MediaColumn.Width = new GridLength(3, GridUnitType.Star);
             }
         }
 
@@ -310,7 +310,6 @@ namespace MediaPlayerApp
 
 
                 media_Element.MouseMove += media_Element_MouseMove;
-
 
 
                 // Always visible in windowed mode
@@ -503,8 +502,8 @@ namespace MediaPlayerApp
                 return; // nothing to stop
 
             media_Element.Stop();
-            //media_Element.Position = TimeSpan.Zero;
-            media_Element.Source = null;
+            media_Element.Position = TimeSpan.Zero;
+            //media_Element.Source = null;
 
             // Reset UI
             PlayPauseImage.Source = new BitmapImage(new Uri("/Icons/play.png", UriKind.Relative));
@@ -776,31 +775,116 @@ namespace MediaPlayerApp
         // ───────────────────────────────
         // Playlist Loaders
         // ───────────────────────────────
+        //private void OpenFile_Click(object sender, RoutedEventArgs e)
+        //{
+        //    OpenFileDialog openFileDialog = new()
+        //    {
+        //        Filter = "Media Files|*.mp4;*.mov;*.wmv;*.mp3;*.wav;*.wma|All Files|*.*",
+        //        Multiselect = false
+        //    };
+
+        //    if (openFileDialog.ShowDialog() == true)
+        //    {
+        //        //_playlist.Clear();
+        //        _playlist.Add(new PlaylistModel
+        //        {
+        //            FilePath = openFileDialog.FileName,
+        //            Title = Path.GetFileNameWithoutExtension(openFileDialog.FileName),
+        //            Artist = "Unknown Artist",
+        //            Duration = "--:--",
+        //            Thumbnail = "Images/default_thumbnail.png"
+        //        });
+
+        //        PlayTrackByIndex(0);
+        //    }
+        //    // Update FullScreen button
+        //    //UpdateFullScreenButton();
+        //}
+
+
+
+        //private void OpenFile_Click(object sender, RoutedEventArgs e)
+        //{
+        //    OpenFileDialog openFileDialog = new()
+        //    {
+        //        Filter = "Media Files|*.mp4;*.mov;*.wmv;*.mp3;*.wav;*.wma|All Files|*.*",
+        //        Multiselect = false
+        //    };
+
+        //    if (openFileDialog.ShowDialog() == true)
+        //    {
+        //        string filePath = openFileDialog.FileName;
+
+        //        // Optional: prevent duplicates
+        //        if (_playlist.Any(p => p.FilePath == filePath))
+        //        {
+        //            MessageBox.Show("This file is already in the playlist.", "Duplicate", MessageBoxButton.OK, MessageBoxImage.Information);
+        //            return;
+        //        }
+
+        //        var newTrack = new PlaylistModel
+        //        {
+        //            FilePath = filePath,
+        //            Title = Path.GetFileNameWithoutExtension(filePath),
+        //            Artist = "Unknown Artist",
+        //            Duration = "--:--",
+        //            Thumbnail = "Images/default_thumbnail.png"
+        //        };
+
+        //        _playlist.Add(newTrack);
+
+        //        // 👉 Only start playing if nothing is playing yet
+        //        if (!isPlaying && _playlist.Count == 1)
+        //        {
+        //            PlayTrackByIndex(0); // first file starts automatically
+        //        }
+        //    }
+        //}
+
+
+
         private void OpenFile_Click(object sender, RoutedEventArgs e)
         {
             OpenFileDialog openFileDialog = new()
             {
                 Filter = "Media Files|*.mp4;*.mov;*.wmv;*.mp3;*.wav;*.wma|All Files|*.*",
-                Multiselect = false
+                Multiselect = true // allow selecting multiple files
             };
 
             if (openFileDialog.ShowDialog() == true)
             {
-                //_playlist.Clear();
-                _playlist.Add(new PlaylistModel
-                {
-                    FilePath = openFileDialog.FileName,
-                    Title = Path.GetFileNameWithoutExtension(openFileDialog.FileName),
-                    Artist = "Unknown Artist",
-                    Duration = "--:--",
-                    Thumbnail = "Images/default_thumbnail.png"
-                });
+                bool playlistWasEmpty = _playlist.Count == 0;
 
-                PlayTrackByIndex(0);
+                foreach (var filePath in openFileDialog.FileNames)
+                {
+                    // Optional: prevent duplicates
+                    if (_playlist.Any(p => p.FilePath == filePath))
+                    {
+                        MessageBox.Show("This file is already in the playlist.", "Duplicate", MessageBoxButton.OK, MessageBoxImage.Information);
+                        return;
+                    }
+
+                    var newTrack = new PlaylistModel
+                    {
+                        FilePath = filePath,
+                        Title = Path.GetFileNameWithoutExtension(filePath),
+                        Artist = "Unknown Artist",
+                        Duration = "--:--",
+                        Thumbnail = "Images/default_thumbnail.png"
+                    };
+
+                    _playlist.Add(newTrack);
+                }
+
+                // 🎵 If nothing was playing before and playlist was empty, play the first track
+                if (!isPlaying && playlistWasEmpty && _playlist.Count > 0)
+                {
+                    PlayTrackByIndex(0);
+                }
             }
-            // Update FullScreen button
-            //UpdateFullScreenButton();
         }
+
+
 
 
         private void UpdateNowPlayingStatus(string status)
@@ -1340,22 +1424,17 @@ namespace MediaPlayerApp
         private async void CheckForUpdates_Click(object sender, RoutedEventArgs e)
         {
             string currentVersion = Assembly.GetExecutingAssembly().GetName().Version?.ToString() ?? "0.0.0";
-            string latestVersion = "1.0.0";
-            string releaseUrl = "https://github.com/Kennerdol/MediaPlayerApp/releases/tag/v1.0.0"; // change this
+            string releaseUrl = "https://github.com/Kennerdol/MediaPlayerApp/releases/latest";
 
             try
             {
-                using (HttpClient client = new HttpClient())
-                {
-                    client.DefaultRequestHeaders.UserAgent.ParseAdd("MediaPlayerApp"); // GitHub requires UA
+                using HttpClient client = new HttpClient();
+                client.DefaultRequestHeaders.UserAgent.ParseAdd("MediaPlayerApp");
 
-                    string response = await client.GetStringAsync("https://github.com/Kennerdol/MediaPlayerApp/releases/tag/v1.0.0");
+                string response = await client.GetStringAsync("https://api.github.com/repos/Kennerdol/MediaPlayerApp/releases/latest");
 
-                    using (JsonDocument doc = JsonDocument.Parse(response))
-                    {
-                        latestVersion = doc.RootElement.GetProperty("tag_name").GetString();
-                    }
-                }
+                using JsonDocument doc = JsonDocument.Parse(response);
+                string latestVersion = doc.RootElement.GetProperty("tag_name").GetString() ?? "0.0.0";
 
                 if (currentVersion == latestVersion)
                 {
@@ -1386,5 +1465,6 @@ namespace MediaPlayerApp
                                 "Error", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
+
     }
 }
