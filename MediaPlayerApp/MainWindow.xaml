@@ -141,7 +141,7 @@
                     </MenuItem.Icon>
                 </MenuItem>
 
-                <MenuItem Header="Check for Updates" Foreground="{DynamicResource WindowForeground}">
+                <MenuItem Header="Check for Updates" Foreground="{DynamicResource WindowForeground}" Click="CheckForUpdates_Click">
                     <MenuItem.Icon>
                         <Image Source="/Icons/updates.png"  Style="{Binding icon}"/>
                     </MenuItem.Icon>

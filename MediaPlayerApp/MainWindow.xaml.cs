@@ -5,6 +5,9 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
+using System.Net.Http;
+using System.Reflection;
+using System.Text.Json;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
@@ -1331,6 +1334,56 @@ namespace MediaPlayerApp
             catch (Exception ex)
             {
                 MessageBox.Show($"Unable to open the URL: {ex.Message}");
+            }
+        }
+
+        private async void CheckForUpdates_Click(object sender, RoutedEventArgs e)
+        {
+            string currentVersion = Assembly.GetExecutingAssembly().GetName().Version?.ToString() ?? "0.0.0";
+            string latestVersion = "0.0.0";
+            string releaseUrl = "https://github.com/YourUser/YourRepo/releases/latest"; // change this
+
+            try
+            {
+                using (HttpClient client = new HttpClient())
+                {
+                    client.DefaultRequestHeaders.UserAgent.ParseAdd("MediaPlayerApp"); // GitHub requires UA
+
+                    string response = await client.GetStringAsync("https://api.github.com/repos/YourUser/YourRepo/releases/latest");
+
+                    using (JsonDocument doc = JsonDocument.Parse(response))
+                    {
+                        latestVersion = doc.RootElement.GetProperty("tag_name").GetString();
+                    }
+                }
+
+                if (currentVersion == latestVersion)
+                {
+                    MessageBox.Show($"✅ You are up to date!\nCurrent version: v{currentVersion}",
+                                    "Check for Updates", MessageBoxButton.OK, MessageBoxImage.Information);
+                }
+                else
+                {
+                    var result = MessageBox.Show(
+                        $"⚡ New version available: v{latestVersion}\n(Current: v{currentVersion})\n\nDo you want to open the download page?",
+                        "Update Available",
+                        MessageBoxButton.YesNo,
+                        MessageBoxImage.Question);
+
+                    if (result == MessageBoxResult.Yes)
+                    {
+                        Process.Start(new ProcessStartInfo
+                        {
+                            FileName = releaseUrl,
+                            UseShellExecute = true
+                        });
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"❌ Unable to check for updates:\n{ex.Message}",
+                                "Error", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
     }
