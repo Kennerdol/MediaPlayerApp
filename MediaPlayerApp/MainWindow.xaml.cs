@@ -1340,8 +1340,8 @@ namespace MediaPlayerApp
         private async void CheckForUpdates_Click(object sender, RoutedEventArgs e)
         {
             string currentVersion = Assembly.GetExecutingAssembly().GetName().Version?.ToString() ?? "0.0.0";
-            string latestVersion = "0.0.0";
-            string releaseUrl = "https://github.com/YourUser/YourRepo/releases/latest"; // change this
+            string latestVersion = "1.0.0";
+            string releaseUrl = "https://github.com/Kennerdol/MediaPlayerApp/releases/tag/v1.0.0"; // change this
 
             try
             {
@@ -1349,7 +1349,7 @@ namespace MediaPlayerApp
                 {
                     client.DefaultRequestHeaders.UserAgent.ParseAdd("MediaPlayerApp"); // GitHub requires UA
 
-                    string response = await client.GetStringAsync("https://api.github.com/repos/YourUser/YourRepo/releases/latest");
+                    string response = await client.GetStringAsync("https://github.com/Kennerdol/MediaPlayerApp/releases/tag/v1.0.0");
 
                     using (JsonDocument doc = JsonDocument.Parse(response))
                     {
