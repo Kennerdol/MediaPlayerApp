@@ -1311,50 +1311,140 @@ namespace MediaPlayerApp
             }
         }
 
+        //private async void CheckForUpdates_Click(object sender, RoutedEventArgs e)
+        //{
+        //    string currentVersion = Assembly.GetExecutingAssembly().GetName().Version?.ToString() ?? "0.0.0";
+        //    string releaseUrl = "https://github.com/Kennerdol/MediaPlayerApp/releases/latest";
+
+        //    try
+        //    {
+        //        using HttpClient client = new HttpClient();
+        //        client.DefaultRequestHeaders.UserAgent.ParseAdd("MediaPlayerApp");
+
+        //        string response = await client.GetStringAsync("https://api.github.com/repos/Kennerdol/MediaPlayerApp/releases/latest");
+
+        //        using JsonDocument doc = JsonDocument.Parse(response);
+        //        string latestVersion = doc.RootElement.GetProperty("tag_name").GetString() ?? "0.0.0";
+
+        //        if (currentVersion == latestVersion)
+        //        {
+        //            MessageBox.Show($"✅ You are up to date!\nCurrent version: v{currentVersion}",
+        //                            "Check for Updates", MessageBoxButton.OK, MessageBoxImage.Information);
+        //        }
+        //        else
+        //        {
+        //            var result = MessageBox.Show(
+        //                $"⚡ New version available: v{latestVersion}\n(Current: v{currentVersion})\n\nDo you want to open the download page?",
+        //                "Update Available",
+        //                MessageBoxButton.YesNo,
+        //                MessageBoxImage.Question);
+
+        //            if (result == MessageBoxResult.Yes)
+        //            {
+        //                Process.Start(new ProcessStartInfo
+        //                {
+        //                    FileName = releaseUrl,
+        //                    UseShellExecute = true
+        //                });
+        //            }
+        //        }
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        MessageBox.Show($"❌ Unable to check for updates:\n{ex.Message}",
+        //                        "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+        //    }
+        //}
+
+
+        private static readonly HttpClient httpClient = new()
+        {
+            Timeout = TimeSpan.FromSeconds(15)
+        };
+
         private async void CheckForUpdates_Click(object sender, RoutedEventArgs e)
         {
-            string currentVersion = Assembly.GetExecutingAssembly().GetName().Version?.ToString() ?? "0.0.0";
-            string releaseUrl = "https://github.com/Kennerdol/MediaPlayerApp/releases/latest";
+            const string repoOwner = "Kennerdol";
+            const string repoName = "MediaPlayerApp";
+            string releaseUrl = $"https://github.com/{repoOwner}/{repoName}/releases/latest";
+            string apiUrl = $"https://api.github.com/repos/{repoOwner}/{repoName}/releases/latest";
+
+            if (sender is not System.Windows.Controls.Button updateButton) return;
+            updateButton.IsEnabled = false;
+            Mouse.OverrideCursor = Cursors.Wait;
 
             try
             {
-                using HttpClient client = new HttpClient();
-                client.DefaultRequestHeaders.UserAgent.ParseAdd("MediaPlayerApp");
+                Version? currentVersion = Assembly.GetExecutingAssembly().GetName().Version;
+                if (currentVersion == null)
+                {
+                    MessageBox.Show("Could not determine the current application version.",
+                                    "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                    return;
+                }
 
-                string response = await client.GetStringAsync("https://api.github.com/repos/Kennerdol/MediaPlayerApp/releases/latest");
+                httpClient.DefaultRequestHeaders.UserAgent.ParseAdd("MediaPlayerApp");
 
+                string response = await httpClient.GetStringAsync(apiUrl);
                 using JsonDocument doc = JsonDocument.Parse(response);
-                string latestVersion = doc.RootElement.GetProperty("tag_name").GetString() ?? "0.0.0";
+                string latestVersionStr = doc.RootElement.GetProperty("tag_name")
+                                                      .GetString()?
+                                                      .TrimStart('v') ?? "0.0.0";
 
-                if (currentVersion == latestVersion)
+                // Strip prerelease metadata (optional)
+                latestVersionStr = latestVersionStr.Split('-', '+')[0];
+
+                if (!Version.TryParse(latestVersionStr, out Version? latestVersion))
+                {
+                    MessageBox.Show($"Invalid version format from GitHub: {latestVersionStr}",
+                                    "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                    return;
+                }
+
+                if (latestVersion > currentVersion)
+                {
+                    if (MessageBox.Show(
+                        $"⚡ A new version is available: v{latestVersion}\n(You have v{currentVersion})\n\nOpen download page?",
+                        "Update Available",
+                        MessageBoxButton.YesNo,
+                        MessageBoxImage.Question) == MessageBoxResult.Yes)
+                    {
+                        Process.Start(new ProcessStartInfo(releaseUrl) { UseShellExecute = true });
+                    }
+                }
+                else
                 {
                     MessageBox.Show($"✅ You are up to date!\nCurrent version: v{currentVersion}",
                                     "Check for Updates", MessageBoxButton.OK, MessageBoxImage.Information);
                 }
-                else
-                {
-                    var result = MessageBox.Show(
-                        $"⚡ New version available: v{latestVersion}\n(Current: v{currentVersion})\n\nDo you want to open the download page?",
-                        "Update Available",
-                        MessageBoxButton.YesNo,
-                        MessageBoxImage.Question);
-
-                    if (result == MessageBoxResult.Yes)
-                    {
-                        Process.Start(new ProcessStartInfo
-                        {
-                            FileName = releaseUrl,
-                            UseShellExecute = true
-                        });
-                    }
-                }
+            }
+            catch (HttpRequestException ex)
+            {
+                MessageBox.Show($"❌ Network error: Unable to connect to GitHub.\n\nDetails: {ex.Message}",
+                                "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+            catch (TaskCanceledException)
+            {
+                MessageBox.Show("❌ The request to check for updates timed out.",
+                                "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+            catch (JsonException)
+            {
+                MessageBox.Show("❌ Failed to read update info from GitHub.",
+                                "Error", MessageBoxButton.OK, MessageBoxImage.Error);
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"❌ Unable to check for updates:\n{ex.Message}",
+                MessageBox.Show($"❌ Unexpected error:\n{ex.Message}",
                                 "Error", MessageBoxButton.OK, MessageBoxImage.Error);
             }
+            finally
+            {
+                updateButton.IsEnabled = true;
+                Mouse.OverrideCursor = null;
+            }
         }
+
 
     }
 }

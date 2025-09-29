@@ -344,23 +344,23 @@
                     </Button>
 
                     <TextBox x:Name="SearchTextBox"
-                             Width="250" Height="30"
-                             FontSize="15"
-                             Margin="5,0,5,0"
-                             Padding="5"
-                             TextChanged="SearchTextBox_TextChanged"
-                             BorderThickness="1"
-                             BorderBrush="{DynamicResource BorderBrush}"
-                             Background="{DynamicResource TextBoxBackground}"
-                             Foreground="{DynamicResource TextBoxForeground}"
-                             VerticalContentAlignment="Center">
-                                            <TextBox.Style>
+         Width="250" Height="30"
+         FontSize="15"
+         Margin="5,0,5,0"
+         Padding="5"
+         TextChanged="SearchTextBox_TextChanged"
+         BorderThickness="1"
+         BorderBrush="{DynamicResource BorderBrush}"
+         Background="{DynamicResource TextBoxBackground}"
+         Foreground="{DynamicResource TextBoxForeground}"
+         VerticalContentAlignment="Center">
+                        <TextBox.Style>
                             <Style TargetType="TextBox">
                                 <Setter Property="Template">
                                     <Setter.Value>
                                         <ControlTemplate TargetType="TextBox">
                                             <Grid>
-                                                <!-- The actual text area -->
+                                                <!-- The text input area -->
                                                 <ScrollViewer x:Name="PART_ContentHost"/>
 
                                                 <!-- Watermark text -->
@@ -387,7 +387,6 @@
                             </Style>
                         </TextBox.Style>
                     </TextBox>
-
 
                     <Button x:Name="ClearSearch" Grid.Column="1" Background="{DynamicResource NoBackground}" ToolTip="Clear Search"
                             BorderBrush="{DynamicResource BorderLess}" Margin="0,0,5,0" Width="50" Click="ClearSearch_Click">
