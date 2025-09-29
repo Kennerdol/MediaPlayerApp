@@ -9,8 +9,8 @@
     <ApplicationIcon>logo.ico</ApplicationIcon>
     <Title>Duducha</Title>
     <AssemblyName>MediaPlayerApp</AssemblyName>
-    <AssemblyVersion>1.0.0.0</AssemblyVersion>    <!-- Major.Minor.Build.Revision -->
-  <FileVersion>1.0.0.0</FileVersion>
+    <AssemblyVersion>1.0.0</AssemblyVersion>    <!-- Major.Minor.Build.Revision -->
+  <FileVersion>1.0.0</FileVersion>
     <Version>1.0.0</Version>
   </PropertyGroup>
 
