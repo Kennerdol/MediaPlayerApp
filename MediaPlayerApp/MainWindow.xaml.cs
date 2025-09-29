@@ -1362,88 +1362,70 @@ namespace MediaPlayerApp
             Timeout = TimeSpan.FromSeconds(15)
         };
 
+
         private async void CheckForUpdates_Click(object sender, RoutedEventArgs e)
         {
-            const string repoOwner = "Kennerdol";
-            const string repoName = "MediaPlayerApp";
-            string releaseUrl = $"https://github.com/{repoOwner}/{repoName}/releases/latest";
-            string apiUrl = $"https://api.github.com/repos/{repoOwner}/{repoName}/releases/latest";
-
-            if (sender is not System.Windows.Controls.Button updateButton) return;
-            updateButton.IsEnabled = false;
-            Mouse.OverrideCursor = Cursors.Wait;
+            string currentVersion = Assembly.GetExecutingAssembly().GetName().Version?.ToString() ?? "0.0.0";
+            string apiUrl = "https://api.github.com/repos/Kennerdol/MediaPlayerApp/releases/latest";
 
             try
             {
-                Version? currentVersion = Assembly.GetExecutingAssembly().GetName().Version;
-                if (currentVersion == null)
+                using (HttpClient client = new HttpClient())
                 {
-                    MessageBox.Show("Could not determine the current application version.",
-                                    "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-                    return;
-                }
+                    // GitHub requires a User-Agent header
+                    client.DefaultRequestHeaders.UserAgent.ParseAdd("request");
 
-                httpClient.DefaultRequestHeaders.UserAgent.ParseAdd("MediaPlayerApp");
+                    string json = await client.GetStringAsync(apiUrl);
 
-                string response = await httpClient.GetStringAsync(apiUrl);
-                using JsonDocument doc = JsonDocument.Parse(response);
-                string latestVersionStr = doc.RootElement.GetProperty("tag_name")
-                                                      .GetString()?
-                                                      .TrimStart('v') ?? "0.0.0";
-
-                // Strip prerelease metadata (optional)
-                latestVersionStr = latestVersionStr.Split('-', '+')[0];
-
-                if (!Version.TryParse(latestVersionStr, out Version? latestVersion))
-                {
-                    MessageBox.Show($"Invalid version format from GitHub: {latestVersionStr}",
-                                    "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-                    return;
-                }
-
-                if (latestVersion > currentVersion)
-                {
-                    if (MessageBox.Show(
-                        $"⚡ A new version is available: v{latestVersion}\n(You have v{currentVersion})\n\nOpen download page?",
-                        "Update Available",
-                        MessageBoxButton.YesNo,
-                        MessageBoxImage.Question) == MessageBoxResult.Yes)
+                    using (JsonDocument doc = JsonDocument.Parse(json))
                     {
-                        Process.Start(new ProcessStartInfo(releaseUrl) { UseShellExecute = true });
+                        string latestTag = doc.RootElement.GetProperty("tag_name").GetString() ?? "v0.0.0";
+
+                        // Strip "v" prefix if present
+                        string latestVersion = latestTag.StartsWith("v") ? latestTag.Substring(1) : latestTag;
+
+                        //Version current = new Version(currentVersion);
+                        //Version latest = new Version(latestVersion);
+
+                        // Normalize version strings to 3 parts (Major.Minor.Build)
+                        Version current = new Version(currentVersion.Split('.')[0] + "." +
+                                                      currentVersion.Split('.')[1] + "." +
+                                                      currentVersion.Split('.')[2]);
+
+                        Version latest = new Version(latestVersion.Split('.')[0] + "." +
+                                                     latestVersion.Split('.')[1] + "." +
+                                                     (latestVersion.Split('.').Length > 2 ? latestVersion.Split('.')[2] : "0"));
+
+
+                        if (latest > current)
+                        {
+                            string releaseUrl = doc.RootElement.GetProperty("html_url").GetString() ??
+                                                "https://github.com/Kennerdol/MediaPlayerApp/releases";
+
+                            MessageBox.Show(
+                                $"A new version is available!\n\nCurrent: {current}\nLatest: {latest}\n\nVisit:\n{releaseUrl}",
+                                "Update Available",
+                                MessageBoxButton.OK,
+                                MessageBoxImage.Information);
+                        }
+                        else
+                        {
+                            MessageBox.Show(
+                                $"You are already on the latest version.\n\nCurrent: v{current}",
+                                "No Updates",
+                                MessageBoxButton.OK,
+                                MessageBoxImage.Information);
+                        }
                     }
                 }
-                else
-                {
-                    MessageBox.Show($"✅ You are up to date!\nCurrent version: v{currentVersion}",
-                                    "Check for Updates", MessageBoxButton.OK, MessageBoxImage.Information);
-                }
-            }
-            catch (HttpRequestException ex)
-            {
-                MessageBox.Show($"❌ Network error: Unable to connect to GitHub.\n\nDetails: {ex.Message}",
-                                "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-            }
-            catch (TaskCanceledException)
-            {
-                MessageBox.Show("❌ The request to check for updates timed out.",
-                                "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-            }
-            catch (JsonException)
-            {
-                MessageBox.Show("❌ Failed to read update info from GitHub.",
-                                "Error", MessageBoxButton.OK, MessageBoxImage.Error);
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"❌ Unexpected error:\n{ex.Message}",
-                                "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-            }
-            finally
-            {
-                updateButton.IsEnabled = true;
-                Mouse.OverrideCursor = null;
+                MessageBox.Show($"Failed to check for updates:\n{ex.Message}", "Error",
+                    MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
+
 
 
     }
