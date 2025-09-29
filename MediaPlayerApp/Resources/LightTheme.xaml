@@ -7,10 +7,12 @@
     <SolidColorBrush x:Key="WindowForeground" Color="#FF040404" />
 
     <SolidColorBrush x:Key="NoBackground" Color="Transparent" />
-    <SolidColorBrush x:Key="BorderBrush" Color="LightBlue" />
+    <SolidColorBrush x:Key="BorderBrush" Color="#9ba3a3" />
 
     <!-- Splitter -->
-    <SolidColorBrush x:Key="Splittercolor" Color="#98A5B0" Opacity="0.4"/>
+    <!--<SolidColorBrush x:Key="Splittercolor" Color="#98A5B0" Opacity="0.4"/>-->
+    <SolidColorBrush x:Key="SplitterBackgroundcolor" Color="#9ba3a3" Opacity="0.4"/>
+    <SolidColorBrush x:Key="SplitterBordercolor" Color="#98A5B0"/>
 
     <!-- Playlist -->
     <SolidColorBrush x:Key="PlaylistBorder" Color="#86A0AC"/>

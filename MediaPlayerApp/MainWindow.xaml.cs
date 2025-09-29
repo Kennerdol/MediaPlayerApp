@@ -29,7 +29,6 @@ namespace MediaPlayerApp
         private int currentTrackIndex = -1;
         private Point _lastMousePosition;
 
-
         // Controls timer
         private readonly DispatcherTimer controlsHideTimer = new DispatcherTimer();
 
@@ -43,8 +42,6 @@ namespace MediaPlayerApp
         private WindowStyle _previousWindowStyle;
         private ResizeMode _previousResizeMode;
 
-
-
         public MainWindow()
         {
             InitializeComponent();
@@ -52,7 +49,6 @@ namespace MediaPlayerApp
             InitializePlaylist();
             UpdateFullScreenButton();
             SetupTimer();
-
 
             // Auto-hide controls after 3s
             controlsHideTimer.Interval = TimeSpan.FromSeconds(3);
@@ -120,7 +116,6 @@ namespace MediaPlayerApp
             }
             return false;
         }
-
 
 
         // ======================== TOGGLE PLAYLIST ============================
@@ -210,9 +205,7 @@ namespace MediaPlayerApp
             SongArtist.Text = "";
             totalTime.Text = "";
             TotalTime.Text = "00:00:00";
-            //UpdateFullScreenButton();
         }
-
 
 
         // ==================== Playlist Playback ==========================
@@ -354,7 +347,6 @@ namespace MediaPlayerApp
 
         // ================================================================================
 
-
         private void media_Element_MediaOpened(object sender, RoutedEventArgs e)
         {
             if (media_Element.NaturalDuration.HasTimeSpan)
@@ -460,8 +452,6 @@ namespace MediaPlayerApp
                 }
             }
 
-            // Update FullScreen button
-            //UpdateFullScreenButton();
         }
 
 
@@ -496,32 +486,66 @@ namespace MediaPlayerApp
         }
 
 
+        //private void Stop_Click(object sender, RoutedEventArgs e)
+        //{
+        //    if (_playlist.Count == 0 || currentTrackIndex < 0)
+        //        return; // nothing to stop
+
+        //    media_Element.Stop();
+        //    media_Element.Position = TimeSpan.Zero;
+        //    //media_Element.Source = null;
+
+        //    // Reset UI
+        //    PlayPauseImage.Source = new BitmapImage(new Uri("/Icons/play.png", UriKind.Relative));
+        //    Play_PauseImage.Source = new BitmapImage(new Uri("/Icons/play.png", UriKind.Relative));
+        //    VisualizerPanel.Visibility = Visibility.Hidden;
+        //    CurrentTime.Text = "00:00:00";
+        //    TotalTime.Text = "00:00:00";
+        //    TotalDuration.Text = "00:00:00";
+        //    time.Text = "00:00:00";
+        //    TimeSlider.Value = 0;
+        //    slider.Value = 0; //Overlay
+        //    isPlaying = false;
+        //    timer?.Stop();
+
+        //    // Update status bar only if a track was playing
+        //    var track = _playlist[currentTrackIndex];
+        //    UpdateNowPlayingStatus($"Stopped");
+        //}
+
         private void Stop_Click(object sender, RoutedEventArgs e)
-        {
-            if (_playlist.Count == 0 || currentTrackIndex < 0)
-                return; // nothing to stop
+{
+    media_Element.Stop();
+    media_Element.Position = TimeSpan.Zero;
+    //media_Element.Source = null; // clear last file
 
-            media_Element.Stop();
-            media_Element.Position = TimeSpan.Zero;
-            //media_Element.Source = null;
+    // Reset UI
+    PlayPauseImage.Source = new BitmapImage(new Uri("/Icons/play.png", UriKind.Relative));
+    Play_PauseImage.Source = new BitmapImage(new Uri("/Icons/play.png", UriKind.Relative));
+    VisualizerPanel.Visibility = Visibility.Hidden;
+    CurrentTime.Text = "00:00:00";
+    TotalTime.Text = "00:00:00";
+    TotalDuration.Text = "00:00:00";
+    time.Text = "00:00:00";
+    TimeSlider.Value = 0;
+    TimeSlider.Maximum = 1; // keep slider valid
+    slider.Value = 0; //Overlay
+    isPlaying = false;
+    timer?.Stop();
 
-            // Reset UI
-            PlayPauseImage.Source = new BitmapImage(new Uri("/Icons/play.png", UriKind.Relative));
-            Play_PauseImage.Source = new BitmapImage(new Uri("/Icons/play.png", UriKind.Relative));
-            VisualizerPanel.Visibility = Visibility.Hidden;
-            CurrentTime.Text = "00:00:00";
-            TotalTime.Text = "00:00:00";
-            TotalDuration.Text = "00:00:00";
-            time.Text = "00:00:00";
-            TimeSlider.Value = 0;
-            slider.Value = 0; //Overlay
-            isPlaying = false;
-            timer?.Stop();
+    // Only update status if a track exists
+    if (_playlist.Count > 0 && currentTrackIndex >= 0 && currentTrackIndex < _playlist.Count)
+    {
+        var track = _playlist[currentTrackIndex];
+        UpdateNowPlayingStatus($"Stopped");
+    }
+    else
+    {
+        UpdateNowPlayingStatus($"No track");
+        currentTrackIndex = -1;
+    }
+}
 
-            // Update status bar only if a track was playing
-            var track = _playlist[currentTrackIndex];
-            UpdateNowPlayingStatus($"Stopped");
-        }
 
 
         // On application start
@@ -551,33 +575,6 @@ namespace MediaPlayerApp
             }
         }
 
-
-        //private void VolumeSlider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
-        //{
-        //    //media_Element.Volume = VolumeSlider.Value;
-        //    if (media_Element != null)
-        //    {
-        //        media_Element.Volume = VolumeSlider.Value;
-        //    }
-
-        //    // Optional: update icon
-        //    VolumeSpeaker.Source = VolumeSlider.Value == 0
-        //        ? new BitmapImage(new Uri("/Icons/mute.png", UriKind.Relative))
-        //        : new BitmapImage(new Uri("/Icons/speaker.png", UriKind.Relative));
-        //}
-
-        //private void VolumeSlider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
-        //{
-        //    media_Element.Volume = VolumeSlider.Value;
-
-        //    // Optional: Change speaker icon based on volume
-        //    if (VolumeSlider.Value == 0)
-        //        VolumeSpeaker.Source = new BitmapImage(new Uri("/Icons/mute.png", UriKind.Relative));
-        //    else if (VolumeSlider.Value <= 0.5)
-        //        VolumeSpeaker.Source = new BitmapImage(new Uri("/Icons/volume-low.png", UriKind.Relative));
-        //    else
-        //        VolumeSpeaker.Source = new BitmapImage(new Uri("/Icons/volume-high.png", UriKind.Relative));
-        //}
 
 
         private void ChangeSpeed_Click(object sender, RoutedEventArgs e)
@@ -613,31 +610,6 @@ namespace MediaPlayerApp
             if (_isFullScreen)
                 PlayerControlsGrid.Visibility = Visibility.Collapsed;
         }
-
-        //private void VolumeSlider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
-        //{
-        //    media_Element.Volume = VolumeSlider.Value;
-
-        //    // Optional: Change speaker icon based on volume
-        //    if (VolumeSlider.Value == 0 || Volume_Slider.Value == 0)
-        //    {
-        //        VolumeSpeaker.Source = new BitmapImage(new Uri("/Icons/mute.png", UriKind.Relative));
-        //        VolumeIcon.Source = new BitmapImage(new Uri("/Icons/mute.png", UriKind.Relative));
-        //    }
-                
-        //    else if (VolumeSlider.Value < 0.5 || Volume_Slider.Value < 0.5)
-        //    {
-        //        VolumeSpeaker.Source = new BitmapImage(new Uri("/Icons/volume-low.png", UriKind.Relative));
-        //        VolumeIcon.Source = new BitmapImage(new Uri("/Icons/volume-low.png", UriKind.Relative));
-        //    }
-
-        //    else
-        //    {
-        //        VolumeSpeaker.Source = new BitmapImage(new Uri("/Icons/volume-high.png", UriKind.Relative));
-        //        VolumeIcon.Source = new BitmapImage(new Uri("/Icons/volume-high.png", UriKind.Relative));
-        //    }
-                
-        //}
 
 
         private void VolumeSlider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
@@ -714,8 +686,6 @@ namespace MediaPlayerApp
         }
 
 
-
-
         private void HideUIs()
         {
             TopMenu.Visibility = Visibility.Collapsed;
@@ -733,8 +703,6 @@ namespace MediaPlayerApp
             SplitterColumn.Width = new GridLength(3);         // restore splitter width
             GridPlit.Visibility = Visibility.Visible;
         }
-
-
 
         private void media_Element_MouseMove(object sender, MouseEventArgs e)
         {
@@ -755,7 +723,6 @@ namespace MediaPlayerApp
         }
 
 
-
         // ───────────────────────────────
         // Slider Seek
         // ───────────────────────────────
@@ -770,77 +737,6 @@ namespace MediaPlayerApp
             media_Element.Position = TimeSpan.FromSeconds(TimeSlider.Value);
             media_Element.Position = TimeSpan.FromSeconds(slider.Value);
         }
-
-
-        // ───────────────────────────────
-        // Playlist Loaders
-        // ───────────────────────────────
-        //private void OpenFile_Click(object sender, RoutedEventArgs e)
-        //{
-        //    OpenFileDialog openFileDialog = new()
-        //    {
-        //        Filter = "Media Files|*.mp4;*.mov;*.wmv;*.mp3;*.wav;*.wma|All Files|*.*",
-        //        Multiselect = false
-        //    };
-
-        //    if (openFileDialog.ShowDialog() == true)
-        //    {
-        //        //_playlist.Clear();
-        //        _playlist.Add(new PlaylistModel
-        //        {
-        //            FilePath = openFileDialog.FileName,
-        //            Title = Path.GetFileNameWithoutExtension(openFileDialog.FileName),
-        //            Artist = "Unknown Artist",
-        //            Duration = "--:--",
-        //            Thumbnail = "Images/default_thumbnail.png"
-        //        });
-
-        //        PlayTrackByIndex(0);
-        //    }
-        //    // Update FullScreen button
-        //    //UpdateFullScreenButton();
-        //}
-
-
-
-        //private void OpenFile_Click(object sender, RoutedEventArgs e)
-        //{
-        //    OpenFileDialog openFileDialog = new()
-        //    {
-        //        Filter = "Media Files|*.mp4;*.mov;*.wmv;*.mp3;*.wav;*.wma|All Files|*.*",
-        //        Multiselect = false
-        //    };
-
-        //    if (openFileDialog.ShowDialog() == true)
-        //    {
-        //        string filePath = openFileDialog.FileName;
-
-        //        // Optional: prevent duplicates
-        //        if (_playlist.Any(p => p.FilePath == filePath))
-        //        {
-        //            MessageBox.Show("This file is already in the playlist.", "Duplicate", MessageBoxButton.OK, MessageBoxImage.Information);
-        //            return;
-        //        }
-
-        //        var newTrack = new PlaylistModel
-        //        {
-        //            FilePath = filePath,
-        //            Title = Path.GetFileNameWithoutExtension(filePath),
-        //            Artist = "Unknown Artist",
-        //            Duration = "--:--",
-        //            Thumbnail = "Images/default_thumbnail.png"
-        //        };
-
-        //        _playlist.Add(newTrack);
-
-        //        // 👉 Only start playing if nothing is playing yet
-        //        if (!isPlaying && _playlist.Count == 1)
-        //        {
-        //            PlayTrackByIndex(0); // first file starts automatically
-        //        }
-        //    }
-        //}
-
 
 
         private void OpenFile_Click(object sender, RoutedEventArgs e)
@@ -883,8 +779,6 @@ namespace MediaPlayerApp
                 }
             }
         }
-
-
 
 
         private void UpdateNowPlayingStatus(string status)
@@ -963,20 +857,50 @@ namespace MediaPlayerApp
                 PlayMedia();
             }
         }
+      
+
 
         private void Playlist_Remove_Click(object sender, RoutedEventArgs e)
         {
             if (PlaylistListView.SelectedItem is PlaylistModel track)
             {
-                Stop_Click(null!, null!);
-                _playlist.Remove(track);
-                //if (_playlist.Count == 0)
-                //{
-                //    Stop_Click(null!, null!);
-                //}
+                int removedIndex = _playlist.IndexOf(track);
+                bool isCurrentTrack = removedIndex == currentTrackIndex;
+
+                _playlist.RemoveAt(removedIndex);
+
+                if (isCurrentTrack)
+                {
+                    Stop_Click(null!, null!);
+
+                    if (_playlist.Count > 0)
+                    {
+                        // play the next track if possible
+                        int nextIndex = removedIndex;
+                        if (nextIndex >= _playlist.Count)
+                            nextIndex = _playlist.Count - 1;
+
+                        PlayTrack(_playlist[nextIndex]);
+                        currentTrackIndex = nextIndex;
+                    }
+                    else
+                    {
+                        // playlist is empty → clear playback
+                        media_Element.Stop();
+                        //media_Element.Source = null;
+                        currentTrackIndex = -1;
+                    }
+                }
+                else if (removedIndex < currentTrackIndex)
+                {
+                    // Shift index back since list shrank before the current track
+                    currentTrackIndex--;
+                }
             }
-            //UpdateFullScreenButton();
         }
+
+
+
 
         private void Playlist_OpenLocation_Click(object sender, RoutedEventArgs e)
         {
@@ -986,7 +910,6 @@ namespace MediaPlayerApp
                 if (dir != null)
                     System.Diagnostics.Process.Start("explorer.exe", dir);
             }
-            //UpdateFullScreenButton();
         }
 
 
@@ -1067,39 +990,6 @@ namespace MediaPlayerApp
 
         }
 
-
-        //private void PlayTrack(PlaylistModel track)
-        //{
-        //    if (track == null) return;
-
-        //    // Stop current playback
-        //    media_Element.Stop();
-
-        //    // Set the source
-        //    media_Element.Source = new Uri(track.FilePath);
-        //    media_Element.Play();
-
-        //    // Update currentTrackIndex in the original playlist
-        //    currentTrackIndex = _playlist.IndexOf(track);
-
-        //    // Update IsPlaying flags for full playlist
-        //    foreach (var t in _playlist)
-        //        t.IsPlaying = t == track;
-
-        //    // Update UI
-        //    CurrentTitle.Text = track.Title;
-        //    SongArtist.Text = track.Artist;
-        //    totalTime.Text = track.Duration;
-
-        //    // Refresh the ListView so IsPlaying triggers apply
-        //    PlaylistListView.Items.Refresh();
-
-        //    // Scroll into view in filtered list
-        //    PlaylistListView.ScrollIntoView(track);
-
-        //    // Update status bar
-        //    UpdateNowPlayingStatus($"{track.Title} — {track.Artist}");
-        //}
 
 
         private void PlayTrack(PlaylistModel track)

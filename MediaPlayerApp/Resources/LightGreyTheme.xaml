@@ -29,6 +29,7 @@
     <SolidColorBrush x:Key="TextBoxBackground" Color="White"/>
     <SolidColorBrush x:Key="TextBoxBorderBrush" Color="#A0A0A0"/>
     <SolidColorBrush x:Key="TextBoxSelectionBrush" Color="DarkOrange"/>
+    <SolidColorBrush x:Key="SearchTextBx" Color="#FFF"/>
 
     <!-- StatusBar -->
     <SolidColorBrush x:Key="StatusBarForeground" Color="Black"/>

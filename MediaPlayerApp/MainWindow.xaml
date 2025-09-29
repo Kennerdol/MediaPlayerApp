@@ -55,59 +55,60 @@
                 
             </MenuItem>
             <MenuItem Header="_Playback" Background="{DynamicResource WindowBackground}" Foreground="{DynamicResource WindowForeground}">
-                <MenuItem Header="Play/Pause" Click="PlayPause_Click" x:Name="PlayPauseItem" Foreground="{DynamicResource WindowForeground}">
+                <MenuItem Header="Play/Pause" Click="PlayPause_Click" x:Name="PlayPauseItem" BorderThickness="0" 
+                          Background="{DynamicResource WindowBackground}" Foreground="{DynamicResource WindowForeground}">
                     <MenuItem.Icon>
                         <Image Source="/Icons/play.png" Style="{Binding icon}"/>
                     </MenuItem.Icon>
                 </MenuItem>
 
-                <MenuItem Header="Next" Click="Next_Click" Foreground="{DynamicResource WindowForeground}">
+                <MenuItem Header="Next" Click="Next_Click" BorderThickness="0" Background="{DynamicResource WindowBackground}" Foreground="{DynamicResource WindowForeground}">
                     <MenuItem.Icon>
                         <Image Source="/Icons/next.png" Style="{Binding icon}"/>
                     </MenuItem.Icon>
                 </MenuItem>
 
-                <MenuItem Header="Previous" Click="Previous_Click" Foreground="{DynamicResource WindowForeground}">
+                <MenuItem Header="Previous" Click="Previous_Click" BorderThickness="0" Background="{DynamicResource WindowBackground}" Foreground="{DynamicResource WindowForeground}">
                     <MenuItem.Icon>
                         <Image Source="/Icons/previous.png" Style="{Binding icon}"/>
                     </MenuItem.Icon>
                 </MenuItem>
 
-                <MenuItem Header="Stop" Click="Stop_Click" Foreground="{DynamicResource WindowForeground}">
+                <MenuItem Header="Stop" Click="Stop_Click" BorderThickness="0" Background="{DynamicResource WindowBackground}" Foreground="{DynamicResource WindowForeground}">
                     <MenuItem.Icon>
                         <Image Source="/Icons/stop.png" Style="{Binding icon}"/>
                     </MenuItem.Icon>
                 </MenuItem>
 
-                <MenuItem Header="Speed" Foreground="{DynamicResource WindowForeground}">
+                <MenuItem Header="Speed" BorderThickness="0" Background="{DynamicResource WindowBackground}" Foreground="{DynamicResource WindowForeground}">
                     <MenuItem.Icon>
                         <Image Source="/Icons/speed.png" Style="{Binding icon}"/>
                     </MenuItem.Icon>
-                    <MenuItem Header="Slower" IsCheckable="True" Click="ChangeSpeed_Click" Tag="0.5" Foreground="{DynamicResource WindowForeground}">
+                    <MenuItem Header="Slower" IsCheckable="True" Click="ChangeSpeed_Click" Tag="0.5" BorderThickness="0" Background="{DynamicResource WindowBackground}" Foreground="{DynamicResource WindowForeground}">
                         <MenuItem.Icon>
                             <Image Source="/Icons/speed-fast.png" Style="{Binding icon}"/>
                         </MenuItem.Icon>
                     </MenuItem>
 
-                    <MenuItem Header="Slow" IsCheckable="True" Click="ChangeSpeed_Click" Tag="0.75" Foreground="{DynamicResource WindowForeground}">
+                    <MenuItem Header="Slow" IsCheckable="True" Click="ChangeSpeed_Click" Tag="0.75" BorderThickness="0" Background="{DynamicResource WindowBackground}" Foreground="{DynamicResource WindowForeground}">
                         <MenuItem.Icon>
                             <Image Source="/Icons/speed-fast.png" Style="{Binding icon}"/>
                         </MenuItem.Icon>
                     </MenuItem>
 
-                    <MenuItem Header="Normal" IsCheckable="True" Click="ChangeSpeed_Click" Tag="1" Foreground="{DynamicResource WindowForeground}">
+                    <MenuItem Header="Normal" IsCheckable="True" Click="ChangeSpeed_Click" Tag="1" BorderThickness="0" Background="{DynamicResource WindowBackground}" Foreground="{DynamicResource WindowForeground}">
                         <MenuItem.Icon>
                             <Image Source="/Icons/speed-normal.png" Style="{Binding icon}"/>
                         </MenuItem.Icon>
                     </MenuItem>
 
-                    <MenuItem Header="Fast" IsCheckable="True" Click="ChangeSpeed_Click" Tag="1.5" Foreground="{DynamicResource WindowForeground}">
+                    <MenuItem Header="Fast" IsCheckable="True" Click="ChangeSpeed_Click" Tag="1.5" BorderThickness="0" Background="{DynamicResource WindowBackground}" Foreground="{DynamicResource WindowForeground}">
                         <MenuItem.Icon>
                             <Image Source="/Icons/speed-fast.png" Style="{Binding icon}"/>
                         </MenuItem.Icon>
                     </MenuItem>
 
-                    <MenuItem Header="Faster" IsCheckable="True" Click="ChangeSpeed_Click" Tag="2.0" Foreground="{DynamicResource WindowForeground}">
+                    <MenuItem Header="Faster" IsCheckable="True" Click="ChangeSpeed_Click" Tag="2.0" BorderThickness="0" Background="{DynamicResource WindowBackground}" Foreground="{DynamicResource WindowForeground}">
                         <MenuItem.Icon>
                             <Image Source="/Icons/speed-faster.png" Style="{Binding icon}"/>
                         </MenuItem.Icon>
@@ -116,17 +117,17 @@
 
             </MenuItem>
 
-            <MenuItem Header="_Settings" Foreground="{DynamicResource WindowForeground}">
-                <MenuItem Header="Themes" Foreground="{DynamicResource WindowForeground}">
+            <MenuItem Header="_Settings" BorderThickness="0" Background="{DynamicResource WindowBackground}" Foreground="{DynamicResource WindowForeground}">
+                <MenuItem Header="Themes" BorderThickness="0" Background="{DynamicResource WindowBackground}" Foreground="{DynamicResource WindowForeground}">
                     <MenuItem.Icon>
-                        <Image Source="/Icons/theme.png" Style="{Binding icon}"/>
+                        <Image Source="/Icons/theme.png" Style="{Binding icon}" />
                     </MenuItem.Icon>
-                    <MenuItem Header="Light" Click="LightTheme_Click" Foreground="{DynamicResource WindowForeground}">
+                    <MenuItem Header="Light" Click="LightTheme_Click" BorderThickness="0" Background="{DynamicResource WindowBackground}" Foreground="{DynamicResource WindowForeground}">
                         <MenuItem.Icon>
                             <Image Source="/Icons/light.png" Style="{Binding icon}"/>
                         </MenuItem.Icon>
                     </MenuItem>
-                    <MenuItem Header="Dark" Click="DarkTheme_Click" Foreground="{DynamicResource WindowForeground}">
+                    <MenuItem Header="Dark" Click="DarkTheme_Click" BorderThickness="0" Background="{DynamicResource WindowBackground}" Foreground="{DynamicResource WindowForeground}">
                         <MenuItem.Icon>
                             <Image Source="/Icons/dark-theme.png" Style="{Binding icon}"/>
                         </MenuItem.Icon>
@@ -134,19 +135,19 @@
                 </MenuItem>
             </MenuItem>
 
-            <MenuItem Header="Help" Foreground="{DynamicResource WindowForeground}">
-                <MenuItem Header="How To" Foreground="{DynamicResource WindowForeground}" Click="HowTo_Click">
+            <MenuItem Header="Help" BorderThickness="0" Background="{DynamicResource WindowBackground}" Foreground="{DynamicResource WindowForeground}">
+                <MenuItem Header="How To" Click="HowTo_Click" BorderThickness="0" Background="{DynamicResource WindowBackground}" Foreground="{DynamicResource WindowForeground}">
                     <MenuItem.Icon>
                         <Image Source="/Icons/help.png" Style="{Binding icon}"/>
                     </MenuItem.Icon>
                 </MenuItem>
 
-                <MenuItem Header="Check for Updates" Foreground="{DynamicResource WindowForeground}" Click="CheckForUpdates_Click">
+                <MenuItem Header="Check for Updates" Click="CheckForUpdates_Click" BorderThickness="0" Background="{DynamicResource WindowBackground}" Foreground="{DynamicResource WindowForeground}">
                     <MenuItem.Icon>
                         <Image Source="/Icons/updates.png"  Style="{Binding icon}"/>
                     </MenuItem.Icon>
                 </MenuItem>
-                <MenuItem Header="About" Foreground="{DynamicResource WindowForeground}" Click="About_Click">
+                <MenuItem Header="About" Click="About_Click" BorderThickness="0" Background="{DynamicResource WindowBackground}" Foreground="{DynamicResource WindowForeground}">
                     <MenuItem.Icon>
                         <Image Source="/Icons/info.png"  Style="{Binding icon}"/>
                     </MenuItem.Icon>
@@ -235,7 +236,7 @@
                            VerticalAlignment="Center"
                            Foreground="{DynamicResource WindowForeground}"/>
 
-                        <Slider x:Name="TimeSlider" Background="{DynamicResource SliderBackground}"
+                        <Slider x:Name="TimeSlider" Background="{DynamicResource SliderOverlayBG}"
                             Grid.Column="1"
                             Minimum="0"
                             Maximum="1"
@@ -322,9 +323,9 @@
 
 
             <!-- ==== Splitter ==== -->
-            <GridSplitter Grid.Column="1" x:Name="GridPlit" Width="3" HorizontalAlignment="Stretch"
+            <GridSplitter Grid.Column="1" x:Name="GridPlit" Width="Auto" HorizontalAlignment="Stretch"
                           VerticalAlignment="Stretch" ShowsPreview="True" ResizeBehavior="PreviousAndNext"
-                          Background="{DynamicResource Splittercolor}"/>
+                          Background="{DynamicResource SplitterBackgroundcolor}" BorderBrush="{DynamicResource SplitterBordercolor}"/>
 
             <!-- ==== Playlist ==== -->
             <Grid Grid.Column="2" x:Name="PlaylistGrid" >
@@ -341,9 +342,53 @@
                             BorderBrush="{DynamicResource BorderLess}" Margin="0,0,5,0" Width="50" Click="OpenFile_Click">
                         <Image Source="/Icons/treble-clef.png" />
                     </Button>
-                    
-                    <TextBox x:Name="SearchTextBox" TextChanged="SearchTextBox_TextChanged" Margin="5,0,5,0" 
-                             Padding="3" FontSize="15" Width="250" Height="30" BorderBrush="{DynamicResource BorderBrush}" />
+
+                    <TextBox x:Name="SearchTextBox"
+                             Width="250" Height="30"
+                             FontSize="15"
+                             Margin="5,0,5,0"
+                             Padding="5"
+                             TextChanged="SearchTextBox_TextChanged"
+                             BorderThickness="1"
+                             BorderBrush="{DynamicResource BorderBrush}"
+                             Background="{DynamicResource TextBoxBackground}"
+                             Foreground="{DynamicResource TextBoxForeground}"
+                             VerticalContentAlignment="Center">
+                                            <TextBox.Style>
+                            <Style TargetType="TextBox">
+                                <Setter Property="Template">
+                                    <Setter.Value>
+                                        <ControlTemplate TargetType="TextBox">
+                                            <Grid>
+                                                <!-- The actual text area -->
+                                                <ScrollViewer x:Name="PART_ContentHost"/>
+
+                                                <!-- Watermark text -->
+                                                <TextBlock x:Name="PART_Watermark"
+                                       Text="Search..."
+                                       Foreground="{DynamicResource TextBoxForeground}"
+                                       Margin="5,0,0,0"
+                                       VerticalAlignment="Center"
+                                       IsHitTestVisible="False"
+                                       Visibility="Collapsed"/>
+                                            </Grid>
+
+                                            <ControlTemplate.Triggers>
+                                                <!-- Show watermark when Text is empty -->
+                                                <Trigger Property="Text" Value="">
+                                                    <Setter TargetName="PART_Watermark"
+                                        Property="Visibility"
+                                        Value="Visible"/>
+                                                </Trigger>
+                                            </ControlTemplate.Triggers>
+                                        </ControlTemplate>
+                                    </Setter.Value>
+                                </Setter>
+                            </Style>
+                        </TextBox.Style>
+                    </TextBox>
+
+
                     <Button x:Name="ClearSearch" Grid.Column="1" Background="{DynamicResource NoBackground}" ToolTip="Clear Search"
                             BorderBrush="{DynamicResource BorderLess}" Margin="0,0,5,0" Width="50" Click="ClearSearch_Click">
                         <Image Source="/Icons/clear.png" />
@@ -351,9 +396,9 @@
                 </StackPanel>
                 
                 <!-- ==== Playlist list ==== -->
-                <Border Grid.Row="1" BorderBrush="{DynamicResource PlaylistBorder}">
-                    <ListView x:Name="PlaylistListView"
-                              MouseDoubleClick="PlaylistListView_MouseDoubleClick"
+                <Border Grid.Row="1" BorderBrush="{DynamicResource PlaylistBorder}"  >
+                    <ListView x:Name="PlaylistListView" Background="{DynamicResource PlaylistBackground}"
+                              MouseDoubleClick="PlaylistListView_MouseDoubleClick" Foreground="{DynamicResource PlaylistFG}"
                               PreviewMouseLeftButtonDown="PlaylistListView_PreviewMouseLeftButtonDown"
                               PreviewMouseMove="PlaylistListView_PreviewMouseMove"
                               BorderThickness="0"
@@ -577,7 +622,7 @@
         </Grid>
 
         <!-- ===== Status Bar ===== -->
-        <StatusBar Grid.Row="3" x:Name="Status" Background="{DynamicResource WindowBackground}">
+        <StatusBar Grid.Row="3" x:Name="Status" Background="{DynamicResource WindowBackground}" Foreground="{DynamicResource WindowForeground}">
             <StatusBarItem x:Name="NowPlayingText" Content="Now Playing: No Track Loaded"/>
             <Separator/>
             <StatusBarItem x:Name="RepeatModeText" Content="Repeat: Off"/>
