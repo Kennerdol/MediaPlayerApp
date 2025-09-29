@@ -27,7 +27,7 @@ Supports audio and video playback, playlists, themes, full-screen mode, and more
 
 ### Prerequisites
 - Windows 10/11
-- [.NET 6 or later](https://dotnet.microsoft.com/en-us/download/dotnet)
+- [.NET 8 or later](https://dotnet.microsoft.com/en-us/download/dotnet)
 - Visual Studio 2022 (recommended)
 
 ### Installation
