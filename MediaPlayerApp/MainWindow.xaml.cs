@@ -1427,6 +1427,25 @@ namespace MediaPlayerApp
         }
 
 
+        // Attach this in XAML to your MediaElement or parent Grid:
+        // <MediaElement Name="media_Element" MouseWheel="MediaElement_MouseWheel" />
+
+        private void MediaElement_MouseWheel(object sender, MouseWheelEventArgs e)
+        {
+            const double step = 0.05; // 5% per scroll tick
+
+            // Increase or decrease based on scroll direction
+            if (e.Delta > 0)
+                media_Element.Volume = Math.Min(media_Element.Volume + step, 1.0);
+            else
+                media_Element.Volume = Math.Max(media_Element.Volume - step, 0.0);
+
+            // Optional: show current volume in status bar or overlay
+            int volumePercent = (int)(media_Element.Volume * 100);
+            UpdateNowPlayingStatus($"Volume: {volumePercent}%");
+        }
+
+
 
     }
 }

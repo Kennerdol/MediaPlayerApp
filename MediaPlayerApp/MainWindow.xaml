@@ -176,7 +176,7 @@
                   LoadedBehavior="Manual"
                   UnloadedBehavior="Manual"
                   Stretch="Uniform" MediaFailed="media_Element_MediaFailed" 
-                  MouseLeftButtonDown="MediaElement_MouseLeftButtonDown" />
+                  MouseLeftButtonDown="MediaElement_MouseLeftButtonDown" MouseWheel="MediaElement_MouseWheel"/>
 
                 <!-- 📀 Watermark-style Thumbnail + Song Info -->
                 <Viewbox Stretch="Uniform" x:Name="SongInfoPanel">
