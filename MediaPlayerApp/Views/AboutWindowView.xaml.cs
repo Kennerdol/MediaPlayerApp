@@ -1,5 +1,7 @@
 ﻿using System.Diagnostics;
+using System.Reflection;
 using System.Windows;
+using System.Windows.Input;
 using System.Windows.Navigation;
 
 namespace MediaPlayerApp.Views
@@ -9,6 +11,8 @@ namespace MediaPlayerApp.Views
         public AboutWindowView()
         {
             InitializeComponent();
+            var version = Assembly.GetExecutingAssembly().GetName().Version?.ToString();
+            VersionText.Text = $"Version {version}";
         }
 
         private void Close_Click(object sender, RoutedEventArgs e)
@@ -22,5 +26,8 @@ namespace MediaPlayerApp.Views
             Process.Start(new ProcessStartInfo(e.Uri.AbsoluteUri) { UseShellExecute = true });
             e.Handled = true;
         }
+
+        
+
     }
 }

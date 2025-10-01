@@ -29,7 +29,7 @@
                 <TextBlock FontSize="18" FontWeight="Bold">Duducha Media Player</TextBlock>
 
                 <!-- Version -->
-                <TextBlock Margin="0,5,0,0">Version 1.0.0</TextBlock>
+                <TextBlock Margin="0,5,0,0" x:Name="VersionText"/>
 
                 <!-- Developer -->
                 <TextBlock Margin="0,5,0,10">Developed by Kennedy Mulenga</TextBlock>
