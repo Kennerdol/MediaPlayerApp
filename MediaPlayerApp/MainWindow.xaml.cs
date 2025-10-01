@@ -65,17 +65,6 @@ namespace MediaPlayerApp
             media_Element.Volume = VolumeSlider.Value;
             media_Element.MediaEnded += media_Element_MediaEnded;
 
-            //// Assign PlacementTarget in code
-            //volumePopup.PlacementTarget = speakerButton;
-
-            //// Show popup on mouse enter
-            //speakerButton.MouseEnter += (s, e) => volumePopup.IsOpen = true;
-
-            //// Hide popup on mouse leave (optional: add delay if needed)
-            //volumePopup.MouseLeave += (s, e) => volumePopup.IsOpen = false;
-
-            // Update FullScreen button
-            //UpdateFullScreenButton();
 
             // Apply last saved theme or default to Light
             string lastTheme = Properties.Settings.Default.LastTheme;
@@ -485,33 +474,6 @@ namespace MediaPlayerApp
 
         }
 
-
-        //private void Stop_Click(object sender, RoutedEventArgs e)
-        //{
-        //    if (_playlist.Count == 0 || currentTrackIndex < 0)
-        //        return; // nothing to stop
-
-        //    media_Element.Stop();
-        //    media_Element.Position = TimeSpan.Zero;
-        //    //media_Element.Source = null;
-
-        //    // Reset UI
-        //    PlayPauseImage.Source = new BitmapImage(new Uri("/Icons/play.png", UriKind.Relative));
-        //    Play_PauseImage.Source = new BitmapImage(new Uri("/Icons/play.png", UriKind.Relative));
-        //    VisualizerPanel.Visibility = Visibility.Hidden;
-        //    CurrentTime.Text = "00:00:00";
-        //    TotalTime.Text = "00:00:00";
-        //    TotalDuration.Text = "00:00:00";
-        //    time.Text = "00:00:00";
-        //    TimeSlider.Value = 0;
-        //    slider.Value = 0; //Overlay
-        //    isPlaying = false;
-        //    timer?.Stop();
-
-        //    // Update status bar only if a track was playing
-        //    var track = _playlist[currentTrackIndex];
-        //    UpdateNowPlayingStatus($"Stopped");
-        //}
 
         private void Stop_Click(object sender, RoutedEventArgs e)
 {
@@ -1206,28 +1168,7 @@ namespace MediaPlayerApp
             }
         }
 
-        //private void speakerButton_MouseEnter(object sender, MouseEventArgs e)
-        //{
-        //    if (!volumePopup.IsMouseOver)
-        //    {
-        //        volumePopup.IsOpen = true;
-        //    }
-        //}
 
-        //private void speakerButton_MouseLeave(object sender, MouseEventArgs e)
-        //{
-        //    if (!volumePopup.IsMouseOver)
-        //    {
-        //        volumePopup.IsOpen = false;
-        //    }
-        //}
-
-        //private void volumePopup_MouseLeave(object sender, MouseEventArgs e) => volumePopup.IsOpen = false;
-
-        //private void volumePopup_MouseEnter(object sender, MouseEventArgs e) => volumePopup.IsOpen = true;
-
-
-       
         private void SavePlaylist_Click(object sender, RoutedEventArgs e)
         {
             if (_playlist.Count == 0)
@@ -1311,51 +1252,6 @@ namespace MediaPlayerApp
             }
         }
 
-        //private async void CheckForUpdates_Click(object sender, RoutedEventArgs e)
-        //{
-        //    string currentVersion = Assembly.GetExecutingAssembly().GetName().Version?.ToString() ?? "0.0.0";
-        //    string releaseUrl = "https://github.com/Kennerdol/MediaPlayerApp/releases/latest";
-
-        //    try
-        //    {
-        //        using HttpClient client = new HttpClient();
-        //        client.DefaultRequestHeaders.UserAgent.ParseAdd("MediaPlayerApp");
-
-        //        string response = await client.GetStringAsync("https://api.github.com/repos/Kennerdol/MediaPlayerApp/releases/latest");
-
-        //        using JsonDocument doc = JsonDocument.Parse(response);
-        //        string latestVersion = doc.RootElement.GetProperty("tag_name").GetString() ?? "0.0.0";
-
-        //        if (currentVersion == latestVersion)
-        //        {
-        //            MessageBox.Show($"✅ You are up to date!\nCurrent version: v{currentVersion}",
-        //                            "Check for Updates", MessageBoxButton.OK, MessageBoxImage.Information);
-        //        }
-        //        else
-        //        {
-        //            var result = MessageBox.Show(
-        //                $"⚡ New version available: v{latestVersion}\n(Current: v{currentVersion})\n\nDo you want to open the download page?",
-        //                "Update Available",
-        //                MessageBoxButton.YesNo,
-        //                MessageBoxImage.Question);
-
-        //            if (result == MessageBoxResult.Yes)
-        //            {
-        //                Process.Start(new ProcessStartInfo
-        //                {
-        //                    FileName = releaseUrl,
-        //                    UseShellExecute = true
-        //                });
-        //            }
-        //        }
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        MessageBox.Show($"❌ Unable to check for updates:\n{ex.Message}",
-        //                        "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-        //    }
-        //}
-
 
         private static readonly HttpClient httpClient = new()
         {
@@ -1384,17 +1280,9 @@ namespace MediaPlayerApp
                         // Strip "v" prefix if present
                         string latestVersion = latestTag.StartsWith("v") ? latestTag.Substring(1) : latestTag;
 
-                        //Version current = new Version(currentVersion);
-                        //Version latest = new Version(latestVersion);
+                        Version current = new Version(currentVersion);
+                        Version latest = new Version(latestVersion);
 
-                        // Normalize version strings to 3 parts (Major.Minor.Build)
-                        Version current = new Version(currentVersion.Split('.')[0] + "." +
-                                                      currentVersion.Split('.')[1] + "." +
-                                                      currentVersion.Split('.')[2]);
-
-                        Version latest = new Version(latestVersion.Split('.')[0] + "." +
-                                                     latestVersion.Split('.')[1] + "." +
-                                                     (latestVersion.Split('.').Length > 2 ? latestVersion.Split('.')[2] : "0"));
 
 
                         if (latest > current)
@@ -1425,25 +1313,6 @@ namespace MediaPlayerApp
                     MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
-
-
-        // Attach this in XAML to your MediaElement or parent Grid:
-        // <MediaElement Name="media_Element" MouseWheel="MediaElement_MouseWheel" />
-
-        //private void MediaElement_MouseWheel(object sender, MouseWheelEventArgs e)
-        //{
-        //    const double step = 0.05; // 5% per scroll tick
-
-        //    // Increase or decrease based on scroll direction
-        //    if (e.Delta > 0)
-        //        media_Element.Volume = Math.Min(media_Element.Volume + step, 1.0);
-        //    else
-        //        media_Element.Volume = Math.Max(media_Element.Volume - step, 0.0);
-
-        //    // Optional: show current volume in status bar or overlay
-        //    int volumePercent = (int)(media_Element.Volume * 100);
-        //    UpdateNowPlayingStatus($"Volume: {volumePercent}%");
-        //}
 
 
         private void MediaElement_MouseWheel(object sender, MouseWheelEventArgs e)

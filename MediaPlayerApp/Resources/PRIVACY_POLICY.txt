@@ -1,0 +1,30 @@
+Privacy Policy for Duducha Media Player
+
+Effective Date: October 1, 2025
+
+1. Introduction
+Duducha Media Player (“the App”) is developed as a personal media playback application. Your privacy is important to us. This Privacy Policy explains how the App handles user data.
+
+2. Information We Collect
+- The App does not collect, store, or transmit any personal information to external servers.
+- User settings (such as themes, playlists, playback preferences) are stored locally on your device only.
+- If you choose to create or upload playlists, those files are stored on your device and are not shared with us.
+
+3. How Information Is Used
+- Settings are stored locally to improve your experience (e.g., remembering theme preferences, last played files, or playlists).
+- The App may check for updates (if enabled), which requires an internet connection to contact our update server. This process does not transmit any personal data.
+
+4. Data Sharing
+- We do not sell, share, or transfer any personal data to third parties.
+- All data remains on your device unless you choose to share your files manually.
+
+5. User Rights
+- You may delete or reset your playlists and settings at any time by removing the app’s local storage/configuration files.
+- Since no data is collected externally, there is nothing to request or erase beyond what is stored on your device.
+
+6. Updates to this Policy
+We may update this Privacy Policy from time to time. Changes will be reflected in the App’s “About” or “Help” section with a new effective date.
+
+7. Contact Us
+If you have any questions about this Privacy Policy, you can reach us at:
+📧 kenny.t.mule.jnr@gmail.com
