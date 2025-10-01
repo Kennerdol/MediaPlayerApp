@@ -93,7 +93,6 @@ namespace MediaPlayerApp
             TrackCountText.Content = $"Tracks: {_playlist.Count}";
         }
 
-
         private bool PlaylistFilter(object obj)
         {
             if (obj is PlaylistModel item)
