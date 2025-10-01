@@ -6,10 +6,6 @@
         WindowStartupLocation="CenterScreen" 
         Background="{DynamicResource WindowBackground}" Foreground="{DynamicResource WindowForeground}">
 
-    <Window.Resources>
-        
-    </Window.Resources>
-   
 
     <Grid>
         <!-- Define rows -->
@@ -290,21 +286,17 @@
 
                         <Grid>
                             <!-- Volume Button -->
-                            <Button x:Name="speakerButton" Height="30" 
+                            <StackPanel Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Center" >
+                                <!--Volume Button-->
+                                <Button x:Name="speakerButton" Height="30" 
                                     HorizontalAlignment="Center" VerticalAlignment="Center"
-                                ToolTip="Volume"
-                                MouseEnter="speakerButton_MouseEnter"
-                                MouseLeave="speakerButton_MouseLeave">
-                                <Image x:Name="VolumeSpeaker" Source="/Icons/volume-low.png" Stretch="Uniform"/>
-                            </Button>
+                                ToolTip="Volume">
+                                    <Image x:Name="VolumeSpeaker" Source="/Icons/volume-low.png" Stretch="Uniform"/>
+                                </Button>
 
-                            <!-- Volume Popup -->
-                            <Popup x:Name="volumePopup" Placement="Right" 
-                                   StaysOpen="False" AllowsTransparency="True">
-                                <Border Background="{DynamicResource WindowBackground}" 
-                                        BorderBrush="{DynamicResource AccentColor}" 
-                                        BorderThickness="1" CornerRadius="5" Padding="5">
-                                <Slider x:Name="VolumeSlider"
+                                <!-- Volume Slider -->
+
+                                <Slider x:Name="VolumeSlider" VerticalAlignment="Center" HorizontalAlignment="Left"
                                         Minimum="0"
                                         Maximum="1"
                                         Width="100"
@@ -313,8 +305,7 @@
                                         LargeChange="0.1"
                                         TickFrequency="0.05"
                                         ValueChanged="VolumeSlider_ValueChanged"/>
-                                </Border>
-                            </Popup>
+                            </StackPanel>
                         </Grid>
                     </StackPanel>
                 </Grid>
@@ -344,16 +335,16 @@
                     </Button>
 
                     <TextBox x:Name="SearchTextBox"
-         Width="250" Height="30"
-         FontSize="15"
-         Margin="5,0,5,0"
-         Padding="5"
-         TextChanged="SearchTextBox_TextChanged"
-         BorderThickness="1"
-         BorderBrush="{DynamicResource BorderBrush}"
-         Background="{DynamicResource TextBoxBackground}"
-         Foreground="{DynamicResource TextBoxForeground}"
-         VerticalContentAlignment="Center">
+                             Width="250" Height="30"
+                             FontSize="15"
+                             Margin="5,0,5,0"
+                             Padding="5"
+                             TextChanged="SearchTextBox_TextChanged"
+                             BorderThickness="1"
+                             BorderBrush="{DynamicResource BorderBrush}"
+                             Background="{DynamicResource TextBoxBackground}"
+                             Foreground="{DynamicResource TextBoxForeground}"
+                             VerticalContentAlignment="Center">
                         <TextBox.Style>
                             <Style TargetType="TextBox">
                                 <Setter Property="Template">
@@ -627,6 +618,8 @@
             <StatusBarItem x:Name="RepeatModeText" Content="Repeat: Off"/>
             <Separator/>
             <StatusBarItem x:Name="ShuffleModeText" Content="Shuffle: Off" HorizontalAlignment="Right"/>
+            <Separator/>
+            <StatusBarItem x:Name="VolumeText"  HorizontalAlignment="Right"/>
             <Separator/>
             <StatusBarItem x:Name="TrackCountText" Content="Total Tracks: 0" HorizontalAlignment="Right"/>
         </StatusBar>

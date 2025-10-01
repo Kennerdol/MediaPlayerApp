@@ -65,14 +65,14 @@ namespace MediaPlayerApp
             media_Element.Volume = VolumeSlider.Value;
             media_Element.MediaEnded += media_Element_MediaEnded;
 
-            // Assign PlacementTarget in code
-            volumePopup.PlacementTarget = speakerButton;
+            //// Assign PlacementTarget in code
+            //volumePopup.PlacementTarget = speakerButton;
 
-            // Show popup on mouse enter
-            speakerButton.MouseEnter += (s, e) => volumePopup.IsOpen = true;
+            //// Show popup on mouse enter
+            //speakerButton.MouseEnter += (s, e) => volumePopup.IsOpen = true;
 
-            // Hide popup on mouse leave (optional: add delay if needed)
-            volumePopup.MouseLeave += (s, e) => volumePopup.IsOpen = false;
+            //// Hide popup on mouse leave (optional: add delay if needed)
+            //volumePopup.MouseLeave += (s, e) => volumePopup.IsOpen = false;
 
             // Update FullScreen button
             //UpdateFullScreenButton();
@@ -600,10 +600,10 @@ namespace MediaPlayerApp
         }
 
 
-        private void SpeakerButton_Click(object sender, RoutedEventArgs e)
-        {
-            volumePopup.IsOpen = !volumePopup.IsOpen;
-        }
+        //private void SpeakerButton_Click(object sender, RoutedEventArgs e)
+        //{
+        //    volumePopup.IsOpen = !volumePopup.IsOpen;
+        //}
 
         private void HideControls()
         {
@@ -1206,25 +1206,25 @@ namespace MediaPlayerApp
             }
         }
 
-        private void speakerButton_MouseEnter(object sender, MouseEventArgs e)
-        {
-            if (!volumePopup.IsMouseOver)
-            {
-                volumePopup.IsOpen = true;
-            }
-        }
+        //private void speakerButton_MouseEnter(object sender, MouseEventArgs e)
+        //{
+        //    if (!volumePopup.IsMouseOver)
+        //    {
+        //        volumePopup.IsOpen = true;
+        //    }
+        //}
 
-        private void speakerButton_MouseLeave(object sender, MouseEventArgs e)
-        {
-            if (!volumePopup.IsMouseOver)
-            {
-                volumePopup.IsOpen = false;
-            }
-        }
+        //private void speakerButton_MouseLeave(object sender, MouseEventArgs e)
+        //{
+        //    if (!volumePopup.IsMouseOver)
+        //    {
+        //        volumePopup.IsOpen = false;
+        //    }
+        //}
 
-        private void volumePopup_MouseLeave(object sender, MouseEventArgs e) => volumePopup.IsOpen = false;
+        //private void volumePopup_MouseLeave(object sender, MouseEventArgs e) => volumePopup.IsOpen = false;
 
-        private void volumePopup_MouseEnter(object sender, MouseEventArgs e) => volumePopup.IsOpen = true;
+        //private void volumePopup_MouseEnter(object sender, MouseEventArgs e) => volumePopup.IsOpen = true;
 
 
        
@@ -1430,19 +1430,34 @@ namespace MediaPlayerApp
         // Attach this in XAML to your MediaElement or parent Grid:
         // <MediaElement Name="media_Element" MouseWheel="MediaElement_MouseWheel" />
 
+        //private void MediaElement_MouseWheel(object sender, MouseWheelEventArgs e)
+        //{
+        //    const double step = 0.05; // 5% per scroll tick
+
+        //    // Increase or decrease based on scroll direction
+        //    if (e.Delta > 0)
+        //        media_Element.Volume = Math.Min(media_Element.Volume + step, 1.0);
+        //    else
+        //        media_Element.Volume = Math.Max(media_Element.Volume - step, 0.0);
+
+        //    // Optional: show current volume in status bar or overlay
+        //    int volumePercent = (int)(media_Element.Volume * 100);
+        //    UpdateNowPlayingStatus($"Volume: {volumePercent}%");
+        //}
+
+
         private void MediaElement_MouseWheel(object sender, MouseWheelEventArgs e)
         {
             const double step = 0.05; // 5% per scroll tick
 
             // Increase or decrease based on scroll direction
             if (e.Delta > 0)
-                media_Element.Volume = Math.Min(media_Element.Volume + step, 1.0);
+                VolumeSlider.Value = Math.Min(VolumeSlider.Value + step, 1.0);
             else
-                media_Element.Volume = Math.Max(media_Element.Volume - step, 0.0);
+                VolumeSlider.Value = Math.Max(VolumeSlider.Value - step, 0.0);
 
-            // Optional: show current volume in status bar or overlay
-            int volumePercent = (int)(media_Element.Volume * 100);
-            UpdateNowPlayingStatus($"Volume: {volumePercent}%");
+            int volumePercent = (int)(VolumeSlider.Value * 100);
+            VolumeText.Content = $"Volume: {volumePercent}% ";
         }
 
 
