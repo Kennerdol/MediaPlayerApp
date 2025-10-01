@@ -1,0 +1,14 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<AppInstaller
+	Uri="file:///C:/Users/kenny/Desktop/Programming/C# Programming/Windows Presentation Foundation/Installer/Duducha.appinstaller"
+	Version="1.0.1.0" xmlns="http://schemas.microsoft.com/appx/appinstaller/2017/2">
+	<MainBundle
+		Name="b45bc9df-5e12-4275-b27a-9530f322845e"
+		Version="1.0.1.0"
+		Publisher="CN=Guy Behind The Buttons"
+		Uri="file:///C:/Users/kenny/Desktop/Programming/C# Programming/Windows Presentation Foundation/Installer/Duducha_1.0.1.0_Test/Duducha_1.0.1.0_x64.msixbundle" />
+	<UpdateSettings>
+		<OnLaunch
+			HoursBetweenUpdateChecks="168" />
+	</UpdateSettings>
+</AppInstaller>
