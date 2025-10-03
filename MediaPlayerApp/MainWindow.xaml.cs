@@ -376,6 +376,7 @@ namespace MediaPlayerApp
 
                 SongInfoPanel.Visibility = Visibility.Visible;
                 AlbumThumbnail.Visibility = Visibility.Visible;
+                VisualizerPanel.Visibility = Visibility.Visible;
 
                 if (currentTrackIndex >= 0 && currentTrackIndex < _playlist.Count)
                 {
